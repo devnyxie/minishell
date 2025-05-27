@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = minishell.c lexer.c builtins/exit.c
+SRC = minishell.c lexer.c error_handling.c builtins/exit.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 

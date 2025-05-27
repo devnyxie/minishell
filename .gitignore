@@ -1,4 +1,5 @@
 *.o
 *.a
 minishell
-.nfs0000000002a61f1b00000050
+.vscode/*
+.vscode
