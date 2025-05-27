@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 12:11:38 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:40:45 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/05/27 13:12:12 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/05/27 14:36:09 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-int exit_shell(char **args)
+void custom_error(char *msg)
 {
-    (void)args;
-    exit(EXIT_SUCCESS);
-    return(0);
+    rl_replace_line("", 0);
+    rl_on_new_line();
+    printf("%s\n", msg);
 }
