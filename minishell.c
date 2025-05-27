@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 11:13:12 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:13:05 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	await_input(void)
 		buffer = readline("minishell$ ");
 		if (buffer)
 		{
+			lexer_builtin(buffer);
+			// lexer_external(buffer);
 			printf("%s\n", buffer);
 			// HANDLE THE INPUT HERE
 			free(buffer);

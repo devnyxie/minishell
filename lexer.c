@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 12:13:30 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/05/27 12:08:35 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/05/27 12:16:03 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "./libft/libft.h"
-
-void lexer_builtin(char *buffer);
-void exit_shell(void);
-
-# endif
+void lexer_builtin(char *buffer){
+    if(ft_strncmp(buffer, "exit", 4) == 0)
+    {
+        exit_shell();
+    }
+}
