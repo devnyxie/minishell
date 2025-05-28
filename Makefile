@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = minishell.c lexer.c error_handling.c builtins/exit.c
+SRC = minishell.c lexer.c error_handling.c builtins/exit.c parser/parser.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
@@ -14,7 +14,7 @@ $(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 
 # Compile object files
-%.o: %.c minishell.h
+%.o: %.c minishell.h parser/parser.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compile libft
