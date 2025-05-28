@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:42:38 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:15:47 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	setup_signals(void)
 void	await_input(void)
 {
 	char	*input;
-	char 	**args = malloc(2 * sizeof(char *));
+	char	**args;
+
+	args = malloc(2 * sizeof(char *));
 	if (!args)
 	{
 		custom_error("Memory allocation failed");
@@ -44,6 +46,9 @@ void	await_input(void)
 		input = readline("minishell$ ");
 		if (input)
 		{
+			printf("Parser testing:\n");
+			parser(input);
+			printf("=== END OF TESTING ===\n");
 			lexer(input, args);
 			free(input);
 		}
