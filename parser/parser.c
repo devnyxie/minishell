@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:44:33 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:26:46 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*grab_word(char *input, int *i)
 	while (input[*i + bytes] && !is_space(input[*i + bytes]) && input[*i
 		+ bytes] != '>' && input[*i + bytes] != '<')
 		bytes++;
+	// TODO: free later
 	word = malloc((bytes + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
@@ -54,22 +55,29 @@ char	*grab_word(char *input, int *i)
 	return (word);
 }
 
-void	handle_word(char *input, t_cmd *command, int *i)
+void	handle_cmd(char *input, t_cmd *command, int *i)
 {
 	char	*word;
 	int		arg_count;
 	char	*arg;
 
-	printf("handle_word function\n");
+	printf("handle_cmd function\n");
 	skip_whitespace(input, i);
 	word = grab_word(input, i);
 	if (!word)
 		return ;
 	if (word[*i] == '>' || '<')
 	{
+		printf("Handling redirection...\n");
 		// handle redirections
 		// 1. >>, <<, >, <
 		// 2. files
+		// ...
+	}
+	else if (word[*i] == '|')
+	{
+		printf("Handling pipeline...\n");
+		// ...
 	}
 	else
 	{
@@ -85,7 +93,7 @@ void	handle_word(char *input, t_cmd *command, int *i)
 		command->args[arg_count++] = word;
 		skip_whitespace(input, i);
 		while (input[*i] && !is_space(input[*i]) && input[*i] != '>'
-			&& input[*i] != '<')
+			&& input[*i] != '<' && input[*i] != '|')
 		{
 			arg = grab_word(input, i);
 			if (!arg)
@@ -103,8 +111,13 @@ input is not manipulated in any of the functions
 */
 int	parser(char *input)
 {
-	// t_shell_input parsed_input;
-	// parsed_input.is_valid = 1;
+	t_shell_input parsed_input;
+	parsed_input.cmds = NULL;
+	// Linked List: one alloc needed
+	parsed_input.cmds = malloc(sizeof(t_cmd));
+	if (!parsed_input.cmds)
+		return (1); // error handling
+	parsed_input.is_valid = 1;
 	int i;
 
 	i = 0;
@@ -112,7 +125,8 @@ int	parser(char *input)
 	{
 		printf("main loop started\n");
 		t_cmd command;
-		handle_word(input, &command, &i);
+		handle_cmd(input, &command, &i);
+		
 		// command.name = grab_word(input, &i);
 	}
 	return (0);
