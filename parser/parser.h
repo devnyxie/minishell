@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 17:16:50 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:09:33 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_redirect {
 
 
 typedef struct s_cmd {
+    char           *name;
     char          **args;         // argv-like
     t_redirect    *in_redir;      // linked list of input redirs
     t_redirect    *out_redir;     // linked list of output redirs
