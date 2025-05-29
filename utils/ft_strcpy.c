@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                   :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 13:12:12 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 18:02:28 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/05/29 14:27:47 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/05/29 15:03:41 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	custom_error(char *msg)
+char	*ft_strcpy(char *dest, char *src)
 {
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	printf("%s\n", msg);
+	int i;
+
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

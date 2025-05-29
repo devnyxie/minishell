@@ -1,35 +1,44 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = minishell.c lexer.c error_handling.c builtins/exit.c
+SRC = minishell.c \
+		lexer.c \
+		error_handling.c \
+		builtins/exit.c \
+		builtins/builtin_echo.c \
+		parser/parser.c \
+		parser/parser_memory.c \
+		utils/ft_strcpy.c \
+		utils/utils.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
+	@echo "Compiling minishell..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 
 # Compile object files
-%.o: %.c minishell.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Compile libft
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	@echo "Compiling libft..."
+	@$(MAKE) -s -C $(LIBFT_DIR)
 
-# Clean obj files
 clean:
-	$(MAKE) clean -C $(LIBFT_DIR)
-	rm -f $(OBJ)
+	@$(MAKE) -s clean -C $(LIBFT_DIR)
+	@rm -f $(OBJ)
 
-# Clean everything (lib and obj)
 fclean: clean
-	$(MAKE) fclean -C $(LIBFT_DIR)
-	rm -f $(NAME)
+	@$(MAKE) -s fclean -C $(LIBFT_DIR)
+	@rm -f $(NAME)
+
 
 re: fclean all
 
