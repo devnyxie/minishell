@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/28 13:48:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:39:57 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+
+// todo:
+# include "parser/parser.h"
 
 typedef struct s_command
 {
@@ -35,9 +38,22 @@ typedef struct s_builtin
 	t_builtin_fn	fn;
 }					t_builtin;
 
+// lexer.c
 void				lexer(char *command, char **args);
+
+// builtins
+// builtins/exit.c
 int					exit_shell(char **args);
+
+// error_handling.c
 void				custom_error(char *msg);
-int					parser(char *input);
+
+// parser
+// parser.c
+t_shell_input		*parser(char *input);
+
+// utils
+// ft_strcpy.c
+char				*ft_strcpy(char *s1, char *s2);
 
 #endif
