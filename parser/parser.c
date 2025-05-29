@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:31:18 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:46:27 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ t_shell_input	*init_shell_input(char *input)
 	shell_input->first_cmd = NULL;
 	shell_input->last_cmd = NULL;
 	shell_input->is_valid = 1;
-	shell_input->input = malloc((ft_strlen(input) + 1) * sizeof(char));
-	ft_strcpy(shell_input->input, input);
+	shell_input->input = input;
+	// shell_input->input = malloc((ft_strlen(input) + 1) * sizeof(char));
+	// ft_strcpy(shell_input->input, input);
 	return (shell_input);
 }
 
@@ -73,41 +74,57 @@ char	*grab_word(char **input)
 	return (word);
 }
 
-void	handle_cmd(t_shell_input *shell_input)
+/*
+Is called for each byte, but the inner functions may move
+the pointer of the input string for faster execution.
+*/
+void	handle_input(t_shell_input *shell_input)
 {
 	char	*word;
 	int		arg_count;
 	char	*arg;
 	t_cmd	*command;
 
-	word = grab_word(&(shell_input->input));
-	if (!word)
-	{
-		if (*(shell_input->input))
-			shell_input->input++;
-		return ;
-	}
-	if (!word)
-		return ;
-	if (*word == '>' || *word == '<')
+	if (*(shell_input->input) == '>' || *(shell_input->input) == '<')
 	{
 		custom_error("Redirects are not implemented yet");
 		if (*(shell_input->input))
 			shell_input->input++;
+		// grab_word doesn't even return the "> < |"
+		// while (start[bytes] && !is_space(start[bytes]) && start[bytes] != '>'
+		// && start[bytes] != '<' && start[bytes] != '|')
 	}
-	else if (*word == '|')
+	else if (*(shell_input->input) == '|')
 	{
 		if (!shell_input->last_cmd)
 			custom_error("syntax error near unexpected token `|'");
 		custom_error("Pipes are not implemented yet");
 		if (*(shell_input->input))
+		{
+			shell_input->input++;
+		}
+		else
+		{
+			printf("Could not increment the input value: Pipe Issue\n");
+			exit(1);
+		}
+	}
+	else if (is_space(*(shell_input->input)))
+	{
+		if (*(shell_input->input))
 			shell_input->input++;
 	}
 	else
 	{
+		word = grab_word(&(shell_input->input));
+		if (!word)
+			return ;
 		command = malloc(sizeof(t_cmd));
 		command->name = NULL;
 		command->next = NULL;
+		command->in_redir = NULL;
+		command->out_redir = NULL;
+		command->args = NULL;
 		command->name = word;
 		command->args = malloc(sizeof(char *) * 256);
 		if (!command->args)
@@ -146,13 +163,14 @@ void	handle_cmd(t_shell_input *shell_input)
 	}
 }
 
+/*
+The loop will continue as long as the input pointer
+is valid. Inner functions move the ptr of the input.
+*/
 t_shell_input	*parser(char *input)
 {
 	t_shell_input *shell_input = init_shell_input(input);
 	while (*(shell_input->input))
-	{
-		handle_cmd(shell_input);
-		// link will occur in pipe segment
-	}
+		handle_input(shell_input);
 	return (shell_input);
 }
