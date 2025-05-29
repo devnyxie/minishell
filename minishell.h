@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:25:47 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:23:07 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <linux/limits.h>
 
 #include "./libft/libft.h"
 
