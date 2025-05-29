@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/28 16:26:46 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:44:57 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ char	*grab_word(char *input, int *i)
 
 	start = *i;
 	bytes = 0;
+	skip_whitespace(input, i);
 	while (input[*i + bytes] && !is_space(input[*i + bytes]) && input[*i
-		+ bytes] != '>' && input[*i + bytes] != '<')
+		+ bytes] != '>' && input[*i + bytes] != '<' && input[*i + bytes] != '|')
 		bytes++;
 	// TODO: free later
 	word = malloc((bytes + 1) * sizeof(char));
@@ -55,14 +56,13 @@ char	*grab_word(char *input, int *i)
 	return (word);
 }
 
-void	handle_cmd(char *input, t_cmd *command, int *i)
+void	handle_cmd(char *input, t_cmd *last_cmd, t_cmd *command, int *i)
 {
 	char	*word;
 	int		arg_count;
 	char	*arg;
 
 	printf("handle_cmd function\n");
-	skip_whitespace(input, i);
 	word = grab_word(input, i);
 	if (!word)
 		return ;
@@ -76,8 +76,11 @@ void	handle_cmd(char *input, t_cmd *command, int *i)
 	}
 	else if (word[*i] == '|')
 	{
-		printf("Handling pipeline...\n");
+		printf("Handling pipe...\n");
 		// ...
+		if (!last_cmd)
+			custom_error("syntax error near unexpected token `|'");
+		// re-run the handle_cmd command using "command" as "last_cmd"
 	}
 	else
 	{
@@ -103,6 +106,7 @@ void	handle_cmd(char *input, t_cmd *command, int *i)
 		}
 		command->args[arg_count] = NULL;
 		printf("Finished the parsing of the command...\n");
+		// the assign of parsed_input.cmds should be here
 	}
 }
 
@@ -113,10 +117,9 @@ int	parser(char *input)
 {
 	t_shell_input parsed_input;
 	parsed_input.cmds = NULL;
-	// Linked List: one alloc needed
-	parsed_input.cmds = malloc(sizeof(t_cmd));
+	t_cmd *last_cmd = NULL;
 	if (!parsed_input.cmds)
-		return (1); // error handling
+		return (1);
 	parsed_input.is_valid = 1;
 	int i;
 
@@ -124,10 +127,19 @@ int	parser(char *input)
 	while (input[i])
 	{
 		printf("main loop started\n");
-		t_cmd command;
-		handle_cmd(input, &command, &i);
-		
-		// command.name = grab_word(input, &i);
+		t_cmd *command = malloc(sizeof(t_cmd));
+		handle_cmd(input, last_cmd, command, &i);
+		// assign cmds without linking them
+		// link occurs in pipe segment
+		if (!parsed_input.cmds)
+		{
+			parsed_input.cmds = command;
+			last_cmd = command;
+		}
+		else
+		{
+			last_cmd = command;
+		}
 	}
 	return (0);
 }
