@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 12:23:07 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:17:39 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include <errno.h>
+# include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-#include <linux/limits.h>
+# include <unistd.h>
 
 // todo:
 # include "parser/parser.h"
@@ -45,6 +47,7 @@ void				lexer(char *command, char **args);
 // builtins
 // builtins/exit.c
 int					exit_shell(char **args);
+int					builtin_echo(char **args);
 
 // error_handling.c
 void				custom_error(char *msg);
@@ -56,5 +59,6 @@ t_shell_input		*parser(char *input);
 // utils
 // ft_strcpy.c
 char				*ft_strcpy(char *s1, char *s2);
+int					ft_strcmp(char *s1, char *s2);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/05/29 12:21:13 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:18:28 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ int	builtin_echo(char **args)
 
 	i = 0;
 	newline = 1;
-	
 	// check for -n
 	if (args[1] && ft_strcmp(args[1], "-n") == 0)
 	{
 		newline = 0;
 		i = 2; // start from next arg
 	}
-
 	// print arg separated by spaces
 	while (args[i])
 	{
@@ -50,18 +48,16 @@ int	builtin_pwd(char **args)
 	{
 		return (1);
 	}
-
 	// get the current working directory
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("pwd");
 		return (1);
 	}
-
 	printf("%s\n", cwd);
 	return (0);
 }
-
+/*
 int	builtin_cd(char **args, char **envp[])
 {
 	char	*path;
@@ -74,7 +70,6 @@ int	builtin_cd(char **args, char **envp[])
 		perror("cd: getcwd");
 		return (1);
 	}
-
 	// determine target directory
 	if (args[1] == NULL)
 	{
@@ -94,7 +89,6 @@ int	builtin_cd(char **args, char **envp[])
 	}
 	else
 		path = args[1];
-
 	// change directory
 	if (chdir(path) == -1)
 	{
@@ -102,3 +96,4 @@ int	builtin_cd(char **args, char **envp[])
 		return (1);
 	}
 }
+*/
