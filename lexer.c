@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:08:35 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 18:28:56 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:30:38 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	lexer(char *command, char **args)
 		if (ft_strncmp(command, builtins[i].name,
 				ft_strlen(builtins[i].name)) == 0)
 		{
-			builtins[i].fn(args); // TODO: pass command and args
+			builtins[i].fn(args);
 			return ;
 		}
 		i++;
