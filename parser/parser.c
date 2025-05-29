@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:58:44 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:31:18 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,26 @@ void	handle_cmd(t_shell_input *shell_input)
 
 	word = grab_word(&(shell_input->input));
 	if (!word)
+	{
+		if (*(shell_input->input))
+			shell_input->input++;
+		return ;
+	}
+	if (!word)
 		return ;
 	if (*word == '>' || *word == '<')
 	{
 		custom_error("Redirects are not implemented yet");
+		if (*(shell_input->input))
+			shell_input->input++;
 	}
 	else if (*word == '|')
 	{
 		if (!shell_input->last_cmd)
 			custom_error("syntax error near unexpected token `|'");
 		custom_error("Pipes are not implemented yet");
+		if (*(shell_input->input))
+			shell_input->input++;
 	}
 	else
 	{
