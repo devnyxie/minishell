@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:17:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:16:40 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,6 @@
 // todo:
 # include "parser/parser.h"
 
-typedef struct s_command
-{
-	char			*name;
-	int				n_args;
-	char			**args;
-}					t_command;
-
 typedef int			(*t_builtin_fn)(char **args);
 
 typedef struct s_builtin
@@ -51,10 +44,6 @@ int					builtin_echo(char **args);
 
 // error_handling.c
 void				custom_error(char *msg);
-
-// parser
-// parser.c
-t_shell_input		*parser(char *input);
 
 // utils
 // ft_strcpy.c

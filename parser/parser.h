@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 14:24:18 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:03:56 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,9 @@ typedef struct s_shell_input
 	int is_valid; // optional, can be useful
 	char				*input;
 }						t_shell_input;
+
+// parser.c
+t_shell_input			*parser(char *input);
+void					free_shell_input(t_shell_input *input);
 
 #endif

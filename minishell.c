@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 15:29:49 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:47:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,21 @@ void	await_input(void)
 		input = readline("minishell$ ");
 		if (input)
 		{
+			shell_input = NULL;
 			shell_input = parser(input);
+			if (!shell_input)
+			{
+				// TODO: free mem
+				custom_error("Parser failed\n");
+			}
 			current_cmd = shell_input->first_cmd;
 			while (current_cmd)
 			{
 				lexer(current_cmd->name, current_cmd->args);
 				current_cmd = current_cmd->next;
 			}
-			free(input);
-			free(shell_input);
 		}
+		free_shell_input(shell_input);
 	}
 }
 
