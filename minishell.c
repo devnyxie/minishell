@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:15:47 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:56:02 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,24 @@ void	setup_signals(void)
 
 void	await_input(void)
 {
-	char	*input;
-	char	**args;
+	char			*input;
+	t_shell_input	*shell_input;
+	t_cmd			*current_cmd;
 
-	args = malloc(2 * sizeof(char *));
-	if (!args)
-	{
-		custom_error("Memory allocation failed");
-		exit(EXIT_FAILURE);
-	}
-	args[0] = NULL;
-	args[1] = NULL;
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input)
 		{
-			printf("Parser testing:\n");
-			parser(input);
-			printf("=== END OF TESTING ===\n");
-			lexer(input, args);
+			shell_input = parser(input);
+			current_cmd = shell_input->first_cmd;
+			while (current_cmd)
+			{
+				lexer(current_cmd->name, current_cmd->args);
+				current_cmd = current_cmd->next;
+			}
 			free(input);
+			free(shell_input);
 		}
 	}
 }

@@ -6,12 +6,30 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 13:44:57 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:58:44 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
+
+t_shell_input	*init_shell_input(char *input)
+{
+	t_shell_input	*shell_input;
+
+	shell_input = malloc(sizeof(t_shell_input));
+	if (!shell_input)
+	{
+		// TODO: err msg, mem handle
+		return (NULL);
+	}
+	shell_input->first_cmd = NULL;
+	shell_input->last_cmd = NULL;
+	shell_input->is_valid = 1;
+	shell_input->input = malloc((ft_strlen(input) + 1) * sizeof(char));
+	ft_strcpy(shell_input->input, input);
+	return (shell_input);
+}
 
 int	is_space(char c)
 {
@@ -22,124 +40,109 @@ int	is_space(char c)
 	return (0);
 }
 
-// @manipulates the "i"
-void	skip_whitespace(char *input, int *i)
+void	skip_whitespace(char **input)
 {
-	printf("skip_whitespaces func\n");
-	while (is_space(input[*i]))
-	{
-		(*i)++;
-	}
+	while (is_space(**input))
+		(*input)++;
 }
 
-char	*grab_word(char *input, int *i)
+char	*grab_word(char **input)
 {
-	int		start;
+	char	*start;
 	int		bytes;
 	char	*word;
+	int		j;
 
-	start = *i;
 	bytes = 0;
-	skip_whitespace(input, i);
-	while (input[*i + bytes] && !is_space(input[*i + bytes]) && input[*i
-		+ bytes] != '>' && input[*i + bytes] != '<' && input[*i + bytes] != '|')
+	j = 0;
+	skip_whitespace(input);
+	start = *(input);
+	while (start[bytes] && !is_space(start[bytes]) && start[bytes] != '>'
+		&& start[bytes] != '<' && start[bytes] != '|')
 		bytes++;
-	// TODO: free later
-	word = malloc((bytes + 1) * sizeof(char));
+	word = malloc(bytes + 1);
 	if (!word)
 		return (NULL);
-	for (int j = 0; j < bytes; j++)
-		word[j] = input[start + j];
+	while (j < bytes)
+	{
+		word[j] = start[j];
+		j++;
+	}
 	word[bytes] = '\0';
-	*i += bytes;
-	printf("grabbed word: %s\n", word);
+	*(input) += bytes;
 	return (word);
 }
 
-void	handle_cmd(char *input, t_cmd *last_cmd, t_cmd *command, int *i)
+void	handle_cmd(t_shell_input *shell_input)
 {
 	char	*word;
 	int		arg_count;
 	char	*arg;
+	t_cmd	*command;
 
-	printf("handle_cmd function\n");
-	word = grab_word(input, i);
+	word = grab_word(&(shell_input->input));
 	if (!word)
 		return ;
-	if (word[*i] == '>' || '<')
+	if (*word == '>' || *word == '<')
 	{
-		printf("Handling redirection...\n");
-		// handle redirections
-		// 1. >>, <<, >, <
-		// 2. files
-		// ...
+		custom_error("Redirects are not implemented yet");
 	}
-	else if (word[*i] == '|')
+	else if (*word == '|')
 	{
-		printf("Handling pipe...\n");
-		// ...
-		if (!last_cmd)
+		if (!shell_input->last_cmd)
 			custom_error("syntax error near unexpected token `|'");
-		// re-run the handle_cmd command using "command" as "last_cmd"
+		custom_error("Pipes are not implemented yet");
 	}
 	else
 	{
-		printf("Parsing the command...\n");
-		// handle the commmand
-		// 1. cmd
-		// 2. args
+		command = malloc(sizeof(t_cmd));
+		command->name = NULL;
+		command->next = NULL;
 		command->name = word;
-		arg_count = 0;
-		command->args = malloc(sizeof(char *) * 256); // arbitrary max args
+		command->args = malloc(sizeof(char *) * 256);
 		if (!command->args)
 			return ;
+		arg_count = 0;
 		command->args[arg_count++] = word;
-		skip_whitespace(input, i);
-		while (input[*i] && !is_space(input[*i]) && input[*i] != '>'
-			&& input[*i] != '<' && input[*i] != '|')
+		skip_whitespace(&(shell_input->input));
+		while (*(shell_input->input) && !is_space(*(shell_input->input))
+			&& *(shell_input->input) != '>' && *(shell_input->input) != '<'
+			&& *(shell_input->input) != '|')
 		{
-			arg = grab_word(input, i);
+			arg = grab_word(&(shell_input->input));
 			if (!arg)
 				break ;
 			command->args[arg_count++] = arg;
-			skip_whitespace(input, i);
+			skip_whitespace(&(shell_input->input));
 		}
 		command->args[arg_count] = NULL;
-		printf("Finished the parsing of the command...\n");
-		// the assign of parsed_input.cmds should be here
+		// update the main struct
+		if (!shell_input->first_cmd)
+			shell_input->first_cmd = command;
+		else
+		{
+			shell_input->last_cmd = command;
+		}
+		// === TESTING ===
+		printf("Parsed command:\n");
+		printf("  Name: %s\n", command->name);
+		printf("  Args:");
+		for (int i = 0; command->args[i]; i++)
+		{
+			printf(" \"%s\"", command->args[i]);
+		}
+		printf("\n");
+		// === END ===
 	}
 }
 
-/*
-input is not manipulated in any of the functions
-*/
-int	parser(char *input)
+t_shell_input	*parser(char *input)
 {
-	t_shell_input parsed_input;
-	parsed_input.cmds = NULL;
-	t_cmd *last_cmd = NULL;
-	if (!parsed_input.cmds)
-		return (1);
-	parsed_input.is_valid = 1;
-	int i;
-
-	i = 0;
-	while (input[i])
+	t_shell_input *shell_input = init_shell_input(input);
+	while (*(shell_input->input))
 	{
-		printf("main loop started\n");
-		t_cmd *command = malloc(sizeof(t_cmd));
-		handle_cmd(input, last_cmd, command, &i);
-		// assign cmds without linking them
-		// link occurs in pipe segment
-		if (!parsed_input.cmds)
-		{
-			parsed_input.cmds = command;
-			last_cmd = command;
-		}
-		else
-		{
-			last_cmd = command;
-		}
+		handle_cmd(shell_input);
+		// link will occur in pipe segment
 	}
-	return (0);
+	return (shell_input);
 }
