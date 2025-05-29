@@ -30,22 +30,24 @@ void	setup_signals(void)
 
 void	await_input(void)
 {
-	char	*input;
-	char 	**args = malloc(2 * sizeof(char *));
-	if (!args)
-	{
-		custom_error("Memory allocation failed");
-		exit(EXIT_FAILURE);
-	}
-	args[0] = NULL;
-	args[1] = NULL;
+	char			*input;
+	t_shell_input	*shell_input;
+	t_cmd			*current_cmd;
+
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input)
 		{
-			lexer(input, args);
+			shell_input = parser(input);
+			current_cmd = shell_input->first_cmd;
+			while (current_cmd)
+			{
+				lexer(current_cmd->name, current_cmd->args);
+				current_cmd = current_cmd->next;
+			}
 			free(input);
+			free(shell_input);
 		}
 	}
 }

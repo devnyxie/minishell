@@ -16,9 +16,12 @@ OBJ = $(SRC:.c=.o)
 # Default target
 all: $(OUT)
 
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 # Create the library
 $(OUT): $(OBJ)
-	ar rcs $@ $^
+	@ar rcs $@ $^
 
 # Clean up object files
 clean:
