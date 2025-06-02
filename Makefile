@@ -12,9 +12,13 @@ SRC = minishell.c \
 		builtins/builtin_echo.c \
 		builtins/builtin_pwd.c \
 		parser/parser.c \
-		parser/parser_memory.c \
+		parser/parser_cmd.c \
+		parser/parser_mem.c \
 		utils/ft_strcpy.c \
-		utils/utils.c 
+		utils/ft_strcmp.c \
+		utils/is_space.c \
+		utils/skip_space.c \
+		utils/grab_word.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
