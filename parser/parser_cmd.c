@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:53:05 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:11:51 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,23 @@ static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
 		arg = grab_word(&(shell_input->input));
 		if (!arg)
 			break ;
+		printf("Found arg: '%d'\n", *arg);
 		cmd->args[arg_count++] = arg;
 	}
 	cmd->args[arg_count] = NULL;
 }
+
+void append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
+{
+	t_cmd *last_cmd;
+
+	last_cmd = shell_input->first_cmd;
+	while(last_cmd->next != NULL)
+		last_cmd = last_cmd->next;
+	last_cmd->next = cmd;
+	shell_input->last_cmd = cmd;
+}
+
 
 void	handle_cmd(t_shell_input *shell_input)
 {
@@ -61,15 +74,17 @@ void	handle_cmd(t_shell_input *shell_input)
 		shell_input->first_cmd = cmd;
 	else
 	{
-		shell_input->last_cmd = cmd;
+		// func to append a pointer to the Next* of the last command of a linked list
+		// shell_input->last_cmd = cmd;
+		append_to_linked_list(shell_input, cmd);
 	}
 	// === TESTING ===
-	printf("Parsed command:\n");
-	printf("  Name: %s\n", cmd->name);
-	printf("  Args:");
-	for (int i = 0; cmd->args[i]; i++)
-	{
-		printf(" \"%s\"", cmd->args[i]);
-	}
-	printf("\n");
+	// printf("Individual Parsed command:\n");
+	// printf("  Name: %s\n", cmd->name);
+	// printf("  Args:");
+	// for (int i = 0; cmd->args[i]; i++)
+	// {
+	// 	printf(" \"%s\"", cmd->args[i]);
+	// }
+	// printf("\n");
 }
