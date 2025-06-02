@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/05/29 16:18:28 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:06:12 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	builtin_echo(char **args)
 		newline = 0;
 		i = 2; // start from next arg
 	}
+	i = i + 1; // skip the cmd name
 	// print arg separated by spaces
 	while (args[i])
 	{
