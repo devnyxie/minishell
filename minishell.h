@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 18:16:40 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:52:27 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void				lexer(char *command, char **args);
 // builtins/exit.c
 int					exit_shell(char **args);
 int					builtin_echo(char **args);
+int					builtin_pwd(char **args);
 
 // error_handling.c
 void				custom_error(char *msg);
