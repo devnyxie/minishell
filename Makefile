@@ -8,11 +8,13 @@ SRC = minishell.c \
 		lexer.c \
 		error_handling.c \
 		builtins/exit.c \
+		builtins/builtin_cd.c \
 		builtins/builtin_echo.c \
+		builtins/builtin_pwd.c \
 		parser/parser.c \
 		parser/parser_memory.c \
 		utils/ft_strcpy.c \
-		utils/utils.c
+		utils/utils.c 
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
