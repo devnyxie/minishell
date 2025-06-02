@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 18:16:40 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:48:56 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,15 @@ int					builtin_echo(char **args);
 void				custom_error(char *msg);
 
 // utils
-// ft_strcpy.c
+// utils/ft_strcpy.c
 char				*ft_strcpy(char *s1, char *s2);
+// utils/ft_strcmp.c
 int					ft_strcmp(char *s1, char *s2);
+// utils/is_space.c
+int					is_space(char c);
+// utils/skip_space.c
+void				skip_space(char **input);
+// utils/grab_word.c
+char	*grab_word(char **input);
 
 #endif
