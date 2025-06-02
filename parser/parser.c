@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:54:17 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:56:48 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,25 @@ t_shell_input	*init_shell_input(char *input)
 }
 
 /*
+tafanasi@c4r1s7:~$ ls ls
+ls: cannot access 'ls': No such file or directory
+tafanasi@c4r1s7:~$ echo echo echo
+echo echo
+tafanasi@c4r1s7:~$ 
+
+So, everything until a pipe counts as a command. But right now, we have the following output:
+minishell$ test1 test2
+=== Parsed commands ===
+  Name: test1,  Args: "test1"  Name: test2,  Args: "test2"
+=======================
+minishell$ test_one test_three test_four
+=== Parsed commands ===
+  Name: test_one,  Args: "test_one"  Name: test_three,  Args: "test_three"  Name: test_four,  Args: "test_four"
+=======================
+minishell$ 
+*/
+
+/*
 Is called for each byte, but the inner functions may move
 the pointer of the input string for faster execution.
 */
@@ -43,11 +62,12 @@ void	handle_input(t_shell_input *shell_input)
 	}
 	else if (*(shell_input->input) == '|')
 	{
-		if (!shell_input->last_cmd)
+		if (shell_input->last_cmd == NULL)
 			custom_error("syntax error near unexpected token `|'");
-		custom_error("Pipes are not implemented yet");
+		// custom_error("Pipes are not implemented yet");
 		if (*(shell_input->input))
 			shell_input->input++;
+		handle_cmd(shell_input);
 	}
 	else if (is_space(*(shell_input->input)))
 	{

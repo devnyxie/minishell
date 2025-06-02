@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:48:32 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:11:34 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ char	*grab_word(char **input)
 	while (start[bytes] && !is_space(start[bytes]) && start[bytes] != '>'
 		&& start[bytes] != '<' && start[bytes] != '|')
 		bytes++;
-	word = malloc(bytes + 1);
+	if(bytes == 0)
+		return (NULL);
+	word = malloc(bytes + 1 * sizeof(char));
 	if (!word)
 		return (NULL);
 	while (j < bytes)

@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 18:47:25 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:47:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,18 @@ void	await_input(void)
 				// TODO: free mem
 				custom_error("Parser failed\n");
 			}
+			printf("=== Parsed commands ===\n");
+			current_cmd = shell_input->first_cmd;
+			while(current_cmd != NULL) {
+				printf("  Name: %s,", current_cmd->name);
+				printf("  Args:");
+				for (int i = 0; current_cmd->args[i]; i++)
+				{
+					printf(" \"%s\"", current_cmd->args[i]);
+				}
+				current_cmd = current_cmd->next;
+			}
+			printf("\n=======================\n");
 			current_cmd = shell_input->first_cmd;
 			while (current_cmd)
 			{
