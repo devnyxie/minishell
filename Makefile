@@ -8,7 +8,9 @@ SRC = minishell.c \
 		lexer.c \
 		error_handling.c \
 		builtins/exit.c \
+		builtins/builtin_cd.c \
 		builtins/builtin_echo.c \
+		builtins/builtin_pwd.c \
 		parser/parser.c \
 		parser/parser_cmd.c \
 		parser/parser_mem.c \
