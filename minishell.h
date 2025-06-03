@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:48:56 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:46:29 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ typedef struct s_builtin
 	t_builtin_fn	fn;
 }					t_builtin;
 
+// main shell structure
+typedef struct s_shell
+{
+	char **			history;
+	char *			prompt; //raw input
+	t_shell_input	*parsed_input;
+	t_builtin		*builtins;
+	char			**envp;
+}					t_shell;
+
 // lexer.c
 void				lexer(char *command, char **args);
 
@@ -56,6 +66,10 @@ int					is_space(char c);
 // utils/skip_space.c
 void				skip_space(char **input);
 // utils/grab_word.c
-char	*grab_word(char **input);
+char				*grab_word(char **input);
+// utils/init_shell.c
+t_shell				*init_shell(void);
+// utils/init_builtins.c
+t_builtin			*init_builtins(void);
 
 #endif

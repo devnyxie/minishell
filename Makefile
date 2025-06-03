@@ -18,7 +18,9 @@ SRC = minishell.c \
 		utils/ft_strcmp.c \
 		utils/is_space.c \
 		utils/skip_space.c \
-		utils/grab_word.c
+		utils/grab_word.c \
+		utils/init_shell.c \
+		utils/init_builtins.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
