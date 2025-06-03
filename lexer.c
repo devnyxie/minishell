@@ -6,29 +6,11 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:08:35 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/29 19:30:38 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:40:17 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_builtin	*init_builtins(void)
-{
-	t_builtin	*g_builtins;
-
-	g_builtins = malloc(3 * sizeof(t_builtin));
-	if (!g_builtins)
-		return (NULL);
-	g_builtins[0].name = "exit";
-	g_builtins[0].fn = &exit_shell;
-	g_builtins[1].name = "echo";
-	g_builtins[1].fn = &builtin_echo;
-	g_builtins[2].name = NULL;
-	g_builtins[2].fn = NULL;
-	return (g_builtins);
-}
-
-// static void lexer_external(){}
 
 // @accepts command and arguments : TODO
 // only builtins for now
@@ -41,8 +23,7 @@ void	lexer(char *command, char **args)
 	builtins = init_builtins();
 	while (builtins[i].name != NULL)
 	{
-		if (builtins[i].name == NULL)
-			break ;
+		// maybe change with ft_strcmp
 		if (ft_strncmp(command, builtins[i].name,
 				ft_strlen(builtins[i].name)) == 0)
 		{
@@ -51,6 +32,8 @@ void	lexer(char *command, char **args)
 		}
 		i++;
 	}
+	if (builtins[i].name == NULL)
+		printf("%s: command not found\n", command); //todo: external cmd check
 	free(builtins);
 	return ;
 }

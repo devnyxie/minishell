@@ -1,41 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:27:39 by mmitkovi         ###   ########.fr       */
+/*   Created: 2025/06/02 12:03:45 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/06/02 12:12:19 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*--- deal with echo with quotes ---*/
-int	builtin_echo(char **args)
+int	builtin_pwd(char **args)
 {
-	int	i;
-	int	newline;
+	char	cwd[PATH_MAX];
 
-	i = 1;
-	newline = 1;
-	// check for -n
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	// check for unwanted args
+	if (args[1] != NULL)
 	{
-		newline = 0;
-		i = 2; // start from next arg
+		return (1);
 	}
-	// print arg separated by spaces
-	while (args[i])
+	// get the current working directory
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
+		perror("pwd");
+		return (1);
 	}
-	// add newline unless -n was specified
-	if (newline)
-		printf("\n");
+	printf("%s\n", cwd);
 	return (0);
 }

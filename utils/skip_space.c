@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   skip_space.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 11:30:58 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/05/28 11:31:38 by mmitkovi         ###   ########.fr       */
+/*   Created: 2025/06/02 12:16:09 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/06/02 12:52:26 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	skip_space(char **input)
 {
-	int	i;
-
-	i = 0;
-	while ((s1[i] == s2[i]) && s1[i] && s2[i])
-		i++;
-	return (s1[i] - s2[i]);
+	while (is_space(**input))
+		(*input)++;
 }
