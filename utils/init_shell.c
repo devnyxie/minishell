@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:45:33 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:00:15 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_shell *init_shell(void)
     if (!shell)
 	{
 		custom_error("Memory allocation failed\n");
-		return (1);
+		exit(EXIT_FAILURE);
 	}
     shell->builtins = init_builtins();
     if (!shell->builtins)
