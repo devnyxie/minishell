@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:08:35 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 18:05:49 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:12:43 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	lexer(char *command, char **args)
 	builtins = init_builtins();
 	while (builtins[i].name != NULL)
 	{
-		// maybe change with ft_strcmp
+		// todo: maybe change with ft_strcmp
 		if (ft_strncmp(command, builtins[i].name,
 				ft_strlen(builtins[i].name)) == 0)
 		{
