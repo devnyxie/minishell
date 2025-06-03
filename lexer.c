@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:08:35 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:40:17 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:05:49 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // @accepts command and arguments : TODO
-// only builtins for now
 void	lexer(char *command, char **args)
 {
 	t_builtin *builtins;
