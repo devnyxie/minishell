@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   free_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 12:03:45 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/04 15:42:35 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/06/04 13:44:30 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_pwd(char **args)
+// Free a 2D array (array of strings)
+void	free_2d(char **str)
 {
-	char	cwd[PATH_MAX];
+	int	i;
 
-	// check for unwanted args
-	if (args[1] != NULL)
+	i = 0;
+	while (str[i])
 	{
-		exit(1);
+		free(str[i]);
+		i++;
 	}
-	// get the current working directory
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("pwd");
-		exit(1);
-	}
-	printf("%s\n", cwd);
-	exit(0);
-	return (0);
+	free(str);
 }

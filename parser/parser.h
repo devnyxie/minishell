@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:04:54 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:05:13 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,15 @@ typedef struct s_cmd
 	t_redirect			*in_redir;
 	t_redirect			*out_redir;
 	struct s_cmd		*next;
+	struct s_cmd		*prev;
+	int					pipe_read;
 }						t_cmd;
 
 typedef struct s_shell_input
 {
 	t_cmd				*first_cmd;
 	t_cmd				*last_cmd;
+	int					cmds_count;
 	int					is_valid;
 	char				*input;
 }						t_shell_input;
