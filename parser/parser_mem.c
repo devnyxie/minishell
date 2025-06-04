@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:02:53 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 12:50:57 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:37:33 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ void	free_shell_input(t_shell_input *input)
 	// free_cmd(input->first_cmd);
 	// free_cmd(input->last_cmd);
 	free(input);
+	input = NULL;
 	// free(input);
 }

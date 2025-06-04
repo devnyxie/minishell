@@ -20,7 +20,8 @@ SRC = minishell.c \
 		utils/skip_space.c \
 		utils/grab_word.c \
 		utils/init_shell.c \
-		utils/init_builtins.c
+		utils/init_builtins.c \
+		utils/free_2d.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 
