@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:39:18 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:26:50 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_shell_input	*init_shell_input(char *input)
 	shell_input->first_cmd = NULL;
 	shell_input->last_cmd = NULL;
 	shell_input->is_valid = 1;
+	shell_input->cmds_count = 0;
 	shell_input->input = input;
 	return (shell_input);
 }

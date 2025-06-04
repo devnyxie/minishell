@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:46:29 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:32:02 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include "parser/parser.h"
 # include <errno.h>
 # include <linux/limits.h>
 # include <readline/history.h>
@@ -22,9 +23,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-// todo:
-# include "parser/parser.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 
 typedef int			(*t_builtin_fn)(char **args);
 
@@ -37,15 +37,16 @@ typedef struct s_builtin
 // main shell structure
 typedef struct s_shell
 {
-	char **			history;
-	char *			prompt; //raw input
+	char			**history;
+	char *prompt; // raw input
 	t_shell_input	*parsed_input;
 	t_builtin		*builtins;
 	char			**envp;
+	char			*path;
 }					t_shell;
 
 // lexer.c
-void				lexer(char *command, char **args);
+void				lexer(t_shell *shell, t_cmd *command);
 
 // builtins
 // builtins/exit.c
@@ -68,8 +69,10 @@ void				skip_space(char **input);
 // utils/grab_word.c
 char				*grab_word(char **input);
 // utils/init_shell.c
-t_shell				*init_shell(void);
+t_shell				*init_shell(char **envp);
 // utils/init_builtins.c
 t_builtin			*init_builtins(void);
+// utils/free_2d.c
+void	free_2d(char **str);
 
 #endif

@@ -10,16 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../minishell.h"
 
-t_shell *init_shell(void)
+t_shell *init_shell(char **envp)
 {
     t_shell *shell;
     shell = malloc(sizeof(t_shell));
     if (!shell)
 	{
 		custom_error("Memory allocation failed\n");
-		exit(EXIT_FAILURE);
+		return (NULL);
 	}
     shell->builtins = init_builtins();
     if (!shell->builtins)
@@ -27,7 +28,14 @@ t_shell *init_shell(void)
         custom_error("Failed to initialize builtins");
         exit(EXIT_FAILURE);
     }
-    shell->envp = NULL;
+    shell->envp = envp;
+    shell->path = getenv("PATH");
+    if (!shell->path)
+        custom_error("Error! PATH not set\n");
+    shell->envp = envp;
+    shell->path = getenv("PATH");
+    if (!shell->path)
+        custom_error("Error! PATH not set\n");
     shell->parsed_input = NULL;
     return (shell);
 }
