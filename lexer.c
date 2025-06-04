@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:15:33 by tafanasi          #+#    #+#             */
 /*   Updated: 2025/06/04 16:17:55 by tafanasi         ###   ########.fr       */
