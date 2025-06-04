@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/history.h>
 
 // Clear the line, move to new line, show prompt
 void	handle_sigint(int sig)
@@ -36,6 +37,7 @@ void	await_input(t_shell *shell)
 		input = readline("minishell$ ");
 		if (input)
 		{
+			add_history(input);
 			shell->parsed_input = parser(input);
 			if (shell->parsed_input->first_cmd != NULL)
 				lexer(shell, shell->parsed_input->first_cmd);
