@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:15:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:11:07 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:09:17 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ int start_process(t_cmd *cmd, int prev_fd, t_shell *shell)
 
         // 3) Now we’re in the right process and the fds are hooked up.
         //    Check if it’s a builtin:
-        /*for (int i = 0; shell->builtins[i].name; i++) {
+        for (int i = 0; shell->builtins[i].name; i++) {
             if (ft_strcmp(cmd->name, shell->builtins[i].name) == 0) {
-                shell->builtins[i].fn(cmd->args);
+                shell->builtins[i].fn(shell, cmd->args);
                 // exit(0);
             }
-        }*/
+        }
 
         // 4) Otherwise it’s an external: resolve path, then execve.
         char *path = search_cmd_path(shell->path, cmd->name);
