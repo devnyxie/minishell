@@ -3,29 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   init_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:36:23 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:19:59 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+static int builtin_echo_wrapper(t_shell *shell, char **args)
+{
+    (void)shell;
+    return builtin_echo(args);
+}
+
+static int builtin_pwd_wrapper(t_shell *shell, char **args)
+{
+    (void)shell;
+    return builtin_pwd(args);
+}
+
+static int builtin_exit_wrapper(t_shell *shell, char **args)
+{
+    (void)shell;
+    return exit_shell(args);
+}
+
 t_builtin	*init_builtins(void)
 {
-	t_builtin	*g_builtins;
+	t_builtin	*builtins;
 
-	g_builtins = malloc((3 + 1) * sizeof(t_builtin));
-	if (!g_builtins)
+	builtins = malloc(8 * sizeof(t_builtin));
+	if (!builtins)
 		return (NULL);
-	g_builtins[0].name = "exit";
-	g_builtins[0].fn = &exit_shell;
-	g_builtins[1].name = "echo";
-	g_builtins[1].fn = &builtin_echo;
-	g_builtins[2].name = "pwd";
-	g_builtins[2].fn = &builtin_pwd;
-	g_builtins[3].name = NULL;
-	g_builtins[3].fn = NULL;
-	return (g_builtins);
+	builtins[0] = (t_builtin){"echo", builtin_echo_wrapper};
+	builtins[1] = (t_builtin){"cd", builtin_cd};
+	builtins[2] = (t_builtin){"pwd", builtin_pwd_wrapper};
+	builtins[3] = (t_builtin){"export", NULL}; // TODO
+	builtins[4] = (t_builtin){"unset", NULL};  // TODO
+	builtins[5] = (t_builtin){"env", NULL};    // TODO
+	builtins[6] = (t_builtin){"exit", builtin_exit_wrapper};
+	builtins[7] = (t_builtin){NULL, NULL};
+	return (builtins);
 }
