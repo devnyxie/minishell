@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/04 15:32:02 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:12:48 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-typedef int			(*t_builtin_fn)(char **args);
+typedef struct		s_shell t_shell;
+typedef int			(*t_builtin_fn)(t_shell *shell, char **args);
 
 typedef struct s_builtin
 {
@@ -43,6 +44,8 @@ typedef struct s_shell
 	t_builtin		*builtins;
 	char			**envp;
 	char			*path;
+	int				env_count;
+	int				env_capacity;
 }					t_shell;
 
 // lexer.c
@@ -50,9 +53,16 @@ void				lexer(t_shell *shell, t_cmd *command);
 
 // builtins
 // builtins/exit.c
-int					exit_shell(char **args);
-int					builtin_echo(char **args);
-int					builtin_pwd(char **args);
+int		builtin_cd(t_shell *shell, char **args);
+int		builtin_echo(char **args);
+int		builtin_pwd(char **args);
+int		builtin_exit(t_shell *shell, char **args);
+int		builtin_env(t_shell *shell, char **args);
+int		builtin_export(t_shell *shell, char **args);
+int		builtin_unset(t_shell *shell, char **args);
+int 	exit_shell(char **args);
+int 	execute_builtin(t_shell *shell, char **args);
+int 	is_builtin(t_shell *shell, char *cmd_name);
 
 // error_handling.c
 void				custom_error(char *msg);

@@ -6,33 +6,67 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 18:00:15 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:42:44 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
+
+char	**copy_envp(t_shell *shell, char **envp)
+{
+	int	i;
+	
+	shell->envp = malloc(sizeof(char*) * (shell->env_capacity + 1));
+	if (!shell->envp)
+		return (NULL);
+	i = 0;
+	while (i < shell->env_count)
+	{
+		shell->envp[i] = ft_strdup(envp[i]);
+		if (!shell->envp[i])
+		{
+			// Free previously allocated strings on failure
+			while (--i >= 0)
+				free(shell->envp[i]);
+			free(shell->envp);
+			return (NULL);
+		}
+		i++;
+	}
+	shell->envp[shell->env_count] = NULL;
+	return (shell->envp);
+}
 
 t_shell *init_shell(char **envp)
 {
     t_shell *shell;
+	int	count;
+	
     shell = malloc(sizeof(t_shell));
     if (!shell)
 	{
 		custom_error("Memory allocation failed\n");
 		return (NULL);
 	}
+	count = 0;
+	while (envp[count])
+		count++;
+	shell->env_count = count;
+	shell->env_capacity = count + 10; // extra space for new vars
     shell->builtins = init_builtins();
     if (!shell->builtins)
     {
         custom_error("Failed to initialize builtins");
+		free(shell);
         exit(EXIT_FAILURE);
     }
-    shell->envp = envp;
-    shell->path = getenv("PATH");
-    if (!shell->path)
-        custom_error("Error! PATH not set\n");
-    shell->envp = envp;
+	if (!copy_envp(shell, envp))
+	{
+		custom_error("Failed to copy environment");
+		free(shell->builtins);
+		free(shell);
+		return (NULL);
+	}
     shell->path = getenv("PATH");
     if (!shell->path)
         custom_error("Error! PATH not set\n");
