@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 15:19:59 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:44:32 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ static int builtin_exit_wrapper(t_shell *shell, char **args)
     return exit_shell(args);
 }
 
+static int builtin_env_wrapper(t_shell *shell, char **args)
+{
+	(void)args;
+	return builtin_env(shell);
+}
+
 t_builtin	*init_builtins(void)
 {
 	t_builtin	*builtins;
@@ -42,7 +48,7 @@ t_builtin	*init_builtins(void)
 	builtins[2] = (t_builtin){"pwd", builtin_pwd_wrapper};
 	builtins[3] = (t_builtin){"export", NULL}; // TODO
 	builtins[4] = (t_builtin){"unset", NULL};  // TODO
-	builtins[5] = (t_builtin){"env", NULL};    // TODO
+	builtins[5] = (t_builtin){"env", builtin_env_wrapper};
 	builtins[6] = (t_builtin){"exit", builtin_exit_wrapper};
 	builtins[7] = (t_builtin){NULL, NULL};
 	return (builtins);
