@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:38:17 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:46:17 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 		if (ft_strcmp(cmd->name, shell->builtins[i].name) == 0)
 		{
 			shell->builtins[i].fn(shell, cmd->args);
+			exit(0);
 		}
 		i++;
 	}
