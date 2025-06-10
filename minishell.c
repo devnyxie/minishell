@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:11:18 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:35:50 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	setup_signals(void)
 void	await_input(t_shell *shell)
 {
 	char	*input;
-
 	while (1)
 	{
 		input = readline("minishell$ ");
