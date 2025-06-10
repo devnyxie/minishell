@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 10:33:23 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:16:23 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		builtin_unset(t_shell *shell, char **args);
 int 	exit_shell(char **args);
 int 	execute_builtin(t_shell *shell, char **args);
 int 	is_builtin(t_shell *shell, char *cmd_name);
+void	update_env_var(t_shell *shell, char *var_name, const char *value);
 
 // error_handling.c
 void				custom_error(char *msg);
