@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:08:20 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:35:50 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	setup_signals(void)
 void	await_input(t_shell *shell)
 {
 	char	*input;
+	t_cmd *current_cmd;
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -39,6 +40,18 @@ void	await_input(t_shell *shell)
 		{
 			add_history(input);
 			shell->parsed_input = parser(input);
+			printf("=== Parsed commands ===\n");
+			current_cmd = shell->parsed_input->first_cmd;
+			while(current_cmd != NULL) {
+				printf("  Name: %s,", current_cmd->name);
+				printf("  Args:");
+				for (int i = 0; current_cmd->args[i]; i++)
+				{
+					printf(" \"%s\"", current_cmd->args[i]);
+				}
+				current_cmd = current_cmd->next;
+			}
+			printf("\n=======================\n");
 			if (shell->parsed_input->first_cmd != NULL)
 				lexer(shell, shell->parsed_input->first_cmd);
 		}
