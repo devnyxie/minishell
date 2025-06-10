@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:30:45 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:16:23 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@
 # include <unistd.h>
 
 // builtins
-// builtins/exit.c
-int			builtin_cd(t_shell *shell, char **args);
-int			builtin_echo(char **args);
-int			builtin_pwd(char **args);
-int			builtin_exit(t_shell *shell, char **args);
-int			builtin_env(t_shell *shell);
-int			builtin_export(t_shell *shell, char **args);
-int			builtin_unset(t_shell *shell, char **args);
-int			exit_shell(char **args);
-int			execute_builtin(t_shell *shell, char **args);
-int			is_builtin(t_shell *shell, char *cmd_name);
+int		builtin_cd(t_shell *shell, char **args);
+int		builtin_echo(char **args);
+int		builtin_pwd(char **args);
+int		builtin_exit(t_shell *shell, char **args);
+int		builtin_env(t_shell *shell);
+int		builtin_export(t_shell *shell, char **args);
+int		builtin_unset(t_shell *shell, char **args);
+int 	exit_shell(char **args);
+int 	execute_builtin(t_shell *shell, char **args);
+int 	is_builtin(t_shell *shell, char *cmd_name);
+void	update_env_var(t_shell *shell, char *var_name, const char *value);
 
 // error_handling.c
 void		custom_error(char *msg);
