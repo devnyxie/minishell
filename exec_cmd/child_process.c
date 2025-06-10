@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:34:09 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:38:17 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	child_process_redir_in(t_cmd *cmd)
 	}
 }
 
-// last one wind
+// last one wins
 static void	child_process_redir_out(t_cmd *cmd)
 {
 	t_redirect	*redir;
