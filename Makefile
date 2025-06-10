@@ -7,6 +7,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC = minishell.c \
 		lexer.c \
 		error_handling.c \
+		builtins/builtin_env.c \
 		builtins/builtin_exit.c \
 		builtins/builtin_cd.c \
 		builtins/builtin_echo.c \

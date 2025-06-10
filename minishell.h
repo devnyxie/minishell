@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:12:48 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:33:23 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		builtin_cd(t_shell *shell, char **args);
 int		builtin_echo(char **args);
 int		builtin_pwd(char **args);
 int		builtin_exit(t_shell *shell, char **args);
-int		builtin_env(t_shell *shell, char **args);
+int		builtin_env(t_shell *shell);
 int		builtin_export(t_shell *shell, char **args);
 int		builtin_unset(t_shell *shell, char **args);
 int 	exit_shell(char **args);
