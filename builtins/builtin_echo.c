@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/04 15:44:03 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:46:54 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ int	builtin_echo(char **args)
 	// add newline unless -n was specified
 	if (newline)
 		printf("\n");
-	exit(EXIT_SUCCESS);
 	return (0);
 }

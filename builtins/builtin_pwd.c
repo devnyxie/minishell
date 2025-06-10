@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:03:45 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/04 15:42:35 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:47:18 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	builtin_pwd(char **args)
 {
-	char	cwd[PATH_MAX];
+	char cwd[PATH_MAX];
 
 	// check for unwanted args
 	if (args[1] != NULL)
@@ -28,6 +28,5 @@ int	builtin_pwd(char **args)
 		exit(1);
 	}
 	printf("%s\n", cwd);
-	exit(0);
 	return (0);
 }
