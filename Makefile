@@ -1,11 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h
+CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h -include exec_cmd/exec_cmd.h
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = minishell.c \
-		lexer.c \
 		error_handling.c \
 		builtins/builtin_env.c \
 		builtins/builtin_exit.c \
@@ -18,12 +17,16 @@ SRC = minishell.c \
 		parser/parser_mem.c \
 		utils/ft_strcpy.c \
 		utils/ft_strcmp.c \
-		utils/is_space.c \
-		utils/skip_space.c \
-		utils/grab_word.c \
+		parser/is_space.c \
+		parser/skip_space.c \
+		parser/grab_word.c \
 		utils/init_shell.c \
 		utils/init_builtins.c \
-		utils/free_2d.c
+		utils/free_2d.c \
+		exec_cmd/search_cmd_path.c \
+		exec_cmd/exec_cmd.c \
+		exec_cmd/child_process.c \
+		exec_cmd/start_process.c
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:08:20 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:11:18 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	setup_signals(void)
 void	await_input(t_shell *shell)
 {
 	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -40,7 +41,7 @@ void	await_input(t_shell *shell)
 			add_history(input);
 			shell->parsed_input = parser(input);
 			if (shell->parsed_input->first_cmd != NULL)
-				lexer(shell, shell->parsed_input->first_cmd);
+				exec_cmd(shell->parsed_input->first_cmd, shell);
 		}
 		free_shell_input(shell->parsed_input);
 	}
