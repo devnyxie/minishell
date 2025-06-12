@@ -11,6 +11,18 @@ int	builtin_unset(t_shell *shell, char **args)
 		printf("unset: not enough arguments\n");
 		return (1);
 	}
+
+	// cmd->args[i]
+	while (args[i])
+	{
+		if (!is_valid_identifier(args[i]))
+		{
+			pritnf("unset: `%s': not a valid identifier\n", args[i]);
+			return (1);
+		}
+		unset_env_var(args[i], shell->envp);
+		i++;
+	}
 	return (0);
 }
 
