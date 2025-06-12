@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:04:38 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:18:02 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:04:00 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_cmd.h"
 
-void	exec_cmd(t_cmd *cmd, t_shell *shell)
+void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args)
 {
-	start_process(cmd, -1, shell);
+	start_process(cmd, -1, shell, args);
 }

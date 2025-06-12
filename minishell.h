@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 12:16:23 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:49:34 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <dirent.h>
 
 // builtins
 int		builtin_cd(t_shell *shell, char **args);
@@ -38,8 +39,8 @@ int		builtin_env(t_shell *shell);
 int		builtin_export(t_shell *shell, char **args);
 int		builtin_unset(t_shell *shell, char **args);
 int 	exit_shell(char **args);
-int 	execute_builtin(t_shell *shell, char **args);
-int 	is_builtin(t_shell *shell, char *cmd_name);
+int 	execute_builtin(t_shell *shell, char **args, t_cmd *cmd);
+int 	is_builtin(t_shell *shell, t_cmd *cmd);
 void	update_env_var(t_shell *shell, char *var_name, const char *value);
 
 // error_handling.c

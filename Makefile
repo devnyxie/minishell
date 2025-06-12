@@ -13,6 +13,7 @@ SRC = minishell.c \
 		builtins/builtin_echo.c \
 		builtins/builtin_pwd.c \
 		builtins/is_builtin.c \
+		builtins/execute_builtin.c \
 		parser/parser.c \
 		parser/parser_cmd.c \
 		parser/parser_mem.c \

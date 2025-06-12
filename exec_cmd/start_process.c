@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:32:28 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:49:55 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,19 @@ static void	close_fds(int prev_fd, t_cmd *cmd, int pipefd[2])
 		close(pipefd[1]);
 }
 
-int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell)
+int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 {
 	int	pipefd[2] = {-1, -1};
 	int	pid;
 
 	handle_exit_if_needed(cmd);
+	if (is_builtin(shell, cmd))
+	{
+		int exec_ret_num;
+		printf("Command is a built-in\n");
+		exec_ret_num = execute_builtin(shell, args, cmd);
+		printf("Exec return number is: %d\n", exec_ret_num);
+	}
 	create_pipe_if_needed(cmd, pipefd);
 	pid = fork();
 	if (pid < 0)
@@ -55,7 +62,7 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell)
 		child_process(cmd, prev_fd, pipefd, shell);
 	close_fds(prev_fd, cmd, pipefd);
 	if (cmd->next)
-		start_process(cmd->next, pipefd[0], shell);
+		start_process(cmd->next, pipefd[0], shell, args);
 	waitpid(pid, NULL, 0);
 	return (0);
 }
