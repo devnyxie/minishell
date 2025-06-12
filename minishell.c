@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 13:35:50 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:01:34 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN); // ignore Ctrl+"/"
 }
 
-void	await_input(t_shell *shell)
+void	await_input(t_shell *shell, char **args)
 {
 	char	*input;
 	while (1)
@@ -40,7 +40,7 @@ void	await_input(t_shell *shell)
 			add_history(input);
 			shell->parsed_input = parser(input);
 			if (shell->parsed_input->first_cmd != NULL)
-				exec_cmd(shell->parsed_input->first_cmd, shell);
+				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 		}
 		free_shell_input(shell->parsed_input);
 	}
@@ -54,6 +54,6 @@ int	main(int argc, char **argv, char **envp)
 		custom_error("Arguments are not supported");
 	shell = init_shell(envp);
 	setup_signals();
-	await_input(shell);
+	await_input(shell, argv);
 	return (0);
 }

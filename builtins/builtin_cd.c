@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:29:56 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:26:12 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	find_env_var(t_shell *shell, const char *var_name)
 	{
 		if (shell->envp[i] && ft_strncmp(shell->envp[i], var_name, len) == 0 &&
 			shell->envp[i][len] == '=')
-			return (i);
+		{
+			return (i); // ret the position in env list
+			printf("%s\n", shell->envp[i]);
+		}
 		i++;
 	}
 	return (-1);
@@ -83,6 +86,7 @@ char	*get_env_var(t_shell *shell, const char *var_name)
 
 	if (!shell || !var_name)
 		return (NULL);
+	printf("Inside the get_env_var\n");
 	index = find_env_var(shell, var_name);
 	if (index != -1)
 	{
@@ -101,7 +105,9 @@ int	builtin_cd(t_shell *shell, char **args)
 
 	if (!shell || !args)
 		return (1);
+	printf("Inside the builtin_cd\n");
 	old_pwd = get_env_var(shell, "PWD");
+	printf("Old PWD: %s\n", old_pwd);
 	//determine target dir
 	if (args[1] == NULL)
 	{
@@ -112,8 +118,9 @@ int	builtin_cd(t_shell *shell, char **args)
 	}
 	else
 		path = args[1];
+	printf("%s\n", path);
 	// change dir
-	if (chdir(path) != 0)
+	if (chdir(path) == -1)
 	{
 		perror("cd");
 		return (1);
