@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/12 15:02:25 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:07:47 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 		exit(1);
 	}
 	if (pid == 0)
+	{
+		printf("\n---Now executing in child process---\n");
 		child_process(cmd, prev_fd, pipefd, shell);
+	}
 	close_fds(prev_fd, cmd, pipefd);
 	if (cmd->next)
 		start_process(cmd->next, pipefd[0], shell, args);
