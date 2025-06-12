@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:11:56 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/12 12:12:37 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:54:32 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int is_builtin(t_shell *shell, t_cmd *cmd)
 {
     int i = 0;
-    
+    printf("---Inside is_builtin function---\n");
     if (!shell || !shell->builtins || !cmd->name)
         return (0);
     printf("Cmd name: %s\n", cmd->name);
@@ -27,5 +27,5 @@ int is_builtin(t_shell *shell, t_cmd *cmd)
             return (1);
         i++;
     }
-    return (0);
+    return (0); // It's not a builtin
 }
