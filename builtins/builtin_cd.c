@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/12 15:08:27 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:02:27 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,16 @@ int	builtin_cd(t_shell *shell, char **args)
 	old_pwd = get_env_var(shell, "PWD");
 	printf("Old PWD: %s\n", old_pwd);
 	//determine target dir
-	printf("%s\n", args[1]);
+	int i = 0;
+	while (args[i])
+	{
+		printf("Args inside builtin_cd: %s\n", args[i]);
+		i++;
+	}
 	if (args[1] == NULL)
 	{
 		//no args, go HOME
-		printf("No args\n");
+		printf("No args after cd command\n");
 		path = get_env_var(shell, "HOME");
 		printf("Path: %s\n", path);
 		if (!path)
@@ -122,6 +127,7 @@ int	builtin_cd(t_shell *shell, char **args)
 	else
 		path = args[1];
 	// change dir
+	printf("Path for chdir: %s\n", path);
 	if (chdir(path) == -1)
 	{
 		perror("cd");

@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:53:17 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/12 14:02:49 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:57:22 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,11 @@ int execute_builtin(t_shell *shell, char **args, t_cmd *cmd)
 	
     while (shell->builtins[i].name)
     {
-		//printf("Searching for: %s\n\n", cmd->name);
         if (ft_strcmp(shell->builtins[i].name, cmd->name) == 0)
         {
-			//printf("Found builtin: %s\n", shell->builtins[i].name);
             if (shell->builtins[i].fn)
 			{
-				printf("Return: %s\n", shell->builtins[i].name);
-                return (shell->builtins[i].fn(shell, args));
+                return (shell->builtins[i].fn(shell, cmd->args));
             }
 			else
             {
@@ -38,6 +35,7 @@ int execute_builtin(t_shell *shell, char **args, t_cmd *cmd)
             }
         }
         i++;
+		printf("Call function: %d\n", i);
     }
     return (-1); // Not found
 }
