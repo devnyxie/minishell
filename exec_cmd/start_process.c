@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/12 12:49:55 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:02:25 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,7 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 
 	handle_exit_if_needed(cmd);
 	if (is_builtin(shell, cmd))
-	{
-		int exec_ret_num;
-		printf("Command is a built-in\n");
-		exec_ret_num = execute_builtin(shell, args, cmd);
-		printf("Exec return number is: %d\n", exec_ret_num);
-	}
+		execute_builtin(shell, args, cmd);
 	create_pipe_if_needed(cmd, pipefd);
 	pid = fork();
 	if (pid < 0)

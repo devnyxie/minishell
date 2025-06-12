@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/12 11:26:12 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:08:27 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*get_env_var(t_shell *shell, const char *var_name)
 
 	if (!shell || !var_name)
 		return (NULL);
-	printf("Inside the get_env_var\n");
+	printf("---Inside get_env_var---\n");
 	index = find_env_var(shell, var_name);
 	if (index != -1)
 	{
@@ -105,20 +105,22 @@ int	builtin_cd(t_shell *shell, char **args)
 
 	if (!shell || !args)
 		return (1);
-	printf("Inside the builtin_cd\n");
+	printf("---Inside builtin_cd---\n");
 	old_pwd = get_env_var(shell, "PWD");
 	printf("Old PWD: %s\n", old_pwd);
 	//determine target dir
+	printf("%s\n", args[1]);
 	if (args[1] == NULL)
 	{
 		//no args, go HOME
+		printf("No args\n");
 		path = get_env_var(shell, "HOME");
+		printf("Path: %s\n", path);
 		if (!path)
 			exit(EXIT_FAILURE);
 	}
 	else
 		path = args[1];
-	printf("%s\n", path);
 	// change dir
 	if (chdir(path) == -1)
 	{

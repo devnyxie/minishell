@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/12 12:01:34 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:30:28 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ void	await_input(t_shell *shell, char **args)
 		{
 			add_history(input);
 			shell->parsed_input = parser(input);
+			printf("---Input parser---\n");
+			int i = 0;
+			while (shell->parsed_input->first_cmd->args[i])
+			{
+				printf("Args: %s\n", shell->parsed_input->first_cmd->args[i]);
+				i++;
+			}
+			
 			if (shell->parsed_input->first_cmd != NULL)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 		}
