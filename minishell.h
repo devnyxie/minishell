@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 12:16:23 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:32:11 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <dirent.h>
 
 // builtins
 int		builtin_cd(t_shell *shell, char **args);
@@ -38,9 +39,11 @@ int		builtin_env(t_shell *shell);
 int		builtin_export(t_shell *shell, char **args);
 int		builtin_unset(t_shell *shell, char **args);
 int 	exit_shell(char **args);
-int 	execute_builtin(t_shell *shell, char **args);
-int 	is_builtin(t_shell *shell, char *cmd_name);
+int 	execute_parent_builtin(t_shell *shell, char **args, t_cmd *cmd);
+int     is_parent_builtin(t_shell *shell, t_cmd *cmd);
 void	update_env_var(t_shell *shell, char *var_name, const char *value);
+t_builtin	*init_builtins_parent(void);
+t_builtin	*init_builtins_child(void);
 
 // error_handling.c
 void		custom_error(char *msg);
@@ -52,8 +55,6 @@ char		*ft_strcpy(char *s1, char *s2);
 int			ft_strcmp(char *s1, char *s2);
 // utils/init_shell.c
 t_shell		*init_shell(char **envp);
-// utils/init_builtins.ca
-t_builtin	*init_builtins(void);
 // utils/free_2d.c
 void		free_2d(char **str);
 

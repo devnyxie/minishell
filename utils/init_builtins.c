@@ -36,20 +36,31 @@ static int builtin_env_wrapper(t_shell *shell, char **args)
 	return builtin_env(shell);
 }
 
-t_builtin	*init_builtins(void)
+t_builtin	*init_builtins_child(void)
 {
 	t_builtin	*builtins;
 
-	builtins = malloc(8 * sizeof(t_builtin));
+	builtins = malloc(4 * sizeof(t_builtin));
 	if (!builtins)
 		return (NULL);
 	builtins[0] = (t_builtin){"echo", builtin_echo_wrapper};
-	builtins[1] = (t_builtin){"cd", builtin_cd};
-	builtins[2] = (t_builtin){"pwd", builtin_pwd_wrapper};
-	builtins[3] = (t_builtin){"export", builtin_export}; // TODO
-	builtins[4] = (t_builtin){"unset", NULL};  // TODO
-	builtins[5] = (t_builtin){"env", builtin_env_wrapper};
-	builtins[6] = (t_builtin){"exit", builtin_exit_wrapper};
-	builtins[7] = (t_builtin){NULL, NULL};
+	builtins[1] = (t_builtin){"pwd", builtin_pwd_wrapper};
+	builtins[2] = (t_builtin){"env", builtin_env_wrapper};
+	builtins[3] = (t_builtin){NULL, NULL};
+	return (builtins);
+}
+
+t_builtin	*init_builtins_parent(void)
+{
+	t_builtin	*builtins;
+
+	builtins = malloc(5 * sizeof(t_builtin));
+	if (!builtins)
+		return (NULL);
+	builtins[0] = (t_builtin){"cd", builtin_cd};
+	builtins[1] = (t_builtin){"export", builtin_export}; // TODO
+	builtins[2] = (t_builtin){"unset", NULL};  // TODO
+	builtins[3] = (t_builtin){"exit", builtin_exit_wrapper};
+	builtins[4] = (t_builtin){NULL, NULL};
 	return (builtins);
 }
