@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:29:56 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:22:27 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	find_env_var(t_shell *shell, const char *var_name)
 	{
 		if (shell->envp[i] && ft_strncmp(shell->envp[i], var_name, len) == 0 &&
 			shell->envp[i][len] == '=')
-			return (i);
+		{
+			return (i); // ret the position in env list
+			printf("%s\n", shell->envp[i]);
+		}
 		i++;
 	}
 	return (-1);
@@ -101,19 +104,29 @@ int	builtin_cd(t_shell *shell, char **args)
 
 	if (!shell || !args)
 		return (1);
+	// printf("---Inside builtin_cd---\n");
 	old_pwd = get_env_var(shell, "PWD");
+	// printf("Old PWD: %s\n", old_pwd);
 	//determine target dir
+	int i = 0;
+	while (args[i])
+	{
+		// printf("Args inside builtin_cd: %s\n", args[i]);
+		i++;
+	}
 	if (args[1] == NULL)
 	{
 		//no args, go HOME
+		// printf("No args after cd command\n");
 		path = get_env_var(shell, "HOME");
+		// printf("Path: %s\n", path);
 		if (!path)
 			exit(EXIT_FAILURE);
 	}
 	else
 		path = args[1];
 	// change dir
-	if (chdir(path) != 0)
+	if (chdir(path) == -1)
 	{
 		perror("cd");
 		return (1);
@@ -121,7 +134,6 @@ int	builtin_cd(t_shell *shell, char **args)
 	// update OLDPWD with previous PWD
 	if (old_pwd)
 		update_env_var(shell, "OLDPWD", old_pwd);
-
 	// update PWD with current dir
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		update_env_var(shell, "PWD", cwd);
