@@ -53,8 +53,11 @@ t_shell *init_shell(char **envp)
 		count++;
 	shell->env_count = count;
 	shell->env_capacity = count + 10; // extra space for new vars
-    shell->builtins = init_builtins();
-    if (!shell->builtins)
+	// printf("builtins start\n....");
+	shell->builtins = malloc(sizeof(t_builtins_unified));
+    shell->builtins->builtins_child = init_builtins_child();
+	shell->builtins->builtins_parent = init_builtins_parent();
+    if (!shell->builtins->builtins_child || !shell->builtins->builtins_parent)
     {
         custom_error("Failed to initialize builtins");
 		free(shell);

@@ -39,14 +39,6 @@ void	await_input(t_shell *shell, char **args)
 		{
 			add_history(input);
 			shell->parsed_input = parser(input);
-			printf("---Input parser---\n");
-			int i = 0;
-			while (shell->parsed_input->first_cmd->args[i])
-			{
-				printf("Args: %s\n", shell->parsed_input->first_cmd->args[i]);
-				i++;
-			}
-			
 			if (shell->parsed_input->first_cmd != NULL)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 		}
