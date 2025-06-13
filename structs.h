@@ -60,12 +60,19 @@ typedef struct s_builtin
 	t_builtin_fn		fn;
 }						t_builtin;
 
+typedef struct s_builtins_unified
+{
+	t_builtin *builtins_child;
+	t_builtin *builtins_parent;
+}						t_builtins_unified;
+
+
 typedef struct s_shell
 {
 	char				**history;
 	char				*prompt;
 	t_shell_input		*parsed_input;
-	t_builtin			*builtins;
+	t_builtins_unified	*builtins;
 	char				**envp;
 	char				*path;
 	int					env_count;

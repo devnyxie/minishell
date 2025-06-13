@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h -include exec_cmd/exec_cmd.h
+CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h -include exec_cmd/exec_cmd.h -g
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -12,8 +12,8 @@ SRC = minishell.c \
 		builtins/builtin_cd.c \
 		builtins/builtin_echo.c \
 		builtins/builtin_pwd.c \
-		builtins/is_builtin.c \
-		builtins/execute_builtin.c \
+		builtins/is_parent_builtin.c \
+		builtins/execute_parent_builtin.c \
 		parser/parser.c \
 		parser/parser_cmd.c \
 		parser/parser_mem.c \

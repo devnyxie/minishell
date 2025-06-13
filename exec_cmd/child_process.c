@@ -82,11 +82,11 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	while (shell->builtins[i].name)
+	while (shell->builtins->builtins_child[i].name)
 	{
-		if (ft_strcmp(cmd->name, shell->builtins[i].name) == 0)
+		if (ft_strcmp(cmd->name, shell->builtins->builtins_child[i].name) == 0)
 		{
-			shell->builtins[i].fn(shell, cmd->args);
+			shell->builtins->builtins_child[i].fn(shell, cmd->args);
 			exit(0);
 		}
 		i++;
