@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:27:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/16 13:19:36 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:16:47 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ int	builtin_export(t_shell *shell, char **args)
 	i = 1;
 	while(args[i])
 	{
+		if (is_valid_identifier(args[i]))
+		{
+			printf("Not valid identifier - \n");
+			return (1);
+		}
 		equals = ft_strchr(args[1], '=');
 		if (equals)
 		{
