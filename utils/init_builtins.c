@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 11:52:49 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/16 09:25:01 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_builtin	*init_builtins_parent(void)
 		return (NULL);
 	builtins[0] = (t_builtin){"cd", builtin_cd};
 	builtins[1] = (t_builtin){"export", builtin_export}; // TODO
-	builtins[2] = (t_builtin){"unset", NULL};  // TODO
+	builtins[2] = (t_builtin){"unset", builtin_unset};  // TODO
 	builtins[3] = (t_builtin){"exit", builtin_exit_wrapper};
 	builtins[4] = (t_builtin){NULL, NULL};
 	return (builtins);
