@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/13 17:32:11 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:40:15 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,9 @@ int			ft_strcmp(char *s1, char *s2);
 t_shell		*init_shell(char **envp);
 // utils/free_2d.c
 void		free_2d(char **str);
+
+//env
+void	unset_env_var(char *name, t_shell *shell);
+int		is_valid_identifier(char *name);
 
 #endif
