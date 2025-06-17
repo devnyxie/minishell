@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 14:25:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/16 14:26:57 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/17 10:52:49 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	is_valid_identifier(char *name)
 
 	i = 0;
 	if (!name || !*name)
+		return (0);
 	if (ft_isalnum(name[0]) == 0 && name[0] != '_')
 		return (0);
 	i++;

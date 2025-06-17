@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/16 11:59:02 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:00:52 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 		execute_parent_builtin(shell, args, cmd);
 	} else {
 		// Child Builtins AND External Commands
-		printf("\n--- Inside Child Process ---\n");
 		create_pipe_if_needed(cmd, pipefd);
 		pid = fork();
 		if (pid < 0)
