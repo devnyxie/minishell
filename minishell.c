@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:45:38 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:30:28 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/history.h>
 
 // Clear the line, move to new line, show prompt
 void	handle_sigint(int sig)
@@ -28,36 +29,31 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN); // ignore Ctrl+"/"
 }
 
-void	await_input(t_shell *shell)
+void	await_input(t_shell *shell, char **args)
 {
-	char			*input;
-	t_cmd			*current_cmd;
-
+	char	*input;
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input)
 		{
+			add_history(input);
 			shell->parsed_input = parser(input);
-			if (!shell->parsed_input)
-				custom_error("Parser failed\n");
-			current_cmd = shell->parsed_input->first_cmd;
-			while (current_cmd)
-			{
-				lexer(current_cmd->name, current_cmd->args);
-				current_cmd = current_cmd->next;
-			}
+			if (shell->parsed_input->first_cmd != NULL)
+				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 		}
 		free_shell_input(shell->parsed_input);
 	}
-	
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
-	shell = init_shell();
+
+	if (argc > 1 || argv[1])
+		custom_error("Arguments are not supported");
+	shell = init_shell(envp);
 	setup_signals();
-	await_input(shell);
+	await_input(shell, argv);
 	return (0);
 }

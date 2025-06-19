@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 12:11:38 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/05/27 14:40:45 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/06/10 10:30:13 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/06/10 10:32:44 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int exit_shell(char **args)
+int	builtin_env(t_shell *shell)
 {
-    (void)args;
-    exit(EXIT_SUCCESS);
-    return(0);
+	int	i;
+
+	i = 0;
+	while (i < shell->env_count)
+	{
+		printf("%s\n", shell->envp[i]);
+		i++;
+	}
+	return (0);
 }
