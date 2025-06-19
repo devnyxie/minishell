@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/16 11:51:38 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/19 12:17:16 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	**copy_envp(t_shell *shell, char **envp)
 t_shell *init_shell(char **envp)
 {
     t_shell *shell;
-	int	count;
 	
     shell = malloc(sizeof(t_shell));
     if (!shell)
@@ -47,11 +46,9 @@ t_shell *init_shell(char **envp)
 		custom_error("Memory allocation failed\n");
 		return (NULL);
 	}
-	count = 0;
-	while (envp[count])
-		count++;
-	shell->env_count = count;
-	shell->env_capacity = count + 10; // extra space for new vars
+	// Change this with the function
+	shell->env_count = env_count(envp);
+	shell->env_capacity = env_count(envp) + 10; // extra space for new vars
 	// printf("builtins start\n....");
 	shell->builtins = malloc(sizeof(t_builtins_unified));
     shell->builtins->builtins_child = init_builtins_child();

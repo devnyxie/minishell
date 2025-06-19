@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/16 14:40:15 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/19 12:28:14 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		builtin_cd(t_shell *shell, char **args);
 int		builtin_echo(char **args);
 int		builtin_pwd(char **args);
 int		builtin_exit(t_shell *shell, char **args);
-int		builtin_env(t_shell *shell);
+int		builtin_env(t_shell *shell, char **args);
 int		builtin_export(t_shell *shell, char **args);
 int		builtin_unset(t_shell *shell, char **args);
 int 	exit_shell(char **args);
@@ -44,6 +44,9 @@ int     is_parent_builtin(t_shell *shell, t_cmd *cmd);
 void	update_env_var(t_shell *shell, char *var_name, const char *value);
 t_builtin	*init_builtins_parent(void);
 t_builtin	*init_builtins_child(void);
+
+// env
+int	env_count(char	**envp);
 
 // error_handling.c
 void		custom_error(char *msg);
