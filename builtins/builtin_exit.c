@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 12:03:45 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/13 17:33:51 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/05/27 12:11:38 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/06/04 15:42:49 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_pwd(char **args)
+int exit_shell(char **args)
 {
-	char cwd[PATH_MAX];
-
-	// check for unwanted args
-	if (args[1] != NULL)
-	{
-		exit(1);
-	}
-	// get the current working directory
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("pwd");
-		exit(1);
-	}
-	printf("%s\n", cwd);
-	return (0);
+    (void)args;
+    exit(EXIT_SUCCESS);
+    return(0);
 }

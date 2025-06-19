@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/03 17:12:25 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:09:58 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static t_cmd	*init_cmd(char *cmd_name)
 	cmd = malloc(sizeof(t_cmd));
 	cmd->name = NULL;
 	cmd->next = NULL;
+	cmd->prev = NULL;
+	cmd->pipe_read = -1;
 	cmd->in_redir = NULL;
 	cmd->out_redir = NULL;
 	cmd->args = NULL;
@@ -60,8 +62,10 @@ void append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 	last_cmd = shell_input->first_cmd;
 	while(last_cmd->next != NULL)
 		last_cmd = last_cmd->next;
+	cmd->prev = last_cmd; // !!!
 	last_cmd->next = cmd;
 	shell_input->last_cmd = cmd;
+	shell_input->cmds_count++;
 }
 
 
