@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:42:44 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:51:38 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ char	**copy_envp(t_shell *shell, char **envp)
 		shell->envp[i] = ft_strdup(envp[i]);
 		if (!shell->envp[i])
 		{
-			// Free previously allocated strings on failure
-			while (--i >= 0)
+				while (--i >= 0)
 				free(shell->envp[i]);
 			free(shell->envp);
 			return (NULL);
