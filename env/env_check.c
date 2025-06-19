@@ -6,12 +6,13 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 14:25:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/17 10:52:49 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:22:35 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// here we're checking if we have a valid name for env var
 int	is_valid_identifier(char *name)
 {
 	int	i;
@@ -52,7 +53,7 @@ void	unset_env_var(char *name, t_shell *shell)
 				shell->envp[j] = shell->envp[j + 1];
 				j++;
 			}
-			// resize array;
+			// resize array TODO
 		}
 		i++;
 	}

@@ -15,6 +15,8 @@ SRC = minishell.c \
 		builtins/builtin_pwd.c \
 		builtins/is_parent_builtin.c \
 		builtins/execute_parent_builtin.c \
+		env/env_check.c \
+		env/env_utils.c \
 		exec_cmd/search_cmd_path.c \
 		exec_cmd/exec_cmd.c \
 		exec_cmd/child_process.c \
@@ -27,7 +29,6 @@ SRC = minishell.c \
 		parser/is_space.c \
 		parser/skip_space.c \
 		parser/grab_word.c \
-		utils/env_check.c \
 		utils/init_shell.c \
 		utils/init_builtins.c \
 		utils/free_2d.c 
