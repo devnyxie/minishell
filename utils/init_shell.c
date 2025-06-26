@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/19 12:17:16 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:50:07 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**copy_envp(t_shell *shell, char **envp)
 		if (!shell->envp[i])
 		{
 				while (--i >= 0)
-				free(shell->envp[i]);
+					free(shell->envp[i]);
 			free(shell->envp);
 			return (NULL);
 		}
@@ -49,7 +49,6 @@ t_shell *init_shell(char **envp)
 	// Change this with the function
 	shell->env_count = env_count(envp);
 	shell->env_capacity = env_count(envp) + 10; // extra space for new vars
-	// printf("builtins start\n....");
 	shell->builtins = malloc(sizeof(t_builtins_unified));
     shell->builtins->builtins_child = init_builtins_child();
 	shell->builtins->builtins_parent = init_builtins_parent();

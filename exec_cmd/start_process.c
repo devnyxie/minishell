@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/17 11:00:52 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:39:35 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,10 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 	int	pid;
 
 	handle_exit_if_needed(cmd);
-	if (is_parent_builtin(shell, cmd)){
-		// Parent Process Builtins
+	if (is_parent_builtin(shell, cmd))
 		execute_parent_builtin(shell, args, cmd);
-	} else {
-		// Child Builtins AND External Commands
+	else 
+	{
 		create_pipe_if_needed(cmd, pipefd);
 		pid = fork();
 		if (pid < 0)
@@ -57,10 +56,7 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 			exit(1);
 		}
 		if (pid == 0)
-		{
-			// printf("\n---Now executing in child process---\n");
-			child_process(cmd, prev_fd, pipefd, shell);
-		}
+				child_process(cmd, prev_fd, pipefd, shell);
 		close_fds(prev_fd, cmd, pipefd);
 		if (cmd->next)
 			start_process(cmd->next, pipefd[0], shell, args);
