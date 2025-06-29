@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/12 14:07:16 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:56:01 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_builtins_unified
 
 typedef struct s_shell
 {
-	char				**history;
+	//char				**history;
 	char				*prompt;
 	t_shell_input		*parsed_input;
 	t_builtins_unified	*builtins;
@@ -77,6 +77,7 @@ typedef struct s_shell
 	char				*path;
 	int					env_count;
 	int					env_capacity;
+	int					exit_code;
 }						t_shell;
 
 #endif
