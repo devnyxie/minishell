@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/19 12:28:14 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:31:51 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	env_count(char	**envp);
 
 // error_handling.c
 void		custom_error(char *msg);
+void	report_error(char *command, char *detail, int is_sys_err);
 
 // utils
 // utils/ft_strcpy.c

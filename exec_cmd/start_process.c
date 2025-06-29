@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/26 12:39:35 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:53:56 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 {
 	int	pipefd[2] = {-1, -1};
 	int	pid;
+	int	status;
+	int	exit_code;
 
 	handle_exit_if_needed(cmd);
 	if (is_parent_builtin(shell, cmd))
@@ -60,7 +62,12 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 		close_fds(prev_fd, cmd, pipefd);
 		if (cmd->next)
 			start_process(cmd->next, pipefd[0], shell, args);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			exit_code = WEXITSTATUS(status);
+			shell->exit_code = exit_code;
+		}
 	}
 	return (0);
 }
