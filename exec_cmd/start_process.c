@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/17 11:00:52 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:53:56 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,14 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 {
 	int	pipefd[2] = {-1, -1};
 	int	pid;
+	int	status;
+	int	exit_code;
 
 	handle_exit_if_needed(cmd);
-	if (is_parent_builtin(shell, cmd)){
-		// Parent Process Builtins
+	if (is_parent_builtin(shell, cmd))
 		execute_parent_builtin(shell, args, cmd);
-	} else {
-		// Child Builtins AND External Commands
+	else 
+	{
 		create_pipe_if_needed(cmd, pipefd);
 		pid = fork();
 		if (pid < 0)
@@ -57,14 +58,16 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 			exit(1);
 		}
 		if (pid == 0)
-		{
-			// printf("\n---Now executing in child process---\n");
-			child_process(cmd, prev_fd, pipefd, shell);
-		}
+				child_process(cmd, prev_fd, pipefd, shell);
 		close_fds(prev_fd, cmd, pipefd);
 		if (cmd->next)
 			start_process(cmd->next, pipefd[0], shell, args);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			exit_code = WEXITSTATUS(status);
+			shell->exit_code = exit_code;
+		}
 	}
 	return (0);
 }
