@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:46:17 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:09:19 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static void	child_process_prepare(t_cmd *cmd, int prev_fd, int pipefd[2])
 	}
 }
 
-// last one wins
 static void	child_process_redir_in(t_cmd *cmd)
 {
 	t_redirect	*redir;
@@ -41,18 +40,26 @@ static void	child_process_redir_in(t_cmd *cmd)
 			fd = open(redir->file, O_RDONLY);
 			if (fd < 0)
 			{
-				perror(redir->file);
+				report_error(NULL, redir->file, 1);
 				exit(1);
 			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
-		redir = redir->next;
 		// TODO: handle HEREDOC here
+		else if (redir->type == HEREDOC)
+		{
+			fd = open(redir->file, O_RDONLY);
+			if (fd < 0)
+			{
+				report_error(NULL, redir->file, 1);
+				exit(1);
+			}
+		}
+		redir = redir->next;
 	}
 }
 
-// last one wins
 static void	child_process_redir_out(t_cmd *cmd)
 {
 	t_redirect	*redir;
@@ -67,7 +74,7 @@ static void	child_process_redir_out(t_cmd *cmd)
 			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
 		{
-			perror(redir->file);
+			report_error(NULL, redir->file, 1);
 			exit(1);
 		}
 		dup2(fd, STDOUT_FILENO);
@@ -98,7 +105,7 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 		perror("execve");
 	}
 	else
-		fprintf(stderr, "%s: command not found\n", cmd->name);
+		report_error(cmd->name, "command not found", 0);
 }
 
 void	child_process(t_cmd *cmd, int prev_fd, int pipefd[2], t_shell *shell)

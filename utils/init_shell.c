@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/26 12:50:07 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:05:11 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ t_shell *init_shell(char **envp)
     if (!shell->path)
         custom_error("Error! PATH not set\n");
     shell->parsed_input = NULL;
+	shell->exit_code = 0;
     return (shell);
 }

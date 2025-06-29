@@ -6,12 +6,11 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/27 12:42:46 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/06/27 12:54:44 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/history.h>
 
 // Clear the line, move to new line, show prompt
 void	handle_sigint(int sig)
@@ -34,8 +33,6 @@ void	await_input(t_shell *shell, char **args)
 	char	*input;
 	while (1)
 	{
-		// if the readline returns NULL (Ctrl + D),
-		// we should probaly just exit without freeing???
 		input = readline("minishell$ ");
 		if (input)
 		{

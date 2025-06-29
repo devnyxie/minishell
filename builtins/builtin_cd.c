@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/13 17:22:27 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:04:58 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,49 +98,32 @@ char	*get_env_var(t_shell *shell, const char *var_name)
 
 int	builtin_cd(t_shell *shell, char **args)
 {
+	int		i;
 	char	*path;
 	char	*old_pwd;
 	char	cwd[PATH_MAX];
 
 	if (!shell || !args)
 		return (1);
-	// printf("---Inside builtin_cd---\n");
 	old_pwd = get_env_var(shell, "PWD");
-	// printf("Old PWD: %s\n", old_pwd);
-	//determine target dir
-	int i = 0;
+	i = 0;
 	while (args[i])
-	{
-		// printf("Args inside builtin_cd: %s\n", args[i]);
 		i++;
-	}
 	if (args[1] == NULL)
 	{
-		//no args, go HOME
-		// printf("No args after cd command\n");
 		path = get_env_var(shell, "HOME");
-		// printf("Path: %s\n", path);
 		if (!path)
 			exit(EXIT_FAILURE);
 	}
 	else
 		path = args[1];
-	// change dir
 	if (chdir(path) == -1)
-	{
-		perror("cd");
-		return (1);
-	}
-	// update OLDPWD with previous PWD
+		report_error("cd", path, 1);
 	if (old_pwd)
 		update_env_var(shell, "OLDPWD", old_pwd);
-	// update PWD with current dir
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		update_env_var(shell, "PWD", cwd);
 	else
-	{
-		perror("getcwd");
-		return (1);
-	}
+		report_error("getcwd", cwd, 1);
 	return (0);
 }
