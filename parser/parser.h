@@ -6,14 +6,14 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:28:59 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:20:07 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
-# define PARSER_H
+#define PARSER_H
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 // typedef enum e_redirect_type
 // {
@@ -51,16 +51,16 @@
 // }						t_shell_input;
 
 // parser.c
-t_shell_input	*parser(char *input);
+void parser(t_shell *shell, char *input);
 // parser_cmd.c
-void			handle_cmd(t_shell_input *shell_input);
+void handle_cmd(t_shell_input *shell_input);
 // parser_mem.c
-void			free_shell_input(t_shell_input *input);
+void free_shell_input(t_shell_input *input);
 // skip_space.c
-void			skip_space(char **input);
+void skip_space(char **input);
 // is_space.c
-int				is_space(char c);
+int is_space(char c);
 // grab_word.c
-char			*grab_word(char **input);
+char *grab_word(char **input);
 
 #endif
