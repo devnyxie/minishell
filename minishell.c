@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/27 12:54:44 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:19:44 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	await_input(t_shell *shell, char **args)
 		{
 			if (input[0] != '\0')
 				add_history(input);
-			shell->parsed_input = parser(input);
+			parser(shell, input);
 			if (shell->parsed_input->first_cmd != NULL)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 		}

@@ -31,7 +31,9 @@ SRC = minishell.c \
 		parser/grab_word.c \
 		utils/init_shell.c \
 		utils/init_builtins.c \
-		utils/free_2d.c 
+		utils/free_2d.c \
+		utils/ft_realloc.c \
+		utils/ft_strndup.c \
 
 		
 OBJ = $(SRC:.c=.o)

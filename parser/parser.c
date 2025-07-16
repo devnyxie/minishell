@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/29 14:41:34 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:58:23 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "../minishell.h" // for t_shell and env access
 
 // TODO: err msg, mem handle
-t_shell_input	*init_shell_input(char *input)
+t_shell_input *init_shell_input(char *input)
 {
-	t_shell_input	*shell_input;
+	t_shell_input *shell_input;
 
 	shell_input = malloc(sizeof(t_shell_input));
 	if (!shell_input)
@@ -32,12 +33,12 @@ t_shell_input	*init_shell_input(char *input)
 
 t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 {
-	t_redirect_type	type;
-	
+	t_redirect_type type;
+
 	cmd = shell_input->last_cmd;
 	if (!cmd)
 	{
-		//custom_error("syntax error: redirection with no command");
+		// custom_error("syntax error: redirection with no command");
 		shell_input->input++;
 		return 0;
 	}
@@ -67,17 +68,68 @@ t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 	return (type);
 }
 
-static void	handle_redirect(t_shell_input *shell_input)
+// Helper: Get env value by key
+char *get_env_value(char **envp, const char *key)
 {
-	t_cmd			*cmd;
-	t_redirect		*redir;
-	t_redirect_type	type;
-	char			*file;
+	int i = 0;
+	size_t key_len = strlen(key);
+	while (envp[i])
+	{
+		if (strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
+			return envp[i] + key_len + 1;
+		i++;
+	}
+	return "";
+}
 
-	cmd = shell_input->last_cmd;
-	type = redirect_type(shell_input, cmd);
-	skip_space(&shell_input->input);
-	file = grab_word(&shell_input->input);
+void handle_expand_variables(char **envp, t_shell_input *shell_input)
+{
+	char *input = shell_input->input;
+	char *new_input = ft_calloc(1, ft_strlen(input) + 1);
+	int i = 0;
+
+	while (input[i])
+	{
+		if (input[i] == '$' && (isalpha(input[i + 1]) || input[i + 1] == '_'))
+		{
+			i++; // skip '$'
+			int var_start = i;
+
+			while (isalnum(input[i]) || input[i] == '_')
+				i++;
+
+			char *var_name = ft_strndup(&input[var_start], i - var_start);
+			char *value = get_env_value(envp, var_name);
+
+			new_input = ft_realloc(new_input, ft_strlen(new_input) + ft_strlen(value) + 1);
+			ft_strlcat(new_input, value, ft_strlen(new_input) + ft_strlen(value) + 1);
+			free(var_name);
+		}
+		else
+		{
+			size_t len = ft_strlen(new_input);
+			new_input = ft_realloc(new_input, len + 2);
+			new_input[len] = input[i];
+			new_input[len + 1] = '\0';
+			i++;
+		}
+	}
+
+	free(shell_input->input);
+	shell_input->input = new_input;
+}
+
+static void handle_redirect(t_shell_input *parsed_input)
+{
+	t_cmd *cmd;
+	t_redirect *redir;
+	t_redirect_type type;
+	char *file;
+
+	cmd = parsed_input->last_cmd;
+	type = redirect_type(parsed_input, cmd);
+	skip_space(&parsed_input->input);
+	file = grab_word(&parsed_input->input);
 	printf("file: %s\n", file);
 	if (!file)
 	{
@@ -85,11 +137,11 @@ static void	handle_redirect(t_shell_input *shell_input)
 		i++;
 		printf("Entering function: %d time.\n", i);
 		report_error(NULL, "syntax error near unexpected token `newline'", 0);
-		return ;
+		return;
 	}
 	redir = malloc(sizeof(t_redirect));
 	if (!redir)
-		return ;
+		return;
 	redir->type = type;
 	redir->file = file;
 	redir->next = NULL;
@@ -109,35 +161,38 @@ static void	handle_redirect(t_shell_input *shell_input)
 Is called for each byte, but the inner functions may move
 the pointer of the input string for faster execution.
 */
-void	handle_input(t_shell_input *shell_input)
+void handle_input(t_shell *shell)
 {
-	if (*(shell_input->input) == '>' || *(shell_input->input) == '<')
-		handle_redirect(shell_input);
-	else if (*(shell_input->input) == '|')
+	char **input = &shell->parsed_input->input;
+	// here shell->parsed_input->input should be equal to input, since in the next functions the pointer of parsed_input is updated
+
+	handle_expand_variables(shell->envp, shell->parsed_input);
+	if (**input == '>' || **input == '<')
+		handle_redirect(shell->parsed_input);
+	else if (**input == '|')
 	{
-		if (shell_input->first_cmd == NULL)
+		if (shell->parsed_input->first_cmd == NULL)
 			report_error(NULL, "syntax error near unexpected token `|'", 0);
-		if (*(shell_input->input))
-			shell_input->input++;
-		handle_cmd(shell_input);
+		if (**input)
+			input++;
+		handle_cmd(shell->parsed_input);
 	}
-	else if (is_space(*(shell_input->input)))
+	else if (is_space(**input) && **input)
 	{
-		if (*(shell_input->input))
-			shell_input->input++;
+
+		(*input)++;
 	}
 	else
-		handle_cmd(shell_input);
+		handle_cmd(shell->parsed_input);
 }
 
 /*
 The loop will continue as long as the input pointer
 is valid. Inner functions move the ptr of the input.
 */
-t_shell_input	*parser(char *input)
+void parser(t_shell *shell, char *input)
 {
-	t_shell_input *shell_input = init_shell_input(input);
-	while (*(shell_input->input))
-		handle_input(shell_input);
-	return (shell_input);
+	shell->parsed_input = init_shell_input(input);
+	while (*(shell->parsed_input->input))
+		handle_input(shell);
 }
