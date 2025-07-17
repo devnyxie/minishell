@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   free_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 02:29:03 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/07/17 01:52:53 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/07/17 02:52:09 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "../../minishell.h"
 
-# include "../minishell.h"
+void	free_cmds(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+	int		i;
 
-// parser.c
-void	parser(t_shell *shell, char *input);
-// parser_cmd.c
-void	handle_cmd(t_shell_input *shell_input);
-// skip_space.c
-void	skip_space(char **input);
-// is_space.c
-int		is_space(char c);
-// grab_word.c
-char	*grab_word(char **input);
-
-#endif
+	while (cmd)
+	{
+		tmp = cmd;
+		cmd = cmd->next;
+		free(tmp->name);
+		if (tmp->args)
+		{
+			for (i = 0; tmp->args[i]; i++)
+				free(tmp->args[i]);
+			free(tmp->args);
+		}
+		free_redirects(tmp->in_redir);
+		free_redirects(tmp->out_redir);
+		free(tmp);
+	}
+}

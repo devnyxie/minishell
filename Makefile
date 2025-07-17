@@ -4,38 +4,65 @@ CFLAGS = -Wall -Wextra -Werror -include minishell.h -include parser/parser.h -in
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = minishell.c \
-		error_handling.c \
-		builtins/builtin_cd.c \
-		builtins/builtin_echo.c \
-		builtins/builtin_env.c \
-		builtins/builtin_exit.c \
-		builtins/builtin_export.c \
-		builtins/builtin_unset.c \
-		builtins/builtin_pwd.c \
-		builtins/is_parent_builtin.c \
-		builtins/execute_parent_builtin.c \
-		env/env_check.c \
-		env/env_utils.c \
-		exec_cmd/search_cmd_path.c \
-		exec_cmd/exec_cmd.c \
-		exec_cmd/child_process.c \
-		exec_cmd/start_process.c \
-		parser/parser.c \
-		parser/parser_cmd.c \
-		parser/parser_mem.c \
-		utils/ft_strcpy.c \
-		utils/ft_strcmp.c \
-		parser/is_space.c \
-		parser/skip_space.c \
-		parser/grab_word.c \
-		utils/init_shell.c \
-		utils/init_builtins.c \
-		utils/free_2d.c \
-		utils/ft_realloc.c \
-		utils/ft_strndup.c \
+BUILTINS_SRC = \
+	builtins/builtin_cd.c \
+	builtins/builtin_echo.c \
+	builtins/builtin_env.c \
+	builtins/builtin_exit.c \
+	builtins/builtin_export.c \
+	builtins/builtin_unset.c \
+	builtins/builtin_pwd.c \
+	builtins/is_parent_builtin.c \
+	builtins/execute_parent_builtin.c
 
-		
+ENV_SRC = \
+	env/env_check.c \
+	env/env_utils.c
+
+EXEC_CMD_SRC = \
+	exec_cmd/search_cmd_path.c \
+	exec_cmd/exec_cmd.c \
+	exec_cmd/child_process.c \
+	exec_cmd/start_process.c
+
+PARSER_SRC = \
+	parser/parser.c \
+	parser/parser_cmd.c \
+	parser/is_space.c \
+	parser/skip_space.c \
+	parser/grab_word.c
+
+UTILS_SRC = \
+	utils/ft_strcpy.c \
+	utils/ft_strcmp.c \
+	utils/ft_realloc.c \
+	utils/ft_strndup.c
+
+INIT_SRC = \
+	utils/init/init_shell.c \
+	utils/init/init_builtins.c \
+	utils/init/init_shell_input.c \
+	utils/init/init_cmd.c \
+
+CLEANUP_SRC = \
+	utils/cleanup/free_2d.c \
+	utils/cleanup/free_shell.c \
+	utils/cleanup/free_builtins.c \
+	utils/cleanup/free_shell_input.c \
+	utils/cleanup/free_cmds.c \
+	utils/cleanup/free_redirects.c
+
+SRC = \
+	minishell.c \
+	error_handling.c \
+	$(BUILTINS_SRC) \
+	$(ENV_SRC) \
+	$(EXEC_CMD_SRC) \
+	$(PARSER_SRC) \
+	$(UTILS_SRC) \
+	$(INIT_SRC) \
+	$(CLEANUP_SRC)
+
 OBJ = $(SRC:.c=.o)
 NAME = minishell
 

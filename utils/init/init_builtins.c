@@ -3,31 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/19 10:59:24 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:14:45 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-static int builtin_echo_wrapper(t_shell *shell, char **args)
+static int	builtin_echo_wrapper(t_shell *shell, char **args)
 {
-    (void)shell;
-    return builtin_echo(args);
+	(void)shell;
+	return (builtin_echo(args));
 }
 
-static int builtin_pwd_wrapper(t_shell *shell, char **args)
+static int	builtin_pwd_wrapper(t_shell *shell, char **args)
 {
-    (void)shell;
-    return builtin_pwd(args);
+	(void)shell;
+	return (builtin_pwd(args));
 }
 
-static int builtin_exit_wrapper(t_shell *shell, char **args)
+static int	builtin_exit_wrapper(t_shell *shell, char **args)
 {
-    (void)shell;
-    return exit_shell(args);
+	free_shell(shell);
+	clear_history();
+	return (exit_shell(args));
 }
 
 t_builtin	*init_builtins_child(void)
@@ -53,7 +54,7 @@ t_builtin	*init_builtins_parent(void)
 		return (NULL);
 	builtins[0] = (t_builtin){"cd", builtin_cd};
 	builtins[1] = (t_builtin){"export", builtin_export}; // TODO
-	builtins[2] = (t_builtin){"unset", builtin_unset};  // TODO
+	builtins[2] = (t_builtin){"unset", builtin_unset};   // TODO
 	builtins[3] = (t_builtin){"exit", builtin_exit_wrapper};
 	builtins[4] = (t_builtin){NULL, NULL};
 	return (builtins);

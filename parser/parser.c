@@ -6,41 +6,23 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/05 19:58:23 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 02:29:39 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "../minishell.h" // for t_shell and env access
+#include "parser.h"
 
-// TODO: err msg, mem handle
-t_shell_input *init_shell_input(char *input)
+t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 {
-	t_shell_input *shell_input;
-
-	shell_input = malloc(sizeof(t_shell_input));
-	if (!shell_input)
-	{
-		return (NULL);
-	}
-	shell_input->first_cmd = NULL;
-	shell_input->last_cmd = NULL;
-	shell_input->is_valid = 1;
-	shell_input->cmds_count = 0;
-	shell_input->input = input;
-	return (shell_input);
-}
-
-t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
-{
-	t_redirect_type type;
+	t_redirect_type	type;
 
 	cmd = shell_input->last_cmd;
 	if (!cmd)
 	{
 		// custom_error("syntax error: redirection with no command");
 		shell_input->input++;
-		return 0;
+		return (0);
 	}
 	// Determine redirection type
 	if (*(shell_input->input) == '>' && *(shell_input->input + 1) == '>')
@@ -64,67 +46,77 @@ t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 		shell_input->input += 1;
 	}
 	else
-		return 0;
+		return (0);
 	return (type);
 }
 
 // Helper: Get env value by key
-char *get_env_value(char **envp, const char *key)
+char	*get_env_value(char **envp, const char *key)
 {
-	int i = 0;
-	size_t key_len = strlen(key);
+	int		i;
+	size_t	key_len;
+
+	i = 0;
+	key_len = strlen(key);
 	while (envp[i])
 	{
 		if (strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
-			return envp[i] + key_len + 1;
+			return (envp[i] + key_len + 1);
 		i++;
 	}
-	return "";
+	return ("");
 }
 
-void handle_expand_variables(char **envp, t_shell_input *shell_input)
+void	handle_expand_variables(char **envp, t_shell_input *shell_input)
 {
-	char *input = shell_input->input;
-	char *new_input = ft_calloc(1, ft_strlen(input) + 1);
-	int i = 0;
+	char	*input;
+	char	*new_input;
+	int		i;
+	int		var_start;
+	char	*var_name;
+	char	*value;
+	size_t	len;
 
+	input = shell_input->input;
+	new_input = ft_calloc(1, ft_strlen(input) + 1);
+	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' && (isalpha(input[i + 1]) || input[i + 1] == '_'))
+		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i
+				+ 1] == '_'))
 		{
 			i++; // skip '$'
-			int var_start = i;
-
-			while (isalnum(input[i]) || input[i] == '_')
+			var_start = i;
+			while (ft_isalnum(input[i]) || input[i] == '_')
 				i++;
-
-			char *var_name = ft_strndup(&input[var_start], i - var_start);
-			char *value = get_env_value(envp, var_name);
-
-			new_input = ft_realloc(new_input, ft_strlen(new_input) + ft_strlen(value) + 1);
-			ft_strlcat(new_input, value, ft_strlen(new_input) + ft_strlen(value) + 1);
+			var_name = ft_strndup(&input[var_start], i - var_start);
+			value = get_env_value(envp, var_name);
+			new_input = ft_realloc(new_input, ft_strlen(new_input)
+					+ ft_strlen(value) + 1);
+			ft_strlcat(new_input, value, ft_strlen(new_input) + ft_strlen(value)
+				+ 1);
 			free(var_name);
 		}
 		else
 		{
-			size_t len = ft_strlen(new_input);
+			len = ft_strlen(new_input);
 			new_input = ft_realloc(new_input, len + 2);
 			new_input[len] = input[i];
 			new_input[len + 1] = '\0';
 			i++;
 		}
 	}
-
 	free(shell_input->input);
 	shell_input->input = new_input;
 }
 
-static void handle_redirect(t_shell_input *parsed_input)
+static void	handle_redirect(t_shell_input *parsed_input)
 {
-	t_cmd *cmd;
-	t_redirect *redir;
-	t_redirect_type type;
-	char *file;
+	t_cmd			*cmd;
+	t_redirect		*redir;
+	t_redirect_type	type;
+	char			*file;
+	static int		i = 0;
 
 	cmd = parsed_input->last_cmd;
 	type = redirect_type(parsed_input, cmd);
@@ -133,15 +125,14 @@ static void handle_redirect(t_shell_input *parsed_input)
 	printf("file: %s\n", file);
 	if (!file)
 	{
-		static int i = 0;
 		i++;
 		printf("Entering function: %d time.\n", i);
 		report_error(NULL, "syntax error near unexpected token `newline'", 0);
-		return;
+		return ;
 	}
 	redir = malloc(sizeof(t_redirect));
 	if (!redir)
-		return;
+		return ;
 	redir->type = type;
 	redir->file = file;
 	redir->next = NULL;
@@ -157,42 +148,43 @@ static void handle_redirect(t_shell_input *parsed_input)
 	}
 }
 
-/*
-Is called for each byte, but the inner functions may move
-the pointer of the input string for faster execution.
-*/
-void handle_input(t_shell *shell)
+void	handle_char(t_shell *shell)
 {
-	char **input = &shell->parsed_input->input;
-	// here shell->parsed_input->input should be equal to input, since in the next functions the pointer of parsed_input is updated
+	char	**input;
 
+	input = &shell->parsed_input->input;
 	handle_expand_variables(shell->envp, shell->parsed_input);
 	if (**input == '>' || **input == '<')
 		handle_redirect(shell->parsed_input);
 	else if (**input == '|')
 	{
 		if (shell->parsed_input->first_cmd == NULL)
+		{
 			report_error(NULL, "syntax error near unexpected token `|'", 0);
+			shell->parsed_input->is_valid = 0;
+			return ;
+		}
 		if (**input)
 			input++;
-		handle_cmd(shell->parsed_input);
 	}
 	else if (is_space(**input) && **input)
 	{
-
 		(*input)++;
 	}
 	else
 		handle_cmd(shell->parsed_input);
 }
 
-/*
-The loop will continue as long as the input pointer
-is valid. Inner functions move the ptr of the input.
-*/
-void parser(t_shell *shell, char *input)
+void	parser(t_shell *shell, char *input)
 {
-	shell->parsed_input = init_shell_input(input);
-	while (*(shell->parsed_input->input))
-		handle_input(shell);
+	t_shell_input	*shell_input;
+
+	shell_input = init_shell_input(input);
+	shell->parsed_input = shell_input;
+	while (*(shell_input->input) && shell_input->is_valid)
+		handle_char(shell);
+	if (!shell_input->is_valid)
+	{
+		free_shell_input(shell_input);
+	}
 }
