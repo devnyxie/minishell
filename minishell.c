@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/05 19:19:44 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:14:36 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	setup_signals(void)
 void	await_input(t_shell *shell, char **args)
 {
 	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -39,13 +40,16 @@ void	await_input(t_shell *shell, char **args)
 			if (input[0] != '\0')
 				add_history(input);
 			parser(shell, input);
-			if (shell->parsed_input->first_cmd != NULL)
+			if (shell->parsed_input->is_valid)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
-		}
-		if (input != NULL)
 			free_shell_input(shell->parsed_input);
+		}
 		else
-			exit (EXIT_SUCCESS);
+		{
+			clear_history();
+			free_shell(shell);
+			exit(EXIT_SUCCESS);
+		}
 	}
 }
 
