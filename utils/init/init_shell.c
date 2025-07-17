@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 11:44:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 12:30:20 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ t_shell	*init_shell(char **envp)
 	if (!shell->path)
 		custom_error("Error! PATH not set\n");
 	shell->parsed_input = NULL;
-	shell->history = NULL; // Initialize to NULL
-	shell->prompt = NULL;  // Initialize to NULL
+	shell->history = NULL;
+	shell->prompt = NULL;
 	shell->exit_code = 0;
 	return (shell);
 }
