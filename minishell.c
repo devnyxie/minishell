@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 03:14:36 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 12:09:24 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,13 @@ void	await_input(t_shell *shell, char **args)
 			if (input[0] != '\0')
 				add_history(input);
 			parser(shell, input);
-			if (shell->parsed_input->is_valid)
+			if (shell->parsed_input && shell->parsed_input->is_valid)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
-			free_shell_input(shell->parsed_input);
+			if (shell->parsed_input)
+			{
+				free_shell_input(shell->parsed_input);
+				shell->parsed_input = NULL; // Set to NULL after freeing
+			}
 		}
 		else
 		{

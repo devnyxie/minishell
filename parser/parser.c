@@ -1,12 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                   	if (!shell_input->is_valid)
+	{
+		free_shell_input(shell_input);
+		shell->parsed_input = NULL;
+	}
+}             :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:59:16 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 02:29:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 11:55:45 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +158,6 @@ void	handle_char(t_shell *shell)
 	char	**input;
 
 	input = &shell->parsed_input->input;
-	handle_expand_variables(shell->envp, shell->parsed_input);
 	if (**input == '>' || **input == '<')
 		handle_redirect(shell->parsed_input);
 	else if (**input == '|')
@@ -165,7 +169,7 @@ void	handle_char(t_shell *shell)
 			return ;
 		}
 		if (**input)
-			input++;
+			(*input)++; /* increment the character pointer */
 	}
 	else if (is_space(**input) && **input)
 	{
@@ -181,10 +185,13 @@ void	parser(t_shell *shell, char *input)
 
 	shell_input = init_shell_input(input);
 	shell->parsed_input = shell_input;
+	// Expand variables once at the beginning
+	handle_expand_variables(shell->envp, shell_input);
 	while (*(shell_input->input) && shell_input->is_valid)
 		handle_char(shell);
 	if (!shell_input->is_valid)
 	{
 		free_shell_input(shell_input);
+		shell->parsed_input = NULL;
 	}
 }
