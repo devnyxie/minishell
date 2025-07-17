@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/29 14:56:01 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/07/17 02:35:42 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
-
-// Parser
 
 typedef enum e_redirect_type
 {
@@ -62,14 +60,13 @@ typedef struct s_builtin
 
 typedef struct s_builtins_unified
 {
-	t_builtin *builtins_child;
-	t_builtin *builtins_parent;
+	t_builtin			*builtins_child;
+	t_builtin			*builtins_parent;
 }						t_builtins_unified;
-
 
 typedef struct s_shell
 {
-	//char				**history;
+	char				**history;
 	char				*prompt;
 	t_shell_input		*parsed_input;
 	t_builtins_unified	*builtins;

@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   init_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 02:29:03 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/07/17 02:28:29 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/07/17 02:40:36 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "../../minishell.h"
 
-# include "../minishell.h"
+t_cmd	*init_cmd(char *cmd_name)
+{
+	t_cmd *cmd;
 
-// parser.c
-void	parser(t_shell *shell, char *input);
-// parser_cmd.c
-void	handle_cmd(t_shell_input *shell_input);
-// skip_space.c
-void	skip_space(char **input);
-// is_space.c
-int		is_space(char c);
-// grab_word.c
-char	*grab_word(char **input);
-
-#endif
+	cmd = malloc(sizeof(t_cmd));
+	cmd->name = NULL;
+	cmd->next = NULL;
+	cmd->prev = NULL;
+	cmd->pipe_read = -1;
+	cmd->in_redir = NULL;
+	cmd->out_redir = NULL;
+	cmd->args = NULL;
+	cmd->name = cmd_name;
+	return (cmd);
+}
