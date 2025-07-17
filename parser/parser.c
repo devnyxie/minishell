@@ -189,6 +189,8 @@ void	parser(t_shell *shell, char *input)
 	handle_expand_variables(shell->envp, shell_input);
 	while (*(shell_input->input) && shell_input->is_valid)
 		handle_char(shell);
+	if (!shell_input->first_cmd)
+		shell_input->is_valid = 0;
 	if (!shell_input->is_valid)
 	{
 		free_shell_input(shell_input);
