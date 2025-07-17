@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 01:52:14 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 11:44:39 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_2d(char **str)
 {
 	int i;
 
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
 	{
