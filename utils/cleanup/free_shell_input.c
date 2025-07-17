@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_2d.c                                          :+:      :+:    :+:   */
+/*   free_shell_input.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/04 13:44:30 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/07/17 01:53:16 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/07/17 01:53:27 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-// Free a 2D array (array of strings)
-void	free_2d(char **str)
+void	free_shell_input(t_shell_input *shell_input)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
+	if (!shell_input)
+		return ;
+	free_cmds(shell_input->first_cmd);
+	free(shell_input->input); // allocated using readline
+	free(shell_input);
 }
