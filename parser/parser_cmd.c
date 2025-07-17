@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 02:29:15 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/17 11:57:03 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@ static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
 	cmd->args = malloc(sizeof(char *) * 256);
 	if (!cmd->args)
 		return ;
-	cmd->args[arg_count++] = cmd_name;
+	cmd->args[arg_count] = ft_strdup(cmd_name);
+	if (!cmd->args[arg_count])
+	{
+		free(cmd->args);
+		return ;
+	}
+	arg_count++;
 	while (*(shell_input->input) && *(shell_input->input) != '>'
 		&& *(shell_input->input) != '<' && *(shell_input->input) != '|')
 	{
