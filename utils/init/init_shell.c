@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 12:30:20 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:36:15 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,29 @@ char	**copy_envp(t_shell *shell, char **envp)
 	return (shell->envp);
 }
 
+static	int shell_process_check(t_shell *shell)
+{
+	if (!shell->builtins->builtins_child || !shell->builtins->builtins_parent)
+	{
+		custom_error("Failed to initialize builtins");
+		free(shell);
+		return (1);
+	}
+	return (0);
+}
+
+static int copy_env_check(t_shell *shell, char **envp)
+{
+	if (!copy_envp(shell, envp))
+	{
+		custom_error("Failed to copy environment");
+		free(shell->builtins);
+		free(shell);
+		return (1);
+	}
+	return (0);
+}
+
 t_shell	*init_shell(char **envp)
 {
 	t_shell *shell;
@@ -46,25 +69,15 @@ t_shell	*init_shell(char **envp)
 		custom_error("Memory allocation failed\n");
 		return (NULL);
 	}
-	// Change this with the function
 	shell->env_count = env_count(envp);
 	shell->env_capacity = env_count(envp) + 10; // extra space for new vars
 	shell->builtins = malloc(sizeof(t_builtins_unified));
 	shell->builtins->builtins_child = init_builtins_child();
 	shell->builtins->builtins_parent = init_builtins_parent();
-	if (!shell->builtins->builtins_child || !shell->builtins->builtins_parent)
-	{
-		custom_error("Failed to initialize builtins");
-		free(shell);
+	if (shell_process_check(shell))
 		exit(EXIT_FAILURE);
-	}
-	if (!copy_envp(shell, envp))
-	{
-		custom_error("Failed to copy environment");
-		free(shell->builtins);
-		free(shell);
+	if (copy_env_check(shell, envp))
 		return (NULL);
-	}
 	shell->path = getenv("PATH");
 	if (!shell->path)
 		custom_error("Error! PATH not set\n");
