@@ -1,11 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                   	if (!shell_input->is_valid)
-	{
-		free_shell_input(shell_input);
-		shell->parsed_input = NULL;
-	}
-}             :::      ::::::::   */
+/*                                   	                  :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
