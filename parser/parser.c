@@ -13,43 +13,6 @@
 #include "../minishell.h" // for t_shell and env access
 #include "parser.h"
 
-t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
-{
-	t_redirect_type	type;
-
-	cmd = shell_input->last_cmd;
-	if (!cmd)
-	{
-		// custom_error("syntax error: redirection with no command");
-		shell_input->input++;
-		return (0);
-	}
-	// Determine redirection type
-	if (*(shell_input->input) == '>' && *(shell_input->input + 1) == '>')
-	{
-		type = REDIR_APPEND;
-		shell_input->input += 2;
-	}
-	else if (*(shell_input->input) == '<' && *(shell_input->input + 1) == '<')
-	{
-		type = HEREDOC;
-		shell_input->input += 2;
-	}
-	else if (*(shell_input->input) == '>')
-	{
-		type = REDIR_OUT;
-		shell_input->input += 1;
-	}
-	else if (*(shell_input->input) == '<')
-	{
-		type = REDIR_IN;
-		shell_input->input += 1;
-	}
-	else
-		return (0);
-	return (type);
-}
-
 // Helper: Get env value by key
 char	*get_env_value(char **envp, const char *key)
 {
@@ -65,6 +28,33 @@ char	*get_env_value(char **envp, const char *key)
 		i++;
 	}
 	return ("");
+}
+
+t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
+{
+	t_redirect_type	type;
+
+	cmd = shell_input->last_cmd;
+	if (!cmd)
+	{
+		shell_input->input++;
+		return (0);
+	}
+	if (*(shell_input->input) == '>' && *(shell_input->input + 1) == '>')
+		type = REDIR_APPEND;
+	else if (*(shell_input->input) == '<' && *(shell_input->input + 1) == '<')
+		type = HEREDOC;
+	else if (*(shell_input->input) == '>')
+		type = REDIR_OUT;
+	else if (*(shell_input->input) == '<')
+		type = REDIR_IN;
+	else
+		return (0);
+	if (type == REDIR_APPEND || type == HEREDOC)
+		shell_input->input +=2;
+	else if (type == REDIR_IN || type == REDIR_OUT)
+		shell_input->input += 1;
+	return (type);
 }
 
 void	handle_expand_variables(char **envp, t_shell_input *shell_input)
@@ -167,9 +157,7 @@ void	handle_char(t_shell *shell)
 			(*input)++; /* increment the character pointer */
 	}
 	else if (is_space(**input) && **input)
-	{
 		(*input)++;
-	}
 	else
 		handle_cmd(shell->parsed_input);
 }
@@ -180,6 +168,7 @@ void	parser(t_shell *shell, char *input)
 
 	shell_input = init_shell_input(input);
 	shell->parsed_input = shell_input;
+	printf("Input: %s\n", shell->parsed_input->input);
 	// Expand variables once at the beginning
 	handle_expand_variables(shell->envp, shell_input);
 	while (*(shell_input->input) && shell_input->is_valid)
