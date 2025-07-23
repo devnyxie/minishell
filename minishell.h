@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 02:39:47 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:36:07 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,14 @@ void			free_shell(t_shell *shell);
 // env
 void			unset_env_var(char *name, t_shell *shell);
 int				is_valid_identifier(char *name);
+
+// parser/expanders
+void	handle_expand_variables(char **envp, t_shell_input *shell_input);
+// parser/parser
+char	*get_env_value(char **envp, const char *key);
+// parser/redirections
+void	handle_redirect(t_shell_input *shell_input);
+t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
+
 
 #endif

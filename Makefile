@@ -26,11 +26,14 @@ EXEC_CMD_SRC = \
 	exec_cmd/start_process.c
 
 PARSER_SRC = \
+	parser/expanders.c \
+	parser/grab_word.c \
 	parser/parser.c \
 	parser/parser_cmd.c \
 	parser/is_space.c \
-	parser/skip_space.c \
-	parser/grab_word.c
+	parser/redirections.c \
+	parser/skip_space.c
+	
 
 UTILS_SRC = \
 	utils/ft_strcpy.c \
