@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_2d.c                                          :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/04 13:44:30 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/07/17 13:53:21 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/07/17 13:58:57 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+// char	*print_error(t_shell *shell, char **args)
+// {
+// 	int	i = 0;
+// 	char	*msg;
 
-// Free a 2D array (array of strings)
-void	free_2d(char **str)
-{
-	int	i;
+// 	ft_putstr_fd();
 
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
+// 	return (msg);
+// }

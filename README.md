@@ -1,46 +1,24 @@
-# MiniShell
+# minishell
+
+`minishell` is a shell implementation in C, designed to mimic the behavior of a Bash shell. It must be equally compatible with Bash, meaning it should handle commands, pipes, arguments, redirections and all other shell features in a similar way. Of course, with limited access even to the C standard library, and perfectly managed memory.
 
 ## Development
 
 ### Branching
 
 - `main`: The main branch, which should always be stable.
+- `dev`: The development branch, where new features and changes are merged and tested before being pushed to `main`.
 - `any other branch`: Feature branches for development. These branches can be named according to the feature being developed, e.g., `feature/command-parser`.
 
-- Switching branches;
-  ```bash
-  git switch -c your-branch-name
-  ```
-  *-c creates the branch if it doesn't exist already.*
+### Testing
 
-- Stashing changes:
-  ```bash
-  git stash
-  git stash apply
-  ```
+#### Valgrind
 
-- Pushing to the remote:
-  ```bash
-  git push origin your-branch-name
-  ```
+To test the shell with Valgrind using our suppression file:
 
-## Other
-
-### Reusable Samples
-
-#### CMDs and ARGs output
-
-```c
-printf("=== Parsed commands ===\n");
-current_cmd = shell_input->first_cmd;
-while(current_cmd != NULL) {
-    printf("  Name: %s,", current_cmd->name);
-    printf("  Args:");
-    for (int i = 0; current_cmd->args[i]; i++)
-    {
-        printf(" \"%s\"", current_cmd->args[i]);
-    }
-    current_cmd = current_cmd->next;
-}
-printf("\n=======================\n");
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=valgrind.supp ./minishell
 ```
+
+The `valgrind.supp` file contains comprehensive suppressions for readline/libedit library leaks that are expected and not actual bugs. This will give you a clean output showing only your actual memory leaks.
+If you would like to add more suppressions, add ` --gen-suppressions=yes` flag, which will output rules for each leak found. You can then add these rules to the `valgrind.supp` file.
