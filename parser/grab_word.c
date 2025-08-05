@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grab_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/02 16:11:34 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/05 09:49:07 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*grab_word(char **input)
 	while (start[bytes] && !is_space(start[bytes]) && start[bytes] != '>'
 		&& start[bytes] != '<' && start[bytes] != '|')
 		bytes++;
-	if(bytes == 0)
+	if (bytes == 0)
 		return (NULL);
 	word = malloc(bytes + 1 * sizeof(char));
 	if (!word)
