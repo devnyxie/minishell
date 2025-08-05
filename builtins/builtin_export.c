@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:27:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/17 10:56:09 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:40:25 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,43 @@
 
 static void	sort_env(t_shell *shell)
 {
-	int	i = 0;
-	int j = 0;
+	int		i;
+	int		j;
 	char	*temp;
-	
+
+	i = 0;
+	j = 0;
 	while (i < shell->env_count - 1)
 	{
 		j = 0;
 		while (j < shell->env_count - 1 - i)
 		{
-			if (ft_strcmp(shell->envp[j], shell->envp[j+1]) > 0)
+			if (ft_strcmp(shell->envp[j], shell->envp[j + 1]) > 0)
 			{
 				temp = shell->envp[j];
-				shell->envp[j] = shell->envp[j+1];
-				shell->envp[j+1] = temp;
+				shell->envp[j] = shell->envp[j + 1];
+				shell->envp[j + 1] = temp;
 			}
 			j++;
 		}
 		i++;
 	}
-	
 }
 
-int	builtin_export(t_shell *shell, char **args)
+static void	build_env_var(t_shell *shell, char **args, int i)
 {
-	int	i;
 	char	*equals;
-	
-	i = 0;
-	if (args[1] == NULL)
-	{
-		sort_env(shell);
-		while (i < shell->env_count)
-		{
-			printf("declare -x %s\n", shell->envp[i]);
-			i++;
-		}
-		return (0);
-	}
-	i = 1;
-	while(args[i])
+	char	*detail_mgs;
+
+	while (args[i])
 	{
 		if (!is_valid_identifier(args[i]))
 		{
-			printf("Not valid identifier: %s\n", args[i]);
-			return (1);
+			detail_mgs = ft_strjoin("`", args[i]);
+			detail_mgs = ft_strjoin(detail_mgs, "': not valid identifier");
+			report_error("export", detail_mgs, 0);
+			free(detail_mgs);
+			return ;
 		}
 		equals = ft_strchr(args[1], '=');
 		if (equals)
@@ -71,5 +63,24 @@ int	builtin_export(t_shell *shell, char **args)
 			update_env_var(shell, args[1], "");
 		i++;
 	}
+}
+
+int	builtin_export(t_shell *shell, char **args)
+{
+	int	i;
+
+	i = 0;
+	if (args[1] == NULL)
+	{
+		sort_env(shell);
+		while (i < shell->env_count)
+		{
+			printf("declare -x %s\n", shell->envp[i]);
+			i++;
+		}
+		return (0);
+	}
+	i = 1;
+	build_env_var(shell, args, i);
 	return (0);
 }
