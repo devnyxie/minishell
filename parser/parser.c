@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                   	                  :::      ::::::::   */
+/*                                   		               :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
@@ -60,7 +60,6 @@ void	parser(t_shell *shell, char *input)
 
 	shell_input = init_shell_input(input);
 	shell->parsed_input = shell_input;
-	printf("Input: %s\n", shell->parsed_input->input);
 	// Expand variables once at the beginning
 	handle_expand_variables(shell->envp, shell_input);
 	while (*(shell_input->input) && shell_input->is_valid)
