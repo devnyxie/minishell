@@ -32,8 +32,9 @@ PARSER_SRC = \
 	parser/parser_cmd.c \
 	parser/is_space.c \
 	parser/redirections.c \
-	parser/skip_space.c
-	
+	parser/skip_space.c \
+	parser/quote_handler.c
+			
 
 UTILS_SRC = \
 	utils/ft_strcpy.c \

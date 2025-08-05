@@ -51,7 +51,7 @@ void	handle_char(t_shell *shell)
 	else if (is_space(**input) && **input)
 		(*input)++;
 	else
-		handle_cmd(shell->parsed_input);
+		handle_cmd(shell->parsed_input, shell->envp);
 }
 
 void	parser(t_shell *shell, char *input)
@@ -60,8 +60,16 @@ void	parser(t_shell *shell, char *input)
 
 	shell_input = init_shell_input(input);
 	shell->parsed_input = shell_input;
-	// Expand variables once at the beginning
-	handle_expand_variables(shell->envp, shell_input);
+	
+	if (has_unclosed_quotes(input))
+	{
+		report_error(NULL, "syntax error: unclosed quotes", 0);
+		shell_input->is_valid = 0;
+		free_shell_input(shell_input);
+		shell->parsed_input = NULL;
+		return ;
+	}
+	
 	while (*(shell_input->input) && shell_input->is_valid)
 		handle_char(shell);
 	if (!shell_input->first_cmd)
