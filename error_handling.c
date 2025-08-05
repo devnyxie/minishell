@@ -3,20 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:12:12 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/29 12:42:38 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/07/17 02:30:32 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// to-be-reviewed
 void	custom_error(char *msg)
 {
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	printf("%s\n", msg);
+	while (*msg)
+	{
+		if (*msg == '\n')
+			write(STDERR_FILENO, "\n", 1);
+		else
+			write(STDERR_FILENO, msg, 1);
+		msg++;
+	}
 }
 
 void	report_error(char *command, char *detail, int is_sys_err)
