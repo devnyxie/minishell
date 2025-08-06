@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/29 14:09:19 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:35:52 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 		if (ft_strcmp(cmd->name, shell->builtins->builtins_child[i].name) == 0)
 		{
 			shell->builtins->builtins_child[i].fn(shell, cmd->args);
+			free_shell(shell);
 			exit(0);
 		}
 		i++;
@@ -102,7 +103,8 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	if (path)
 	{
 		execve(path, cmd->args, shell->envp);
-		perror("execve");
+		perror("execve"); //todo review
+		free(path);
 	}
 	else
 		report_error(cmd->name, "command not found", 0);
@@ -114,5 +116,6 @@ void	child_process(t_cmd *cmd, int prev_fd, int pipefd[2], t_shell *shell)
 	child_process_redir_in(cmd);
 	child_process_redir_out(cmd);
 	child_process_exec(shell, cmd);
+	free_shell(shell);
 	exit(1);
 }

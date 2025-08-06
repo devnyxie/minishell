@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/22 13:09:07 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:30:21 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	await_input(t_shell *shell, char **args)
 				exec_cmd(shell->parsed_input->first_cmd, shell, args);
 			if (shell->parsed_input)
 			{
+				ft_putstr_fd("=== CLEANUP IN PROCESS ===\n", 1);
 				free_shell_input(shell->parsed_input);
 				shell->parsed_input = NULL;
 			}
