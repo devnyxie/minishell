@@ -3,29 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   quote_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 14:40:49 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/05 17:59:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/06 12:06:48 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-/*
-** is_escaped_char - checks if a character should be treated as escaped inside double quotes
-** Only \", \\, \$, and \` are escaped inside double quotes in bash
-*/
+// todo: split to utils and separate func files, around 9 functions here
+
 static int	is_escaped_char(char c)
 {
 	return (c == '"' || c == '\\' || c == '$' || c == '`');
 }
 
-/*
-** handle_escape_in_quotes - processes escape sequences inside double quotes
-** Returns the character to add to the result, advances input pointer
-*/
 static char	handle_escape_in_quotes(char **input)
 {
 	char	escaped_char;
@@ -41,10 +35,6 @@ static char	handle_escape_in_quotes(char **input)
 	return ('\\');
 }
 
-/*
-** find_var_end - finds the end of a variable name starting from current position
-** Returns the length of the variable name
-*/
 static int	find_var_end(char *input)
 {
 	int	len;
@@ -66,10 +56,7 @@ static int	find_var_end(char *input)
 	return (len);
 }
 
-/*
-** expand_variable_in_quotes - expands a single variable inside double quotes
-** Returns the expanded value, advances input pointer
-*/
+// expand_variable_in_quotes expands a single variable inside double quotes
 static char	*expand_variable_in_quotes(char **input, char **envp)
 {
 	char	*var_name;
@@ -108,9 +95,7 @@ static char	*expand_variable_in_quotes(char **input, char **envp)
 	return (ft_strdup(var_value ? var_value : ""));
 }
 
-/*
-** calculate_quoted_length - calculates the final length after processing quotes and expansions
-*/
+// calculate_quoted_length calculates the final length after processing quotes and expansions
 static size_t	calculate_quoted_length(char *input, char **envp)
 {
 	size_t	len;
@@ -150,10 +135,7 @@ static size_t	calculate_quoted_length(char *input, char **envp)
 	return (len);
 }
 
-/*
-** process_quoted_content - processes the content inside double quotes
-** Handles escape sequences and variable expansion
-*/
+// process_quoted_content - processes the content inside double quotes
 static char	*process_quoted_content(char *input, char **envp)
 {
 	size_t	final_len;
@@ -192,9 +174,8 @@ static char	*process_quoted_content(char *input, char **envp)
 }
 
 /*
-** grab_single_quoted_word - extracts and processes content within single quotes
-** Single quotes preserve everything literally (no variable expansion, no escapes)
-** Returns the literal string, advances input pointer past closing quote
+grab_single_quoted_word extracts and processes content within single quotes
+!! Single quotes preserve everything literally (no variable expansion, no escapes)
 */
 char	*grab_single_quoted_word(char **input)
 {
@@ -208,30 +189,22 @@ char	*grab_single_quoted_word(char **input)
 	(*input)++; // skip opening quote
 	start = *input;
 	
-	// Find closing quote - no escaping in single quotes
+	// find closing quote, no escaping in single quotes
 	end = start;
 	while (*end && *end != '\'')
 		end++;
 	
 	if (*end != '\'')
 	{
-		// Unclosed quote - should probably return an error
+		// unclosed quote -> should probably? return an error
 		return (NULL);
 	}
-	
-	// Extract content between quotes (literal)
 	result = ft_strndup(start, end - start);
-	
-	// Advance input past closing quote
-	*input = end + 1;
-	
+	*input = end + 1;	
 	return (result);
 }
 
-/*
-** grab_quoted_word - extracts and processes content within double quotes
-** Returns the processed string, advances input pointer past closing quote
-*/
+// grab_quoted_word extracts and processes content within double quotes
 char	*grab_quoted_word(char **input, char **envp)
 {
 	char	*start;
@@ -276,10 +249,7 @@ char	*grab_quoted_word(char **input, char **envp)
 	return (result);
 }
 
-/*
-** has_unclosed_quotes - checks if the input has unclosed quotes (single or double)
-** Returns 1 if quotes are unclosed, 0 otherwise
-*/
+// has_unclosed_quotes checks if the input has unclosed quotes (single or double)
 int	has_unclosed_quotes(char *input)
 {
 	int	in_double_quotes;
