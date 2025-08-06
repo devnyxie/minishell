@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/22 16:50:23 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:05:26 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_builtins_unified
 typedef struct s_shell
 {
 	char				**history;
-	char				*prompt;
+	// char				*prompt;
 	t_shell_input		*parsed_input;
 	t_builtins_unified	*builtins;
 	char				**envp;

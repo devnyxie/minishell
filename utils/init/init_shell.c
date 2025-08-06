@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/22 15:36:15 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:05:37 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_shell	*init_shell(char **envp)
 		custom_error("Error! PATH not set\n");
 	shell->parsed_input = NULL;
 	shell->history = NULL;
-	shell->prompt = NULL;
+	// shell->prompt = NULL;
 	shell->exit_code = 0;
 	return (shell);
 }
