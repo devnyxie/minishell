@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/29 14:53:56 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:52:11 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 	handle_exit_if_needed(cmd);
 	if (is_parent_builtin(shell, cmd))
 		execute_parent_builtin(shell, args, cmd);
-	else 
+	else
 	{
 		create_pipe_if_needed(cmd, pipefd);
 		pid = fork();
@@ -58,7 +58,7 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 			exit(1);
 		}
 		if (pid == 0)
-				child_process(cmd, prev_fd, pipefd, shell);
+			child_process(cmd, prev_fd, pipefd, shell);
 		close_fds(prev_fd, cmd, pipefd);
 		if (cmd->next)
 			start_process(cmd->next, pipefd[0], shell, args);

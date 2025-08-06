@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:32:03 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/07/23 14:25:28 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:23:21 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static int	find_end_of_var(char *input, int i)
 {
 	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++; // finds the end of var name
+		i++;
 	return (i);
 }
 
@@ -33,10 +33,9 @@ static size_t	calculate_expanded_len(char *input, char **envp)
 	while (input[i])
 	{
 		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i
-				+ 1] == '_'))
+					+ 1] == '_'))
 		{
-			i++; // skip '$'
-			var_start = i;
+			var_start = ++i;
 			i = find_end_of_var(input, i);
 			var_name = ft_strndup(&input[var_start], i - var_start);
 			len += ft_strlen(get_env_value(envp, var_name));
@@ -65,11 +64,9 @@ static void	build_expanded_string(char *input, char *new_input, char **envp)
 	while (input[i])
 	{
 		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i
-				+ 1] == '_'))
+					+ 1] == '_'))
 		{
-			printf("Found special character: %c\n", input[i]);
-			i++; // skip '$'
-			var_start = i;
+			var_start = ++i;
 			i = find_end_of_var(input, i);
 			var_name = ft_strndup(&input[var_start], i - var_start);
 			var_value = get_env_value(envp, var_name);
@@ -78,10 +75,7 @@ static void	build_expanded_string(char *input, char *new_input, char **envp)
 			free(var_name);
 		}
 		else
-		{
-			printf("Input: %c\n", input[i]);
-			new_input[j++] = input[i++]; // copy the reg char
-		}
+			new_input[j++] = input[i++];
 	}
 	new_input[j] = '\0';
 }
