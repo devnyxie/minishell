@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
+static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name, char **envp)
 {
 	int		arg_count;
 	char	*arg;
@@ -31,7 +31,7 @@ static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
 	while (*(shell_input->input) && *(shell_input->input) != '>'
 		&& *(shell_input->input) != '<' && *(shell_input->input) != '|')
 	{
-		arg = grab_word(&(shell_input->input));
+		arg = grab_word_with_env(&(shell_input->input), envp);
 		if (!arg)
 			break ;
 		cmd->args[arg_count++] = arg;
@@ -58,15 +58,15 @@ void	append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 	shell_input->cmds_count++;
 }
 
-void	handle_cmd(t_shell_input *shell_input)
+void	handle_cmd(t_shell_input *shell_input, char **envp)
 {
 	t_cmd	*cmd;
 	char	*cmd_name;
 
-	cmd_name = grab_word(&(shell_input->input));
+	cmd_name = grab_word_with_env(&(shell_input->input), envp);
 	if (!cmd_name)
 		return ;
 	cmd = init_cmd(cmd_name);
-	handle_args(cmd, shell_input, cmd_name);
+	handle_args(cmd, shell_input, cmd_name, envp);
 	append_to_linked_list(shell_input, cmd);
 }
