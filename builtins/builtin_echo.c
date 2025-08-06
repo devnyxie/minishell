@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:46:54 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:45:36 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*--- deal with echo with quotes ---*/
 int	builtin_echo(char **args)
 {
 	int	i;
@@ -20,13 +19,11 @@ int	builtin_echo(char **args)
 
 	i = 1;
 	newline = 1;
-	// check for -n
 	if (args[1] && ft_strcmp(args[1], "-n") == 0)
 	{
 		newline = 0;
-		i = 2; // start from next arg
+		i = 2;
 	}
-	// print arg separated by spaces
 	while (args[i])
 	{
 		printf("%s", args[i]);
@@ -34,7 +31,6 @@ int	builtin_echo(char **args)
 			printf(" ");
 		i++;
 	}
-	// add newline unless -n was specified
 	if (newline)
 		printf("\n");
 	return (0);

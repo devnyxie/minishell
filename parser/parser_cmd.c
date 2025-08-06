@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 11:57:03 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:32:06 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
+static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name, char **envp)
 {
 	int		arg_count;
 	char	*arg;
@@ -31,7 +31,7 @@ static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name)
 	while (*(shell_input->input) && *(shell_input->input) != '>'
 		&& *(shell_input->input) != '<' && *(shell_input->input) != '|')
 	{
-		arg = grab_word(&(shell_input->input));
+		arg = grab_word_with_env(&(shell_input->input), envp);
 		if (!arg)
 			break ;
 		cmd->args[arg_count++] = arg;
@@ -52,21 +52,21 @@ void	append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 	last_cmd = shell_input->first_cmd;
 	while (last_cmd->next != NULL)
 		last_cmd = last_cmd->next;
-	cmd->prev = last_cmd; // !!!
+	cmd->prev = last_cmd;
 	last_cmd->next = cmd;
 	shell_input->last_cmd = cmd;
 	shell_input->cmds_count++;
 }
 
-void	handle_cmd(t_shell_input *shell_input)
+void	handle_cmd(t_shell_input *shell_input, char **envp)
 {
 	t_cmd	*cmd;
 	char	*cmd_name;
 
-	cmd_name = grab_word(&(shell_input->input));
+	cmd_name = grab_word_with_env(&(shell_input->input), envp);
 	if (!cmd_name)
 		return ;
 	cmd = init_cmd(cmd_name);
-	handle_args(cmd, shell_input, cmd_name);
+	handle_args(cmd, shell_input, cmd_name, envp);
 	append_to_linked_list(shell_input, cmd);
 }
