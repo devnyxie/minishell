@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_parent_builtin.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:16:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/05 15:20:13 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:13:55 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ int	execute_parent_builtin(t_shell *shell, char **args, t_cmd *cmd)
 				printf("Command %s\n", shell->builtins->builtins_parent[i].name);
 				return (shell->builtins->builtins_parent[i].fn(shell,
 						cmd->args));
-			}
-			else
-			{
-				printf("%s: builtin not implemented yet\n", args[0]);
-				return (1);
 			}
 		}
 		i++;
