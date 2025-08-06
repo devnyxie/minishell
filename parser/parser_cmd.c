@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/05 17:28:08 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:32:06 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 	last_cmd = shell_input->first_cmd;
 	while (last_cmd->next != NULL)
 		last_cmd = last_cmd->next;
-	cmd->prev = last_cmd; // !!!
+	cmd->prev = last_cmd;
 	last_cmd->next = cmd;
 	shell_input->last_cmd = cmd;
 	shell_input->cmds_count++;
