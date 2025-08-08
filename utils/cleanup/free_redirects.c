@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_redirects.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 01:52:21 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:36:27 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_redirects(t_redirect *redir)
 {
-	t_redirect *tmp;
+	t_redirect	*tmp;
 
 	if (!redir)
 		return ;

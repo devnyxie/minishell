@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 15:01:56 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:59:52 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	builtin_pwd_wrapper(t_shell *shell, char **args)
 
 static int	builtin_exit_wrapper(t_shell *shell, char **args)
 {
-	ft_putstr_fd("=== EXIT WRAPPER CLEANUP ===\n", 1);
 	free_shell(shell);
 	clear_history();
 	return (exit_shell(args));
@@ -52,8 +51,8 @@ t_builtin	*init_builtins_parent(void)
 	if (!builtins)
 		return (NULL);
 	builtins[0] = (t_builtin){"cd", builtin_cd};
-	builtins[1] = (t_builtin){"export", builtin_export}; 
-	builtins[2] = (t_builtin){"unset", builtin_unset};   
+	builtins[1] = (t_builtin){"export", builtin_export};
+	builtins[2] = (t_builtin){"unset", builtin_unset};
 	builtins[3] = (t_builtin){"exit", builtin_exit_wrapper};
 	builtins[4] = (t_builtin){"echo", builtin_echo_wrapper};
 	builtins[5] = (t_builtin){"pwd", builtin_pwd_wrapper};
