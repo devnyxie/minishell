@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:32:03 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/05 10:23:21 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:34:08 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	handle_expand_variables(char **envp, t_shell_input *shell_input)
 
 	original_input = shell_input->input;
 	final_len = calculate_expanded_len(original_input, envp);
-	// If the length is the same, no variables were found. Nothing to do.
 	if (final_len == ft_strlen(original_input))
 		return ;
 	new_input = malloc(sizeof(char) * (final_len + 1));

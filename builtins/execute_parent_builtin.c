@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_parent_builtin.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:16:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 14:13:55 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:24:26 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// Execute a builtin command
 int	execute_parent_builtin(t_shell *shell, char **args, t_cmd *cmd)
 {
 	int	i;
@@ -26,7 +25,6 @@ int	execute_parent_builtin(t_shell *shell, char **args, t_cmd *cmd)
 		{
 			if (shell->builtins->builtins_parent[i].fn)
 			{
-				printf("Command %s\n", shell->builtins->builtins_parent[i].name);
 				return (shell->builtins->builtins_parent[i].fn(shell,
 						cmd->args));
 			}

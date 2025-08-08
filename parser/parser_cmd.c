@@ -6,13 +6,14 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/05 10:32:06 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:29:21 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name, char **envp)
+static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name,
+		char **envp)
 {
 	int		arg_count;
 	char	*arg;
