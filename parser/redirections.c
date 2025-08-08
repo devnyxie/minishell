@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:29:09 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/07/23 11:58:13 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:30:37 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ static t_redirect	*new_redirect_node(t_redirect_type type, char *file)
 
 static void	add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir)
 {
-	// (<, <<)
 	if (redir->type == REDIR_IN || redir->type == HEREDOC)
 	{
 		redir->next = cmd->in_redir;
 		cmd->in_redir = redir;
 	}
-	// (>, >>)
 	else
 	{
 		redir->next = cmd->out_redir;

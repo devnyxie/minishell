@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 11:44:39 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:55:09 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Free a 2D array (array of strings)
 void	free_2d(char **str)
 {
-	int i;
+	int	i;
 
 	if (!str)
 		return ;

@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                   			          :::      ::::::::   */
+/*                                   				      :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
@@ -13,7 +13,6 @@
 #include "../minishell.h" // for t_shell and env access
 #include "parser.h"
 
-// Helper: Get env value by key
 char	*get_env_value(char **envp, const char *key)
 {
 	int		i;
@@ -46,7 +45,7 @@ void	handle_char(t_shell *shell)
 			return ;
 		}
 		if (**input)
-			(*input)++; /* increment the character pointer */
+			(*input)++;
 	}
 	else if (is_space(**input) && **input)
 		(*input)++;
@@ -60,7 +59,6 @@ void	parser(t_shell *shell, char *input)
 
 	shell_input = init_shell_input(input);
 	shell->parsed_input = shell_input;
-	
 	if (has_unclosed_quotes(input))
 	{
 		report_error(NULL, "syntax error: unclosed quotes", 0);
@@ -69,7 +67,6 @@ void	parser(t_shell *shell, char *input)
 		shell->parsed_input = NULL;
 		return ;
 	}
-	
 	while (*(shell_input->input) && shell_input->is_valid)
 		handle_char(shell);
 	if (!shell_input->first_cmd)
