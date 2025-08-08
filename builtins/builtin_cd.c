@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/05 16:02:04 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 10:30:14 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	find_env_var(t_shell *shell, const char *var_name)
 		if (shell->envp[i] && ft_strncmp(shell->envp[i], var_name, len) == 0
 			&& shell->envp[i][len] == '=')
 		{
-			return (i); // ret the position in env list
+			return (i);
 			printf("%s\n", shell->envp[i]);
 		}
 		i++;
@@ -34,10 +34,10 @@ int	find_env_var(t_shell *shell, const char *var_name)
 	return (-1);
 }
 
-static void update_add_env_var(t_shell *shell, int index, char	*new_var)
+static void	update_add_env_var(t_shell *shell, int index, char *new_var)
 {
 	char	**new_envp;
-	
+
 	if (index != -1)
 	{
 		free(shell->envp[index]);
@@ -60,7 +60,7 @@ static void update_add_env_var(t_shell *shell, int index, char	*new_var)
 		shell->envp[shell->env_count] = new_var;
 		shell->env_count++;
 		shell->envp[shell->env_count] = NULL;
-	}	
+	}
 }
 
 void	update_env_var(t_shell *shell, char *var_name, const char *value)
@@ -71,13 +71,10 @@ void	update_env_var(t_shell *shell, char *var_name, const char *value)
 
 	if (!shell || !var_name || !value)
 		return ;
-	// Calculate total length: var_name + '=' + value + '\0'
 	total_len = ft_strlen(var_name) + ft_strlen(value) + 2;
-	// Create the new environment variable string "VAR=value"
 	new_var = malloc(total_len);
 	if (!new_var)
 		return ;
-	// Format the string properly
 	ft_strcpy(new_var, var_name);
 	ft_strlcat(new_var, "=", total_len);
 	ft_strlcat(new_var, value, total_len);
@@ -104,16 +101,12 @@ char	*get_env_var(t_shell *shell, const char *var_name)
 
 int	builtin_cd(t_shell *shell, char **args)
 {
-	int		i;
 	char	*path;
 	char	*old_pwd;
 	char	cwd[PATH_MAX];
 
 	if (!shell || !args)
 		return (1);
-	i = 0;
-	while (args[i])
-		i++;
 	if (args[1] == NULL || *args[1] == '~')
 	{
 		path = get_env_var(shell, "HOME");

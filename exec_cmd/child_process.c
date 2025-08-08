@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 15:35:52 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 10:45:37 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	child_process_redir_in(t_cmd *cmd)
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
-		// TODO: handle HEREDOC here
 		else if (redir->type == HEREDOC)
 		{
 			fd = open(redir->file, O_RDONLY);
@@ -103,7 +102,7 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	if (path)
 	{
 		execve(path, cmd->args, shell->envp);
-		perror("execve"); //todo review
+		perror("execve");
 		free(path);
 	}
 	else

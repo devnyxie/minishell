@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 02:28:29 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/22 15:39:34 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:41:24 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_shell_input	*init_shell_input(char *input)
 {
-	t_shell_input *shell_input;
+	t_shell_input	*shell_input;
 
 	shell_input = malloc(sizeof(t_shell_input));
 	if (!shell_input)

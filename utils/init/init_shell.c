@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 14:05:37 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:40:48 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**copy_envp(t_shell *shell, char **envp)
 	return (shell->envp);
 }
 
-static	int shell_process_check(t_shell *shell)
+static int	shell_process_check(t_shell *shell)
 {
 	if (!shell->builtins->builtins_child || !shell->builtins->builtins_parent)
 	{
@@ -47,7 +47,7 @@ static	int shell_process_check(t_shell *shell)
 	return (0);
 }
 
-static int copy_env_check(t_shell *shell, char **envp)
+static int	copy_env_check(t_shell *shell, char **envp)
 {
 	if (!copy_envp(shell, envp))
 	{
@@ -61,7 +61,7 @@ static int copy_env_check(t_shell *shell, char **envp)
 
 t_shell	*init_shell(char **envp)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)

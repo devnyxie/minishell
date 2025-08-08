@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 14:40:49 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 12:06:48 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:29:29 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static char	*expand_variable_in_quotes(char **input, char **envp)
 	var_len = find_var_end(*input);
 	if (var_len == 0)
 		return (ft_strdup("$")); // just a lone $
-	
 	// Handle ${VAR} format
 	if (**input == '{')
 	{
@@ -83,15 +82,12 @@ static char	*expand_variable_in_quotes(char **input, char **envp)
 		name_start = 0;
 		name_len = var_len;
 	}
-	
 	var_name = ft_strndup(*input + name_start, name_len);
 	if (!var_name)
 		return (ft_strdup(""));
-	
 	var_value = get_env_value(envp, var_name);
 	*input += var_len; // advance past the variable
 	free(var_name);
-	
 	return (ft_strdup(var_value ? var_value : ""));
 }
 
@@ -104,7 +100,6 @@ static size_t	calculate_quoted_length(char *input, char **envp)
 
 	len = 0;
 	temp_input = input;
-	
 	while (*temp_input && *temp_input != '"')
 	{
 		if (*temp_input == '\\')
@@ -148,7 +143,6 @@ static char	*process_quoted_content(char *input, char **envp)
 	result = malloc(final_len + 1);
 	if (!result)
 		return (NULL);
-	
 	result_ptr = result;
 	while (*input && *input != '"')
 	{
@@ -175,32 +169,30 @@ static char	*process_quoted_content(char *input, char **envp)
 
 /*
 grab_single_quoted_word extracts and processes content within single quotes
-!! Single quotes preserve everything literally (no variable expansion, no escapes)
+!! Single quotes preserve everything literally (no variable expansion,
+	no escapes)
 */
 char	*grab_single_quoted_word(char **input)
 {
 	char	*start;
 	char	*end;
 	char	*result;
-	
+
 	if (**input != '\'')
 		return (NULL);
-	
 	(*input)++; // skip opening quote
 	start = *input;
-	
 	// find closing quote, no escaping in single quotes
 	end = start;
 	while (*end && *end != '\'')
 		end++;
-	
 	if (*end != '\'')
 	{
 		// unclosed quote -> should probably? return an error
 		return (NULL);
 	}
 	result = ft_strndup(start, end - start);
-	*input = end + 1;	
+	*input = end + 1;
 	return (result);
 }
 
@@ -211,13 +203,11 @@ char	*grab_quoted_word(char **input, char **envp)
 	char	*end;
 	char	*content;
 	char	*result;
-	
+
 	if (**input != '"')
 		return (NULL);
-	
 	(*input)++; // skip opening quote
 	start = *input;
-	
 	// Find closing quote, handling escapes
 	end = start;
 	while (*end && *end != '"')
@@ -227,25 +217,20 @@ char	*grab_quoted_word(char **input, char **envp)
 		else
 			end++;
 	}
-	
 	if (*end != '"')
 	{
 		// Unclosed quote - should probably return an error
 		return (NULL);
 	}
-	
 	// Extract content between quotes
 	content = ft_strndup(start, end - start);
 	if (!content)
 		return (NULL);
-	
 	// Process the content (expand variables, handle escapes)
 	result = process_quoted_content(content, envp);
 	free(content);
-	
 	// Advance input past closing quote
 	*input = end + 1;
-	
 	return (result);
 }
 
@@ -254,7 +239,7 @@ int	has_unclosed_quotes(char *input)
 {
 	int	in_double_quotes;
 	int	in_single_quotes;
-	
+
 	in_double_quotes = 0;
 	in_single_quotes = 0;
 	while (*input)

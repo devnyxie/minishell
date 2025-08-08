@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/23 11:36:07 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:53:09 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 int				builtin_cd(t_shell *shell, char **args);
 int				builtin_echo(char **args);
 int				builtin_pwd(char **args);
-int	builtin_exit(t_shell *shell, char **args); // to-be-reviewed
+//int				builtin_exit(t_shell *shell, char **args); // to-be-reviewed
 int				builtin_env(t_shell *shell, char **args);
 int				builtin_export(t_shell *shell, char **args);
 int				builtin_unset(t_shell *shell, char **args);
@@ -78,12 +78,12 @@ void			unset_env_var(char *name, t_shell *shell);
 int				is_valid_identifier(char *name);
 
 // parser/expanders
-void	handle_expand_variables(char **envp, t_shell_input *shell_input);
+void			handle_expand_variables(char **envp,
+					t_shell_input *shell_input);
 // parser/parser
-char	*get_env_value(char **envp, const char *key);
+char			*get_env_value(char **envp, const char *key);
 // parser/redirections
-void	handle_redirect(t_shell_input *shell_input);
+void			handle_redirect(t_shell_input *shell_input);
 t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
-
 
 #endif
