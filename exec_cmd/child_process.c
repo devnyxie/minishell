@@ -48,11 +48,11 @@ static void	child_process_redir_in(t_cmd *cmd)
 		}
 		else if (redir->type == HEREDOC)
 		{
-			fd = open(redir->file, O_RDONLY);
-			if (fd < 0)
+			if (cmd->in_fd != -1)
 			{
-				report_error(NULL, redir->file, 1);
-				exit(1);
+				dup2(cmd->in_fd, STDIN_FILENO);
+				close(cmd->in_fd);
+				cmd->in_fd = -1;
 			}
 		}
 		redir = redir->next;

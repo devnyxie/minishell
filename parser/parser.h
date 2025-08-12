@@ -31,4 +31,13 @@ char	*grab_quoted_word(char **input, char **envp);
 char	*grab_single_quoted_word(char **input);
 int		has_unclosed_quotes(char *input);
 
+// redirection_parse.c
+t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd);
+void handle_redirect(t_shell_input *shell_input);
+
+// redirection_utils.c
+t_redirect *new_redirect_node(t_redirect_type type, char *file);
+void add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir);
+void	prune_heredocs(t_cmd *cmds);
+
 #endif

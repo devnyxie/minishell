@@ -15,6 +15,7 @@
 
 typedef enum e_redirect_type
 {
+	REDIR_NONE,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
@@ -25,6 +26,7 @@ typedef struct s_redirect
 {
 	t_redirect_type		type;
 	char				*file;
+	int			expand;
 	struct s_redirect	*next;
 }						t_redirect;
 
@@ -37,6 +39,7 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 	int					pipe_read;
+	int in_fd;
 }						t_cmd;
 
 typedef struct s_shell_input

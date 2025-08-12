@@ -1,0 +1,60 @@
+#include "../minishell.h"
+#include "parser.h"
+
+t_redirect *new_redirect_node(t_redirect_type type, char *file)
+{
+	t_redirect	*redir;
+
+	redir = (t_redirect *)malloc(sizeof(t_redirect));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->file = file;
+	redir->expand = 0;
+	redir->next = NULL;
+	return (redir);
+}
+
+void	add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir)
+{
+	t_redirect **head;
+	t_redirect  *cur;
+
+	head = (redir->type == REDIR_IN || redir->type == HEREDOC)
+		? &cmd->in_redir : &cmd->out_redir;
+
+	if (!*head) { *head = redir; redir->next = NULL; return; }
+
+	cur = *head;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = redir;
+	redir->next = NULL;
+}
+
+void	prune_heredocs(t_cmd *cmds)
+{
+	t_cmd		*c;
+	t_redirect	**pp;
+	t_redirect	*dead;
+
+	c = cmds;
+	while (c)
+	{
+		pp = &c->in_redir;
+		while (*pp)
+		{
+			if ((*pp)->type == HEREDOC)
+			{
+				dead = *pp;
+				*pp = (*pp)->next;
+				free(dead->file);
+				free(dead);
+			}
+			else
+				pp = &(*pp)->next;
+		}
+		c = c->next;
+	}
+}
+
