@@ -68,7 +68,10 @@ static int	write_expanded_line(int fd, const char *line, t_redirect *r, t_shell 
 		}
 		i++;
 	}
-	return (i > chunk && write(fd, line + chunk, i - chunk) < 0 ? -1 : 0);
+	if (i > chunk && write(fd, line + chunk, i - chunk) < 0)
+		return (-1);
+	else
+		return (0);
 }
 
 int	run_single_heredoc(t_redirect *r, t_shell *sh)
