@@ -84,7 +84,9 @@ int	run_single_heredoc(t_redirect *r, t_shell *sh)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, r->file) == 0)
+		if (!line)  // EOF (Ctrl+D)
+			break ;
+		if (ft_strcmp(line, r->file) == 0)
 		{
 			free(line);
 			break ;
