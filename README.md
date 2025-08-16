@@ -21,4 +21,4 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressi
 ```
 
 The `valgrind.supp` file contains comprehensive suppressions for readline/libedit library leaks that are expected and not actual bugs. This will give you a clean output showing only your actual memory leaks.
-If you would like to add more suppressions, add ` --gen-suppressions=yes` flag, which will output rules for each leak found. You can then add these rules to the `valgrind.supp` file.
+If you would like to add more suppressions, add `--gen-suppressions=yes` flag, which will output rules for each leak found. You can then add these rules to the `valgrind.supp` file.
