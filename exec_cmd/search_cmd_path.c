@@ -21,15 +21,23 @@ char	*search_cmd_path(char *path, char *cmd)
 
 	i = 0;
 	paths = ft_split(path, ':');
+	if (!paths)
+		return (NULL);
 	while (paths[i])
 	{
 		full_path = ft_strjoin(paths[i], "/");
 		if (!full_path)
-			break ;
+		{
+			free_2d(paths);
+			return (NULL);
+		}
 		tmp = ft_strjoin(full_path, cmd);
 		free(full_path);
 		if (!tmp)
-			break ;
+		{
+			free_2d(paths);
+			return (NULL);
+		}
 		if (access(tmp, X_OK) == 0)
 		{
 			free_2d(paths);
