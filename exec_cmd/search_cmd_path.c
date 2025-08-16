@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_cmd_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:08:59 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 10:43:39 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/16 21:44:33 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ char	*search_cmd_path(char *path, char *cmd)
 		free(tmp);
 		i++;
 	}
+	free_2d(paths);
 	return (NULL);
 }
