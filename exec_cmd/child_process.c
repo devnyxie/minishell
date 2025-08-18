@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/14 15:36:40 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:35:48 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,35 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 		}
 		i++;
 	}
-	path = search_cmd_path(shell->path, cmd->name);
-	if (path)
+	if (cmd->name[0] == '/')
 	{
-		execve(path, cmd->args, shell->envp);
-		perror("execve");
-		free(path);
+		// absolute path
+		if (access(cmd->name, F_OK) == 0)
+		{
+			if (access(cmd->name, X_OK) == 0)
+			{
+				execve(cmd->name, cmd->args, shell->envp);
+				perror("execve");
+			}
+			else
+				report_error(cmd->name, "Permission denied", 0);
+		}
+		else
+			report_error(cmd->name, "No such file or directory", 0);
 	}
 	else
-		report_error(cmd->name, "command not found", 0);
+	{
+		// search in PATH
+		path = search_cmd_path(shell->path, cmd->name);
+		if (path)
+		{
+			execve(path, cmd->args, shell->envp);
+			perror("execve");
+			free(path);
+		}
+		else
+			report_error(cmd->name, "command not found", 0);
+	}
 }
 
 void	child_process(t_cmd *cmd, int prev_fd, int pipefd[2], t_shell *shell)
