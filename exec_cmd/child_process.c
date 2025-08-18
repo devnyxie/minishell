@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 15:35:52 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:36:40 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ static void	child_process_redir_in(t_cmd *cmd)
 	t_redirect	*redir;
 	int			fd;
 
+	// Handle heredoc first if present
+	if (cmd->in_fd != -1)
+	{
+		dup2(cmd->in_fd, STDIN_FILENO);
+		close(cmd->in_fd);
+		cmd->in_fd = -1;
+	}
+	
+	// Then handle other input redirections
 	redir = cmd->in_redir;
 	while (redir)
 	{
@@ -45,16 +54,6 @@ static void	child_process_redir_in(t_cmd *cmd)
 			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
-		}
-		// TODO: handle HEREDOC here
-		else if (redir->type == HEREDOC)
-		{
-			fd = open(redir->file, O_RDONLY);
-			if (fd < 0)
-			{
-				report_error(NULL, redir->file, 1);
-				exit(1);
-			}
 		}
 		redir = redir->next;
 	}
@@ -103,7 +102,7 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	if (path)
 	{
 		execve(path, cmd->args, shell->envp);
-		perror("execve"); //todo review
+		perror("execve");
 		free(path);
 	}
 	else

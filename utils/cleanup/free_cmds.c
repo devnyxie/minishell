@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 01:52:53 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/07/17 11:33:10 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:59:03 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,14 @@ void	free_cmds(t_cmd *cmd)
 		free(tmp->name);
 		if (tmp->args)
 		{
-			for (i = 0; tmp->args[i]; i++)
+			i = 0;
+			while (tmp->args[i])
+			{
 				free(tmp->args[i]);
+				i++;
+			}
+			// for (i = 0; tmp->args[i]; i++)
+			// 	free(tmp->args[i]);
 			free(tmp->args);
 		}
 		free_redirects(tmp->in_redir);
