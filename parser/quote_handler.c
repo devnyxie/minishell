@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 14:40:49 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:29:29 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:46:56 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ static int	find_var_end(char *input)
 		if (input[len] == '}')
 			len++; // include closing brace
 	}
+	else if (input[0] == '?')
+	{
+		len = 1; // $? is a single character variable
+	}
 	else
 	{
 		while (input[len] && (ft_isalnum(input[len]) || input[len] == '_'))
@@ -57,7 +61,7 @@ static int	find_var_end(char *input)
 }
 
 // expand_variable_in_quotes expands a single variable inside double quotes
-static char	*expand_variable_in_quotes(char **input, char **envp)
+static char	*expand_variable_in_quotes(char **input, char **envp, t_shell *shell)
 {
 	char	*var_name;
 	char	*var_value;
@@ -85,6 +89,13 @@ static char	*expand_variable_in_quotes(char **input, char **envp)
 	var_name = ft_strndup(*input + name_start, name_len);
 	if (!var_name)
 		return (ft_strdup(""));
+	// Handle $? specifically
+	if (name_len == 1 && var_name[0] == '?')
+	{
+		*input += var_len; // advance past the variable
+		free(var_name);
+		return (ft_itoa(shell->exit_code));
+	}
 	var_value = get_env_value(envp, var_name);
 	*input += var_len; // advance past the variable
 	free(var_name);
@@ -92,7 +103,7 @@ static char	*expand_variable_in_quotes(char **input, char **envp)
 }
 
 // calculate_quoted_length calculates the final length after processing quotes and expansions
-static size_t	calculate_quoted_length(char *input, char **envp)
+static size_t	calculate_quoted_length(char *input, char **envp, t_shell *shell)
 {
 	size_t	len;
 	char	*temp_input;
@@ -117,7 +128,7 @@ static size_t	calculate_quoted_length(char *input, char **envp)
 		}
 		else if (*temp_input == '$')
 		{
-			var_value = expand_variable_in_quotes(&temp_input, envp);
+			var_value = expand_variable_in_quotes(&temp_input, envp, shell);
 			len += ft_strlen(var_value);
 			free(var_value);
 		}
@@ -131,7 +142,7 @@ static size_t	calculate_quoted_length(char *input, char **envp)
 }
 
 // process_quoted_content - processes the content inside double quotes
-static char	*process_quoted_content(char *input, char **envp)
+static char	*process_quoted_content(char *input, char **envp, t_shell *shell)
 {
 	size_t	final_len;
 	char	*result;
@@ -139,7 +150,7 @@ static char	*process_quoted_content(char *input, char **envp)
 	char	*var_value;
 	char	escaped_char;
 
-	final_len = calculate_quoted_length(input, envp);
+	final_len = calculate_quoted_length(input, envp, shell);
 	result = malloc(final_len + 1);
 	if (!result)
 		return (NULL);
@@ -153,7 +164,7 @@ static char	*process_quoted_content(char *input, char **envp)
 		}
 		else if (*input == '$')
 		{
-			var_value = expand_variable_in_quotes(&input, envp);
+			var_value = expand_variable_in_quotes(&input, envp, shell);
 			ft_strcpy(result_ptr, var_value);
 			result_ptr += ft_strlen(var_value);
 			free(var_value);
@@ -197,7 +208,7 @@ char	*grab_single_quoted_word(char **input)
 }
 
 // grab_quoted_word extracts and processes content within double quotes
-char	*grab_quoted_word(char **input, char **envp)
+char	*grab_quoted_word(char **input, char **envp, t_shell *shell)
 {
 	char	*start;
 	char	*end;
@@ -227,7 +238,7 @@ char	*grab_quoted_word(char **input, char **envp)
 	if (!content)
 		return (NULL);
 	// Process the content (expand variables, handle escapes)
-	result = process_quoted_content(content, envp);
+	result = process_quoted_content(content, envp, shell);
 	free(content);
 	// Advance input past closing quote
 	*input = end + 1;

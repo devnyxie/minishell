@@ -50,7 +50,7 @@ void	handle_char(t_shell *shell)
 	else if (is_space(**input) && **input)
 		(*input)++;
 	else
-		handle_cmd(shell->parsed_input, shell->envp);
+		handle_cmd(shell->parsed_input, shell->envp, shell);
 }
 
 void	parser(t_shell *shell, char *input)
