@@ -31,7 +31,8 @@ PARSER_SRC = \
 	parser/parser.c \
 	parser/parser_cmd.c \
 	parser/is_space.c \
-	parser/redirections.c \
+	parser/redirections_parse.c \
+	parser/redirections_utils.c \
 	parser/skip_space.c \
 	parser/quote_handler.c
 			
@@ -59,6 +60,7 @@ CLEANUP_SRC = \
 SRC = \
 	minishell.c \
 	error_handling.c \
+	heredoc.c \
 	$(BUILTINS_SRC) \
 	$(ENV_SRC) \
 	$(EXEC_CMD_SRC) \
