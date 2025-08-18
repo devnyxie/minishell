@@ -97,3 +97,4 @@ void	handle_expand_variables(char **envp, t_shell_input *shell_input)
 	free(shell_input->input);
 	shell_input->input = new_input;
 }
+

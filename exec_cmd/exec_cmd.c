@@ -11,8 +11,16 @@
 /* ************************************************************************** */
 
 #include "exec_cmd.h"
+#include "../minishell.h"
 
 void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args)
 {
+	if (prepare_heredocs(cmd, shell) < 0)
+	{
+		shell->exit_code = 1;
+		return ;
+	}
+	prune_heredocs(cmd);
 	start_process(cmd, -1, shell, args);
 }
+
