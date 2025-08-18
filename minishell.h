@@ -86,4 +86,8 @@ char			*get_env_value(char **envp, const char *key);
 void			handle_redirect(t_shell_input *shell_input);
 t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
 
+//heredoc
+int	prepare_heredocs(t_cmd *cmds, t_shell *sh);
+int	run_single_heredoc(t_redirect *r, t_shell *sh);
+
 #endif

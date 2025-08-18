@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 10:35:44 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:36:40 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ int	start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args)
 		if (cmd->next)
 			start_process(cmd->next, pipefd[0], shell, args);
 		waitpid(pid, &status, 0);
+		if (cmd->in_fd != -1)
+		{
+			close(cmd->in_fd);
+			cmd->in_fd = -1;
+		}
 		if (WIFEXITED(status))
 		{
 			exit_code = WEXITSTATUS(status);
