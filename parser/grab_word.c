@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grab_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:31:22 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:46:56 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 
 // expands variables in unquoted content
-static char	*expand_unquoted_variables(char *word, char **envp)
+static char	*expand_unquoted_variables(char *word, char **envp, t_shell *shell)
 {
 	char	*result;
 	char	*src;
@@ -27,7 +27,15 @@ static char	*expand_unquoted_variables(char *word, char **envp)
 	i = 0;
 	while (word[i])
 	{
-		if (word[i] == '$' && (ft_isalpha(word[i + 1]) || word[i + 1] == '_'))
+		if (word[i] == '$' && word[i + 1] == '?')
+		{
+			if (shell)
+				result_len += ft_strlen(ft_itoa(shell->exit_code));
+			else
+				result_len += 1; // default to "0"
+			i += 2;
+		}
+		else if (word[i] == '$' && (ft_isalpha(word[i + 1]) || word[i + 1] == '_'))
 		{
 			i++; // skip $
 			var_len = 0;
@@ -55,7 +63,18 @@ static char	*expand_unquoted_variables(char *word, char **envp)
 	dst = result;
 	while (*src)
 	{
-		if (*src == '$' && (ft_isalpha(*(src + 1)) || *(src + 1) == '_'))
+		if (*src == '$' && *(src + 1) == '?')
+		{
+			src += 2; // skip $?
+			if (shell)
+				var_value = ft_itoa(shell->exit_code);
+			else
+				var_value = ft_strdup("0"); // default exit code
+			ft_strcpy(dst, var_value);
+			dst += ft_strlen(var_value);
+			free(var_value);
+		}
+		else if (*src == '$' && (ft_isalpha(*(src + 1)) || *(src + 1) == '_'))
 		{
 			src++; // skip $
 			var_len = 0;
@@ -80,7 +99,7 @@ static char	*expand_unquoted_variables(char *word, char **envp)
 }
 
 // grabs a regular word without quotes
-static char	*grab_unquoted_word(char **input, char **envp)
+static char	*grab_unquoted_word(char **input, char **envp, t_shell *shell)
 {
 	char	*start;
 	int		bytes;
@@ -106,24 +125,26 @@ static char	*grab_unquoted_word(char **input, char **envp)
 	}
 	word[bytes] = '\0';
 	*input += bytes;
-	return (expand_unquoted_variables(word, envp));
+	return (expand_unquoted_variables(word, envp, shell));
 }
 
 char	*grab_word(char **input)
 {
 	extern char	**environ;
 
-	return (grab_word_with_env(input, environ));
+	// For backward compatibility, we'll pass NULL for shell
+	// This means $? won't work in contexts where shell is not available
+	return (grab_word_with_env(input, environ, NULL));
 }
 
-char	*grab_word_with_env(char **input, char **envp)
+char	*grab_word_with_env(char **input, char **envp, t_shell *shell)
 {
 	skip_space(input);
 	if (!**input)
 		return (NULL);
 	if (**input == '\"')
-		return (grab_quoted_word(input, envp));
+		return (grab_quoted_word(input, envp, shell));
 	if (**input == '\'')
 		return (grab_single_quoted_word(input));
-	return (grab_unquoted_word(input, envp));
+	return (grab_unquoted_word(input, envp, shell));
 }
