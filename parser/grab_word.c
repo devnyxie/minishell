@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grab_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/18 17:46:56 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:34:51 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static char	*expand_unquoted_variables(char *word, char **envp, t_shell *shell)
 				result_len += 1; // default to "0"
 			i += 2;
 		}
-		else if (word[i] == '$' && (ft_isalpha(word[i + 1]) || word[i + 1] == '_'))
+		else if (word[i] == '$' && (ft_isalpha(word[i + 1]) || word[i
+				+ 1] == '_'))
 		{
 			i++; // skip $
 			var_len = 0;

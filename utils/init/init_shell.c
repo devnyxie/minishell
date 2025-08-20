@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:26:58 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,13 @@ static int	copy_env_check(t_shell *shell, char **envp)
 t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
+	char	*path_value;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
-	{
-		custom_error("Memory allocation failed\n");
 		return (NULL);
-	}
 	shell->env_count = env_count(envp);
-	shell->env_capacity = env_count(envp) + 10; // extra space for new vars
+	shell->env_capacity = env_count(envp) + 10;
 	shell->builtins = malloc(sizeof(t_builtins_unified));
 	shell->builtins->builtins_child = init_builtins_child();
 	shell->builtins->builtins_parent = init_builtins_parent();
@@ -78,14 +76,13 @@ t_shell	*init_shell(char **envp)
 		exit(EXIT_FAILURE);
 	if (copy_env_check(shell, envp))
 		return (NULL);
-	char *path_value = get_env_value(shell->envp, "PATH");
+	path_value = get_env_value(shell->envp, "PATH");
 	if (path_value && ft_strlen(path_value) > 0)
 		shell->path = ft_strdup(path_value);
 	else
 		shell->path = NULL;
 	shell->parsed_input = NULL;
 	shell->history = NULL;
-	// shell->prompt = NULL;
 	shell->exit_code = 0;
 	return (shell);
 }

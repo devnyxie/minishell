@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 17:17:04 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,12 @@ static void	child_process_redir_in(t_cmd *cmd)
 	t_redirect	*redir;
 	int			fd;
 
-	// Handle heredoc first if present
 	if (cmd->in_fd != -1)
 	{
 		dup2(cmd->in_fd, STDIN_FILENO);
 		close(cmd->in_fd);
 		cmd->in_fd = -1;
 	}
-	
-	// Then handle other input redirections
 	redir = cmd->in_redir;
 	while (redir)
 	{
@@ -100,7 +97,6 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	}
 	if (cmd->name[0] == '/')
 	{
-		// absolute path
 		if (access(cmd->name, F_OK) == 0)
 		{
 			if (access(cmd->name, X_OK) == 0)
@@ -112,15 +108,12 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 				report_error(cmd->name, "Permission denied", 0);
 		}
 		else
-			report_error(cmd->name, "No such file or directory", 0);
+			report_error(cmd->name, "No such file or directory", 127);
 	}
 	else
 	{
-		// search in PATH
 		if (shell->path == NULL)
-		{
 			report_error(cmd->name, "command not found", 0);
-		}
 		else
 		{
 			path = search_cmd_path(shell->path, cmd->name);

@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   hd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 16:04:38 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 15:53:57 by mmitkovi         ###   ########.fr       */
+/*   Created: 2025/08/20 14:40:56 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/08/20 14:41:25 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "exec_cmd.h"
+#include "heredoc.h"
 
-void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args)
+int	hd_write_str(int fd, const char *s, size_t n)
 {
-	if (prepare_heredocs(cmd, shell) < 0)
+	if (n == 0)
+		return (0);
+	if (write(fd, s, n) < 0)
+		return (-1);
+	return (0);
+}
+
+int	hd_write_status(int fd, int code)
+{
+	char	*tmp;
+	size_t	len;
+
+	tmp = ft_itoa(code);
+	if (!tmp)
+		return (-1);
+	len = ft_strlen(tmp);
+	if (hd_write_str(fd, tmp, len) < 0)
 	{
-		shell->exit_code = 1;
-		return ;
+		free(tmp);
+		return (-1);
 	}
-	prune_heredocs(cmd);
-	start_process(cmd, -1, shell, args);
+	free(tmp);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:32:03 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:34:08 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:34:45 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static size_t	calculate_expanded_len(char *input, char **envp)
 	while (input[i])
 	{
 		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i
-					+ 1] == '_'))
+				+ 1] == '_'))
 		{
 			var_start = ++i;
 			i = find_end_of_var(input, i);
@@ -64,7 +64,7 @@ static void	build_expanded_string(char *input, char *new_input, char **envp)
 	while (input[i])
 	{
 		if (input[i] == '$' && (ft_isalpha(input[i + 1]) || input[i
-					+ 1] == '_'))
+				+ 1] == '_'))
 		{
 			var_start = ++i;
 			i = find_end_of_var(input, i);
@@ -97,4 +97,3 @@ void	handle_expand_variables(char **envp, t_shell_input *shell_input)
 	free(shell_input->input);
 	shell_input->input = new_input;
 }
-

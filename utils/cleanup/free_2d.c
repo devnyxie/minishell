@@ -6,13 +6,12 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:55:09 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:25:35 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// Free a 2D array (array of strings)
 void	free_2d(char **str)
 {
 	int	i;
