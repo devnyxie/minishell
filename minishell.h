@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:53:09 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 06:34:30 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int				builtin_pwd(char **args);
 int				builtin_env(t_shell *shell, char **args);
 int				builtin_export(t_shell *shell, char **args);
 int				builtin_unset(t_shell *shell, char **args);
-int				exit_shell(char **args);
+int				exit_shell(t_shell *shell, char **args);
 int				execute_parent_builtin(t_shell *shell, char **args, t_cmd *cmd);
 int				is_parent_builtin(t_shell *shell, t_cmd *cmd);
 void			update_env_var(t_shell *shell, char *var_name,
