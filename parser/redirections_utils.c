@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:41:01 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/08/20 16:41:02 by mmitkovi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 #include "parser.h"
 
-t_redirect *new_redirect_node(t_redirect_type type, char *file)
+t_redirect	*new_redirect_node(t_redirect_type type, char *file)
 {
 	t_redirect	*redir;
 
@@ -17,14 +29,17 @@ t_redirect *new_redirect_node(t_redirect_type type, char *file)
 
 void	add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir)
 {
-	t_redirect **head;
-	t_redirect  *cur;
+	t_redirect	**head;
+	t_redirect	*cur;
 
-	head = (redir->type == REDIR_IN || redir->type == HEREDOC)
-		? &cmd->in_redir : &cmd->out_redir;
-
-	if (!*head) { *head = redir; redir->next = NULL; return; }
-
+	head = (redir->type == REDIR_IN
+			|| redir->type == HEREDOC) ? &cmd->in_redir : &cmd->out_redir;
+	if (!*head)
+	{
+		*head = redir;
+		redir->next = NULL;
+		return ;
+	}
 	cur = *head;
 	while (cur->next)
 		cur = cur->next;
@@ -57,4 +72,3 @@ void	prune_heredocs(t_cmd *cmds)
 		c = c->next;
 	}
 }
-

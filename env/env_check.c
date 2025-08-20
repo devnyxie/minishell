@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 14:25:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 15:15:38 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,10 @@ void	unset_env_var(char *name, t_shell *shell)
 				shell->envp[j] = shell->envp[j + 1];
 				j++;
 			}
-			// Decrement the environment count
 			shell->env_count--;
-			// update shell->path if PATH was unset
 			if (ft_strcmp(name, "PATH") == 0)
 				shell->path = NULL;
-			break;
+			break ;
 		}
 		i++;
 	}

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_parse.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/08/20 16:40:55 by mmitkovi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 #include "parser.h"
 #include <stddef.h>
 
-static char *read_quoted_str(char **p)
+static char	*read_quoted_str(char **p)
 {
 	char	q;
 	char	*start;
@@ -25,7 +37,7 @@ static char *read_quoted_str(char **p)
 	}
 	if (**p != q)
 		return (NULL);
-	out = (char *)malloc(len +1);
+	out = (char *)malloc(len + 1);
 	if (!out)
 		return (NULL);
 	i = 0;
@@ -36,7 +48,7 @@ static char *read_quoted_str(char **p)
 	return (out);
 }
 
-static char *grab_filename_or_delim(char **p, int is_hd, int *expand)
+static char	*grab_filename_or_delim(char **p, int is_hd, int *expand)
 {
 	char	*tok;
 
@@ -64,15 +76,15 @@ static char *grab_filename_or_delim(char **p, int is_hd, int *expand)
 	return (tok);
 }
 
-t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
+t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 {
-	char		*p;
+	char			*p;
 	t_redirect_type	type;
 
 	(void)cmd;
 	p = shell_input->input;
 	if (!p || *p == '\0')
-		return REDIR_NONE;
+		return (REDIR_NONE);
 	if (*p == '>' && *(p + 1) == '>')
 		type = REDIR_APPEND;
 	else if (*p == '<' && *(p + 1) == '<')
@@ -93,18 +105,19 @@ t_redirect_type redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 void	handle_redirect(t_shell_input *shell_input)
 {
 	t_cmd			*cmd;
-	t_redirect_type		type;
-	char			*name; // filename or heredoc delim
+	t_redirect_type	type;
 	t_redirect		*redir;
-	int			expand;
+	int				expand;
 
+	char *name;
 	cmd = shell_input->last_cmd;
 	type = redirect_type(shell_input, cmd);
 	if (type == REDIR_NONE)
 		return ;
 	skip_space(&shell_input->input);
 	expand = 0;
-	name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC), &expand);
+	name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),
+			&expand);
 	if (!name || name[0] == '\0')
 	{
 		report_error(NULL, "syntax error near unexpected token `newline'", 0);
@@ -120,4 +133,3 @@ void	handle_redirect(t_shell_input *shell_input)
 		redir->expand = expand;
 	add_redirect_to_cmd(cmd, redir);
 }
-

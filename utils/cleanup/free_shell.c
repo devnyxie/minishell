@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:44:19 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:26:03 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	free_shell(t_shell *shell)
 {
 	if (!shell)
 		return ;
-	// free(shell->prompt);
-	// Free shell->path if it was dynamically allocated (not pointing to system getenv)
 	if (shell->path && shell->path != getenv("PATH"))
 		free(shell->path);
 	free_2d(shell->envp);

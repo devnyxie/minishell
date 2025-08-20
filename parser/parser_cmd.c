@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/18 18:13:04 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:40:30 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 static int	is_variable_assignment(char *cmd_name)
 {
 	int	i;
-	
+
 	if (!cmd_name || !*cmd_name)
 		return (0);
 	if (!ft_isalpha(cmd_name[0]) && cmd_name[0] != '_')
@@ -82,7 +82,7 @@ static void	handle_variable_assignment(char *assignment, t_shell *shell)
 	char	*equals;
 	char	*var_name;
 	char	*var_value;
-	
+
 	equals = ft_strchr(assignment, '=');
 	if (!equals)
 		return ;
@@ -102,15 +102,12 @@ void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 	cmd_name = grab_word_with_env(&(shell_input->input), envp, shell);
 	if (!cmd_name)
 		return ;
-	
-	// check if this is a var assignment
 	if (is_variable_assignment(cmd_name))
 	{
 		handle_variable_assignment(cmd_name, shell);
 		free(cmd_name);
 		return ;
 	}
-	
 	cmd = init_cmd(cmd_name);
 	handle_args(cmd, shell_input, cmd_name, envp, shell);
 	append_to_linked_list(shell_input, cmd);

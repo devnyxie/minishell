@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 01:52:53 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:59:03 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:25:45 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	free_cmds(t_cmd *cmd)
 				free(tmp->args[i]);
 				i++;
 			}
-			// for (i = 0; tmp->args[i]; i++)
-			// 	free(tmp->args[i]);
 			free(tmp->args);
 		}
 		free_redirects(tmp->in_redir);

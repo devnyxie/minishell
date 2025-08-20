@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:30:04 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -33,9 +34,11 @@
 
 // builtins
 int				builtin_cd(t_shell *shell, char **args);
+int				grow_envp_if_needed(t_shell *shell);
+char			*get_env_var(t_shell *shell, const char *var_name);
+int				find_env_var(t_shell *shell, const char *var_name);
 int				builtin_echo(char **args);
 int				builtin_pwd(char **args);
-//int				builtin_exit(t_shell *shell, char **args); // to-be-reviewed
 int				builtin_env(t_shell *shell, char **args);
 int				builtin_export(t_shell *shell, char **args);
 int				builtin_unset(t_shell *shell, char **args);
@@ -90,8 +93,8 @@ char			*get_env_value(char **envp, const char *key);
 void			handle_redirect(t_shell_input *shell_input);
 t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
 
-//heredoc
-int	prepare_heredocs(t_cmd *cmds, t_shell *sh);
-int	run_single_heredoc(t_redirect *r, t_shell *sh);
+// heredoc
+int				prepare_heredocs(t_cmd *cmds, t_shell *sh);
+int				run_single_heredoc(t_redirect *r, t_shell *sh);
 
 #endif

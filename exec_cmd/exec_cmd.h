@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:47:04 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/06/12 12:04:29 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 17:26:34 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,21 @@
 
 # include "../minishell.h"
 # include "../structs.h"
-// # include "../parser/parser.h"
-// typedef struct s_shell	t_shell;
+# include <sys/types.h>
 
-void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args);
-void	child_process(t_cmd *cmd, int prev_fd, int pipefd[2], t_shell *shell);
-char	*search_cmd_path(char *path, char *cmd);
-int		start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args);
+typedef struct s_procctx
+{
+	t_cmd	*cmd;
+	t_shell	*shell;
+	char	**args;
+	int		prev_fd;
+	int		pipefd[2];
+	pid_t	pid;
+}			t_procctx;
+
+void		exec_cmd(t_cmd *cmd, t_shell *shell, char **args);
+void		child_process(t_cmd *cmd, int prev_fd, int pipefd[2],
+				t_shell *shell);
+char		*search_cmd_path(char *path, char *cmd);
+int			start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args);
 #endif

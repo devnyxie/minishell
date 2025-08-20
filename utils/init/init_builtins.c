@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:24:02 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ static int	builtin_pwd_wrapper(t_shell *shell, char **args)
 
 static int	builtin_exit_wrapper(t_shell *shell, char **args)
 {
-	int result = exit_shell(shell, args);
+	int	result;
+
+	result = exit_shell(shell, args);
 	free_shell(shell);
 	clear_history();
 	return (result);

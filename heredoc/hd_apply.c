@@ -1,25 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   hd_apply.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 16:04:38 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 15:53:57 by mmitkovi         ###   ########.fr       */
+/*   Created: 2025/08/20 14:15:44 by mmitkovi          #+#    #+#             */
+/*   Updated: 2025/08/20 14:53:28 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "exec_cmd.h"
+#include "heredoc.h"
 
-void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args)
+int	prepare_heredocs(t_cmd *cmds, t_shell *sh)
 {
-	if (prepare_heredocs(cmd, shell) < 0)
+	t_cmd		*c;
+	t_redirect	*r;
+	int			fd;
+
+	c = cmds;
+	while (c)
 	{
-		shell->exit_code = 1;
-		return ;
+		r = c->in_redir;
+		while (r)
+		{
+			if (r->type == HEREDOC)
+			{
+				fd = run_single_heredoc(r, sh);
+				if (fd < 0)
+					return (-1);
+				if (c->in_fd != -1)
+					close(c->in_fd);
+				c->in_fd = fd;
+			}
+			r = r->next;
+		}
+		c = c->next;
 	}
-	prune_heredocs(cmd);
-	start_process(cmd, -1, shell, args);
+	return (0);
 }

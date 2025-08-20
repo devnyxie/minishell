@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/06 14:05:26 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:30:43 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_redirect
 {
 	t_redirect_type		type;
 	char				*file;
-	int			expand;
+	int					expand;
 	struct s_redirect	*next;
 }						t_redirect;
 
@@ -39,7 +39,7 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 	struct s_cmd		*prev;
 	int					pipe_read;
-	int in_fd;
+	int					in_fd;
 }						t_cmd;
 
 typedef struct s_shell_input
@@ -70,7 +70,6 @@ typedef struct s_builtins_unified
 typedef struct s_shell
 {
 	char				**history;
-	// char				*prompt;
 	t_shell_input		*parsed_input;
 	t_builtins_unified	*builtins;
 	char				**envp;

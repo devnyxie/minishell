@@ -6,6 +6,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 BUILTINS_SRC = \
 	builtins/builtin_cd.c \
+	builtins/builtin_cd_helpers.c \
+	builtins/builtin_cd_env.c \
 	builtins/builtin_echo.c \
 	builtins/builtin_env.c \
 	builtins/builtin_exit.c \
@@ -59,17 +61,23 @@ CLEANUP_SRC = \
 	utils/cleanup/free_cmds.c \
 	utils/cleanup/free_redirects.c
 
+HEREDOC_SRC = \
+	heredoc/hd_apply.c \
+	heredoc/hd_expand.c \
+	heredoc/hd_run.c \
+	heredoc/hd_utils.c 
+
 SRC = \
 	minishell.c \
 	error_handling.c \
-	heredoc.c \
 	$(BUILTINS_SRC) \
 	$(ENV_SRC) \
 	$(EXEC_CMD_SRC) \
 	$(PARSER_SRC) \
 	$(UTILS_SRC) \
 	$(INIT_SRC) \
-	$(CLEANUP_SRC)
+	$(CLEANUP_SRC) \
+	$(HEREDOC_SRC) 
 
 OBJ = $(SRC:.c=.o)
 NAME = minishell
