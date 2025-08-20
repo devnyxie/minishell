@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:08:59 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/16 21:44:33 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*search_cmd_path(char *path, char *cmd)
 	int		i;
 
 	i = 0;
+	if (!path || !cmd)
+		return (NULL);
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (NULL);

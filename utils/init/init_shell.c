@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:33:46 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:40:48 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,11 @@ t_shell	*init_shell(char **envp)
 		exit(EXIT_FAILURE);
 	if (copy_env_check(shell, envp))
 		return (NULL);
-	shell->path = getenv("PATH");
-	if (!shell->path)
-		custom_error("Error! PATH not set\n");
+	char *path_value = get_env_value(shell->envp, "PATH");
+	if (path_value && ft_strlen(path_value) > 0)
+		shell->path = ft_strdup(path_value);
+	else
+		shell->path = NULL;
 	shell->parsed_input = NULL;
 	shell->history = NULL;
 	// shell->prompt = NULL;

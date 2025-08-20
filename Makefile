@@ -41,7 +41,9 @@ UTILS_SRC = \
 	utils/ft_strcpy.c \
 	utils/ft_strcmp.c \
 	utils/ft_realloc.c \
-	utils/ft_strndup.c
+	utils/ft_strndup.c \
+	utils/count_args.c \
+	utils/is_valid_number.c
 
 INIT_SRC = \
 	utils/init/init_shell.c \
