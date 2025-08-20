@@ -80,6 +80,18 @@ void	update_env_var(t_shell *shell, char *var_name, const char *value)
 	ft_strlcat(new_var, value, total_len);
 	index = find_env_var(shell, var_name);
 	update_add_env_var(shell, index, new_var);
+	// Update shell->path if PATH was set/updated
+	if (ft_strcmp(var_name, "PATH") == 0)
+	{
+		// Find the updated PATH value in the environment
+		int path_index = find_env_var(shell, "PATH");
+		if (path_index != -1)
+		{
+			char *equals = ft_strchr(shell->envp[path_index], '=');
+			if (equals)
+				shell->path = equals + 1;
+		}
+	}
 }
 
 char	*get_env_var(t_shell *shell, const char *var_name)

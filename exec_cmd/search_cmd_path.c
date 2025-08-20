@@ -19,6 +19,8 @@ char	*search_cmd_path(char *path, char *cmd)
 	char	*tmp;
 	int		i;
 
+	if (!path)
+		return (NULL);
 	i = 0;
 	paths = ft_split(path, ':');
 	if (!paths)
