@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/18 17:35:48 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/20 12:07:49 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,22 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	else
 	{
 		// search in PATH
-		path = search_cmd_path(shell->path, cmd->name);
-		if (path)
+		if (shell->path == NULL)
 		{
-			execve(path, cmd->args, shell->envp);
-			perror("execve");
-			free(path);
+			report_error(cmd->name, "command not found", 0);
 		}
 		else
-			report_error(cmd->name, "command not found", 0);
+		{
+			path = search_cmd_path(shell->path, cmd->name);
+			if (path)
+			{
+				execve(path, cmd->args, shell->envp);
+				perror("execve");
+				free(path);
+			}
+			else
+				report_error(cmd->name, "command not found", 0);
+		}
 	}
 }
 
