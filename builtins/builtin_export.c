@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:27:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/05 12:40:25 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:10:34 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,15 @@ static void	build_env_var(t_shell *shell, char **args, int i)
 			free(detail_mgs);
 			return ;
 		}
-		equals = ft_strchr(args[1], '=');
+		equals = ft_strchr(args[i], '=');
 		if (equals)
 		{
 			*equals = '\0';
-			update_env_var(shell, args[1], equals + 1);
+			update_env_var(shell, args[i], equals + 1);
 			*equals = '=';
 		}
 		else
-			update_env_var(shell, args[1], "");
+			update_env_var(shell, args[i], "");
 		i++;
 	}
 }
