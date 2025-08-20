@@ -51,6 +51,10 @@ void	unset_env_var(char *name, t_shell *shell)
 				shell->envp[j] = shell->envp[j + 1];
 				j++;
 			}
+			shell->env_count--;
+			// Update shell->path if PATH was unset
+			if (ft_strcmp(name, "PATH") == 0)
+				shell->path = NULL;
 		}
 		i++;
 	}

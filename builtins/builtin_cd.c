@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:02:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/08 10:30:14 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/20 05:20:59 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,16 @@ void	update_env_var(t_shell *shell, char *var_name, const char *value)
 	ft_strlcat(new_var, value, total_len);
 	index = find_env_var(shell, var_name);
 	update_add_env_var(shell, index, new_var);
+	if (ft_strcmp(var_name, "PATH") == 0)
+	{
+		int path_index = find_env_var(shell, "PATH");
+		if (path_index != -1)
+		{
+			char *equals = ft_strchr(shell->envp[path_index], '=');
+			if (equals)
+				shell->path = equals + 1;
+		}
+	}
 }
 
 char	*get_env_var(t_shell *shell, const char *var_name)
