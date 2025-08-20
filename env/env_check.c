@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 14:25:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/08 10:41:25 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:10:35 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	is_valid_identifier(char *name)
 	i = 0;
 	if (!name || !*name)
 		return (0);
-	if (ft_isalnum(name[0]) == 0 && name[0] != '_')
+	if (ft_isalpha(name[0]) == 0 && name[0] != '_')
 		return (0);
 	i++;
 	while (name[i] && name[i] != '=')
 	{
-		if (ft_isalpha(name[i]) == 0 && name[i] != '_')
+		if (ft_isalnum(name[i]) == 0 && name[i] != '_')
 			return (0);
 		i++;
 	}
