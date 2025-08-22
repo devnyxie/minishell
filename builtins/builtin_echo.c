@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/05 12:45:36 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:20:08 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 int	builtin_echo(char **args)
 {
-	int	i;
-	int	newline;
+	int i;
+	int newline;
 
 	i = 1;
 	newline = 1;
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
+		int j = 2;
+		while (args[i][j] == 'n')
+			j++;
+		if (args[i][j] != '\0')
+			break;
 		newline = 0;
-		i = 2;
+		i++;
 	}
 	while (args[i])
 	{
