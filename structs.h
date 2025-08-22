@@ -48,6 +48,7 @@ typedef struct s_shell_input
 	t_cmd				*last_cmd;
 	int					cmds_count;
 	int					is_valid;
+	int					incomplete_pipe;
 	char				*input;
 }						t_shell_input;
 
