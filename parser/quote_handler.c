@@ -6,56 +6,14 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 14:40:49 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 14:56:57 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:31:15 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-static int	is_escaped_char(char c)
-{
-	return (c == '"' || c == '\\' || c == '$' || c == '`');
-}
-
-static char	handle_escape_in_quotes(char **input)
-{
-	char	escaped_char;
-
-	(*input)++;
-	escaped_char = **input;
-	if (is_escaped_char(escaped_char))
-	{
-		(*input)++;
-		return (escaped_char);
-	}
-	return ('\\');
-}
-
-static int	find_var_end(char *input)
-{
-	int	len;
-
-	len = 0;
-	if (input[0] == '{')
-	{
-		len = 1;
-		while (input[len] && input[len] != '}')
-			len++;
-		if (input[len] == '}')
-			len++;
-	}
-	else if (input[0] == '?')
-		len = 1;
-	else
-	{
-		while (input[len] && (ft_isalnum(input[len]) || input[len] == '_'))
-			len++;
-	}
-	return (len);
-}
-
-static char	*expand_variable_in_quotes(char **input, char **envp,
+char	*expand_variable_in_quotes(char **input, char **envp,
 		t_shell *shell)
 {
 	char	*var_name;
@@ -92,46 +50,9 @@ static char	*expand_variable_in_quotes(char **input, char **envp,
 	var_value = get_env_value(envp, var_name);
 	*input += var_len;
 	free(var_name);
-	return (ft_strdup(var_value ? var_value : ""));
-}
-
-static size_t	calculate_quoted_length(char *input, char **envp,
-		t_shell *shell)
-{
-	size_t	len;
-	char	*temp_input;
-	char	*var_value;
-
-	len = 0;
-	temp_input = input;
-	while (*temp_input && *temp_input != '"')
-	{
-		if (*temp_input == '\\')
-		{
-			if (is_escaped_char(*(temp_input + 1)))
-			{
-				len++;
-				temp_input += 2;
-			}
-			else
-			{
-				len += 2;
-				temp_input++;
-			}
-		}
-		else if (*temp_input == '$')
-		{
-			var_value = expand_variable_in_quotes(&temp_input, envp, shell);
-			len += ft_strlen(var_value);
-			free(var_value);
-		}
-		else
-		{
-			len++;
-			temp_input++;
-		}
-	}
-	return (len);
+	if (!var_value)
+		return (ft_strdup(""));
+	return (ft_strdup(var_value));
 }
 
 static char	*process_quoted_content(char *input, char **envp, t_shell *shell)
@@ -162,9 +83,7 @@ static char	*process_quoted_content(char *input, char **envp, t_shell *shell)
 			free(var_value);
 		}
 		else
-		{
 			*result_ptr++ = *input++;
-		}
 	}
 	*result_ptr = '\0';
 	return (result);

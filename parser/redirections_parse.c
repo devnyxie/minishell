@@ -6,13 +6,26 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 14:59:01 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:59:29 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 #include <stddef.h>
+
+static int str_len_inside_quotes(char **p, char q)
+{
+	int	len;
+	
+	len = 0;
+	while (**p && **p != q)
+	{
+		(*p)++;
+		len++;
+	}
+	return (len);
+}
 
 static char	*read_quoted_str(char **p)
 {
@@ -29,12 +42,14 @@ static char	*read_quoted_str(char **p)
 		return (NULL);
 	(*p)++;
 	start = *p;
-	len = 0;
-	while (**p && **p != q)
-	{
-		(*p)++;
-		len++;
-	}
+	// len = 0;
+	// while (**p && **p != q)
+	// {
+	// 	(*p)++;
+	// 	len++;
+	// }
+	len = str_len_inside_quotes(p, q);
+	printf("Length inside quotes: %zu\n", len);
 	if (**p != q)
 		return (NULL);
 	out = (char *)malloc(len + 1);
