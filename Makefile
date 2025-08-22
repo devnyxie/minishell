@@ -36,7 +36,8 @@ PARSER_SRC = \
 	parser/redirections_parse.c \
 	parser/redirections_utils.c \
 	parser/skip_space.c \
-	parser/quote_handler.c
+	parser/quote_handler.c \
+	parser/quote_utils.c 
 			
 
 UTILS_SRC = \

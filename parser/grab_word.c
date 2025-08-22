@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 15:00:35 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:12:45 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ static char	*expand_unquoted_variables(char *word, char **envp, t_shell *shell)
 			i += 2;
 		}
 		else if (word[i] == '$' && (ft_isalpha(word[i + 1]) || word[i
-				+ 1] == '_'))
+					+ 1] == '_'))
 		{
 			i++;
 			var_len = 0;
 			while (word[i + var_len] && (ft_isalnum(word[i + var_len]) || word[i
-					+ var_len] == '_'))
+						+ var_len] == '_'))
 				var_len++;
 			var_name = ft_strndup(&word[i], var_len);
 			var_value = get_env_value(envp, var_name);

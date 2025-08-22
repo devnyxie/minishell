@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                   						:::      ::::::::   */
+/*                                   						:::      :::::::: */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
@@ -72,7 +72,6 @@ void	parser(t_shell *shell, char *input)
 		handle_char(shell);
 	if (!shell_input->first_cmd)
 		shell_input->is_valid = 0;
-	// Don't mark as invalid if we have commands but an incomplete pipe
 	if (!shell_input->is_valid && !shell_input->incomplete_pipe)
 	{
 		free_shell_input(shell_input);

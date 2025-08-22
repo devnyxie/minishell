@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:43:30 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ char			*grab_word_with_env(char **input, char **envp, t_shell *shell);
 char			*grab_quoted_word(char **input, char **envp, t_shell *shell);
 char			*grab_single_quoted_word(char **input);
 int				has_unclosed_quotes(char *input);
+char			*expand_variable_in_quotes(char **input, char **envp,
+					t_shell *shell);
+
+// quote_utils
+int				is_escaped_char(char c);
+char			handle_escape_in_quotes(char **input);
+int				find_var_end(char *input);
+size_t			calculate_quoted_length(char *input, char **envp,
+					t_shell *shell);
 
 // redirection_parse.c
 t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
