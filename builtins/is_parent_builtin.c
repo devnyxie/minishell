@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_parent_builtin.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:11:56 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/08 11:23:25 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	is_parent_builtin(t_shell *shell, t_cmd *cmd)
 	i = 0;
 	if (!shell || !shell->builtins || !cmd->name)
 	{
-		printf("not valid inputs");
 		return (0);
 	}
 	while (shell->builtins->builtins_parent[i].name)

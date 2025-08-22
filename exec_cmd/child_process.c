@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 17:17:04 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 	char	*path;
 	int		i;
 
+	// Handle redirections-only commands (no actual command to execute)
+	if (!cmd->name || cmd->name[0] == '\0')
+	{
+		free_shell(shell);
+		exit(0);
+	}
 	i = 0;
 	while (shell->builtins->builtins_child[i].name)
 	{
