@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_parse.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:40:55 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,32 @@ void	handle_redirect(t_shell_input *shell_input)
 	t_redirect_type	type;
 	t_redirect		*redir;
 	int				expand;
+	char			*name;
 
-	char *name;
 	cmd = shell_input->last_cmd;
 	type = redirect_type(shell_input, cmd);
 	if (type == REDIR_NONE)
 		return ;
+	if (!cmd)
+	{
+		// Create a dummy command for redirections without a preceding command
+		cmd = init_cmd(NULL);
+		if (!cmd)
+		{
+			shell_input->is_valid = 0;
+			return ;
+		}
+		cmd->args = malloc(sizeof(char *) * 2);
+		if (!cmd->args)
+		{
+			free(cmd);
+			shell_input->is_valid = 0;
+			return ;
+		}
+		cmd->args[0] = NULL;
+		cmd->args[1] = NULL;
+		append_to_linked_list(shell_input, cmd);
+	}
 	skip_space(&shell_input->input);
 	expand = 0;
 	name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),

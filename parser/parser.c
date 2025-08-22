@@ -46,6 +46,7 @@ void	handle_char(t_shell *shell)
 		}
 		if (**input)
 			(*input)++;
+		shell->parsed_input->incomplete_pipe = 1;
 	}
 	else if (is_space(**input) && **input)
 		(*input)++;
@@ -71,7 +72,8 @@ void	parser(t_shell *shell, char *input)
 		handle_char(shell);
 	if (!shell_input->first_cmd)
 		shell_input->is_valid = 0;
-	if (!shell_input->is_valid)
+	// Don't mark as invalid if we have commands but an incomplete pipe
+	if (!shell_input->is_valid && !shell_input->incomplete_pipe)
 	{
 		free_shell_input(shell_input);
 		shell->parsed_input = NULL;

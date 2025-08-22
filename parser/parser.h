@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:35:11 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void			parser(t_shell *shell, char *input);
 // parser_cmd.c
 void			handle_cmd(t_shell_input *shell_input, char **envp,
 					t_shell *shell);
+void			append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd);
 // skip_space.c
 void			skip_space(char **input);
 // is_space.c

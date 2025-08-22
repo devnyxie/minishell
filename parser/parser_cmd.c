@@ -102,6 +102,7 @@ void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 	cmd_name = grab_word_with_env(&(shell_input->input), envp, shell);
 	if (!cmd_name)
 		return ;
+	shell_input->incomplete_pipe = 0;
 	if (is_variable_assignment(cmd_name))
 	{
 		handle_variable_assignment(cmd_name, shell);

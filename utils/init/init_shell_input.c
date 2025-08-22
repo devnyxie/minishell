@@ -22,6 +22,7 @@ t_shell_input	*init_shell_input(char *input)
 	shell_input->first_cmd = NULL;
 	shell_input->last_cmd = NULL;
 	shell_input->is_valid = 1;
+	shell_input->incomplete_pipe = 0;
 	shell_input->cmds_count = 0;
 	shell_input->input = input;
 	return (shell_input);
