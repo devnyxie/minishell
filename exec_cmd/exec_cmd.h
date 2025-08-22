@@ -32,4 +32,8 @@ void		child_process(t_cmd *cmd, int prev_fd, int pipefd[2],
 				t_shell *shell);
 char		*search_cmd_path(char *path, char *cmd);
 int			start_process(t_cmd *cmd, int prev_fd, t_shell *shell, char **args);
+int			try_builtin_child(t_shell *shell, t_cmd *cmd);
+void		exec_absolute_path(t_shell *shell, t_cmd *cmd);
+void		exec_relative_path(t_shell *shell, t_cmd *cmd);
+void		handle_input_redirection(t_redirect *redir);
 #endif

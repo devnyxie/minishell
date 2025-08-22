@@ -29,31 +29,13 @@ static void	child_process_prepare(t_cmd *cmd, int prev_fd, int pipefd[2])
 
 static void	child_process_redir_in(t_cmd *cmd)
 {
-	t_redirect	*redir;
-	int			fd;
-
 	if (cmd->in_fd != -1)
 	{
 		dup2(cmd->in_fd, STDIN_FILENO);
 		close(cmd->in_fd);
 		cmd->in_fd = -1;
 	}
-	redir = cmd->in_redir;
-	while (redir)
-	{
-		if (redir->type == REDIR_IN)
-		{
-			fd = open(redir->file, O_RDONLY);
-			if (fd < 0)
-			{
-				report_error(NULL, redir->file, 1);
-				exit(1);
-			}
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		redir = redir->next;
-	}
+	handle_input_redirection(cmd->in_redir);
 }
 
 static void	child_process_redir_out(t_cmd *cmd)
@@ -81,58 +63,16 @@ static void	child_process_redir_out(t_cmd *cmd)
 
 static void	child_process_exec(t_shell *shell, t_cmd *cmd)
 {
-	char	*path;
-	int		i;
-
-	// Handle redirections-only commands (no actual command to execute)
 	if (!cmd->name || cmd->name[0] == '\0')
 	{
 		free_shell(shell);
 		exit(0);
 	}
-	i = 0;
-	while (shell->builtins->builtins_child[i].name)
-	{
-		if (ft_strcmp(cmd->name, shell->builtins->builtins_child[i].name) == 0)
-		{
-			shell->builtins->builtins_child[i].fn(shell, cmd->args);
-			free_shell(shell);
-			exit(0);
-		}
-		i++;
-	}
+	try_builtin_child(shell, cmd);
 	if (cmd->name[0] == '/')
-	{
-		if (access(cmd->name, F_OK) == 0)
-		{
-			if (access(cmd->name, X_OK) == 0)
-			{
-				execve(cmd->name, cmd->args, shell->envp);
-				perror("execve");
-			}
-			else
-				report_error(cmd->name, "Permission denied", 0);
-		}
-		else
-			report_error(cmd->name, "No such file or directory", 127);
-	}
+		exec_absolute_path(shell, cmd);
 	else
-	{
-		if (shell->path == NULL)
-			report_error(cmd->name, "command not found", 0);
-		else
-		{
-			path = search_cmd_path(shell->path, cmd->name);
-			if (path)
-			{
-				execve(path, cmd->args, shell->envp);
-				perror("execve");
-				free(path);
-			}
-			else
-				report_error(cmd->name, "command not found", 0);
-		}
-	}
+		exec_relative_path(shell, cmd);
 }
 
 void	child_process(t_cmd *cmd, int prev_fd, int pipefd[2], t_shell *shell)
