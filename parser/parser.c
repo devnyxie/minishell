@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                   					   :::      ::::::::   */
+/*                                   						:::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h" // for t_shell and env access
+#include "../minishell.h"
 #include "parser.h"
 
 char	*get_env_value(char **envp, const char *key)

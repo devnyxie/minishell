@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 14:40:49 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:37:34 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:56:57 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static int	find_var_end(char *input)
 	return (len);
 }
 
-static char	*expand_variable_in_quotes(char **input, char **envp, t_shell *shell)
+static char	*expand_variable_in_quotes(char **input, char **envp,
+		t_shell *shell)
 {
 	char	*var_name;
 	char	*var_value;
@@ -94,7 +95,8 @@ static char	*expand_variable_in_quotes(char **input, char **envp, t_shell *shell
 	return (ft_strdup(var_value ? var_value : ""));
 }
 
-static size_t	calculate_quoted_length(char *input, char **envp, t_shell *shell)
+static size_t	calculate_quoted_length(char *input, char **envp,
+		t_shell *shell)
 {
 	size_t	len;
 	char	*temp_input;

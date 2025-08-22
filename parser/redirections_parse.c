@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_parse.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:59:01 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ void	handle_redirect(t_shell_input *shell_input)
 		return ;
 	if (!cmd)
 	{
-		// Create a dummy command for redirections without a preceding command
 		cmd = init_cmd(NULL);
 		if (!cmd)
 		{
