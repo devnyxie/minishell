@@ -31,56 +31,13 @@ void	setup_signals(void)
 void	await_input(t_shell *shell, char **args)
 {
 	char	*input;
-	char	*continuation_input;
-	char	*complete_input;
 
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input)
 		{
-			if (input[0] != '\0')
-				add_history(input);
-			parser(shell, input);
-			
-			// Check for incomplete pipe and handle continuation
-			while (shell->parsed_input && shell->parsed_input->is_valid && 
-				   shell->parsed_input->incomplete_pipe)
-			{
-				continuation_input = readline("> ");
-				if (!continuation_input)
-				{
-					free(input);
-					clear_history();
-					free_shell(shell);
-					exit(EXIT_SUCCESS);
-				}
-				complete_input = malloc(strlen(input) + strlen(continuation_input) + 2);
-				if (!complete_input)
-					break;
-				strcpy(complete_input, input);
-				strcat(complete_input, " ");
-				strcat(complete_input, continuation_input);
-				
-				free(input);
-				free(continuation_input);
-				input = complete_input;
-				
-				if (shell->parsed_input)
-				{
-					free_shell_input(shell->parsed_input);
-					shell->parsed_input = NULL;
-				}
-				parser(shell, input);
-			}
-			
-			if (shell->parsed_input && shell->parsed_input->is_valid)
-				exec_cmd(shell->parsed_input->first_cmd, shell, args);
-			if (shell->parsed_input)
-			{
-				free_shell_input(shell->parsed_input);
-				shell->parsed_input = NULL;
-			}
+			process_input(shell, input, args);
 			free(input);
 		}
 		else

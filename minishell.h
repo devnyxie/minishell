@@ -97,4 +97,9 @@ t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd);
 int				prepare_heredocs(t_cmd *cmds, t_shell *sh);
 int				run_single_heredoc(t_redirect *r, t_shell *sh);
 
+// input handling
+char			*handle_continuation(t_shell *shell, char *input);
+char			*process_continuation(t_shell *shell, char *input);
+void			process_input(t_shell *shell, char *input, char **args);
+
 #endif

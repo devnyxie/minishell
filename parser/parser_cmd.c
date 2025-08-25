@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 16:32:39 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/25 11:21:53 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name,
-		char **envp, t_shell *shell)
+static void	handle_args(t_cmd *cmd, char *cmd_name, t_cmd_params *params)
 {
 	int		arg_count;
 	char	*arg;
@@ -29,10 +28,12 @@ static void	handle_args(t_cmd *cmd, t_shell_input *shell_input, char *cmd_name,
 		return ;
 	}
 	arg_count++;
-	while (*(shell_input->input) && *(shell_input->input) != '>'
-		&& *(shell_input->input) != '<' && *(shell_input->input) != '|')
+	while (*(params->shell_input->input) && *(params->shell_input->input) != '>'
+		&& *(params->shell_input->input) != '<'
+		&& *(params->shell_input->input) != '|')
 	{
-		arg = grab_word_with_env(&(shell_input->input), envp, shell);
+		arg = grab_word_with_env(&(params->shell_input->input), params->envp,
+				params->shell);
 		if (!arg)
 			break ;
 		cmd->args[arg_count++] = arg;
@@ -96,8 +97,9 @@ static void	handle_variable_assignment(char *assignment, t_shell *shell)
 
 void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 {
-	t_cmd	*cmd;
-	char	*cmd_name;
+	t_cmd			*cmd;
+	char			*cmd_name;
+	t_cmd_params	params;
 
 	cmd_name = grab_word_with_env(&(shell_input->input), envp, shell);
 	if (!cmd_name)
@@ -110,6 +112,9 @@ void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 		return ;
 	}
 	cmd = init_cmd(cmd_name);
-	handle_args(cmd, shell_input, cmd_name, envp, shell);
+	params.shell_input = shell_input;
+	params.envp = envp;
+	params.shell = shell;
+	handle_args(cmd, cmd_name, &params);
 	append_to_linked_list(shell_input, cmd);
 }

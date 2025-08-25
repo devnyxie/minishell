@@ -32,8 +32,10 @@ void	add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir)
 	t_redirect	**head;
 	t_redirect	*cur;
 
-	head = (redir->type == REDIR_IN
-			|| redir->type == HEREDOC) ? &cmd->in_redir : &cmd->out_redir;
+	if (redir->type == REDIR_IN || redir->type == HEREDOC)
+		head = &cmd->in_redir;
+	else
+		head = &cmd->out_redir;
 	if (!*head)
 	{
 		*head = redir;

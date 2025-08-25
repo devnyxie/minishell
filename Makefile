@@ -30,14 +30,21 @@ EXEC_CMD_SRC = \
 PARSER_SRC = \
 	parser/expanders.c \
 	parser/grab_word.c \
+	parser/word_expansion.c \
+	parser/expansion_helpers.c \
 	parser/parser.c \
 	parser/parser_cmd.c \
 	parser/is_space.c \
 	parser/redirections_parse.c \
+	parser/redirect_helpers.c \
+	parser/string_utils.c \
 	parser/redirections_utils.c \
 	parser/skip_space.c \
 	parser/quote_handler.c \
-	parser/quote_utils.c 
+	parser/quote_processing.c \
+	parser/variable_expansion.c \
+	parser/quote_utils.c \
+	parser/quote_calculation.c 
 			
 
 UTILS_SRC = \
@@ -71,6 +78,7 @@ HEREDOC_SRC = \
 
 SRC = \
 	minishell.c \
+	input_handling.c \
 	error_handling.c \
 	$(BUILTINS_SRC) \
 	$(ENV_SRC) \
