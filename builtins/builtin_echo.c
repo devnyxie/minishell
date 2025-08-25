@@ -3,40 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:27:57 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 11:20:08 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/25 09:39:04 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_echo(char **args)
+static int	is_n_option(const char *s)
 {
-	int i;
-	int newline;
+	int	i;
+
+	if (!s || s[0] != '-' || s[1] != 'n')
+		return (0);
+	i = 2;
+	while (s[i] == 'n')
+		i++;
+	if (s[i] != '\0')
+		return (0);
+	return (1);
+}
+
+static int	first_non_option(char **args, int *newline)
+{
+	int	i;
 
 	i = 1;
-	newline = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	*newline = 1;
+	while (args[i] && is_n_option(args[i]))
 	{
-		int j = 2;
-		while (args[i][j] == 'n')
-			j++;
-		if (args[i][j] != '\0')
-			break;
-		newline = 0;
+		*newline = 0;
 		i++;
 	}
+	return (i);
+}
+
+int	builtin_echo(char **args)
+{
+	int	i;
+	int	newline;
+
+	if (!args || !args[0])
+		return (0);
+	i = first_non_option(args, &newline);
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
 		if (args[i + 1])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
