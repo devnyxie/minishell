@@ -89,7 +89,30 @@ void	handle_redirect(t_shell_input *shell_input)
 	name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),
 			&expand);
 	if (!validate_redirect_name(name, shell_input))
+	{
+		free (name);
 		return ;
+	}
 	info = (t_redirect_info){name, type, expand, cmd, shell_input};
 	create_and_add_redirect(&info);
 }
+
+void	parse_one_redirection(t_cmd *cmd, t_shell_input *in)
+{
+	t_redirect_type	type;
+	char			*name;
+	int				expand;
+	t_redirect_info	info;
+
+	type = redirect_type(in, cmd);
+	if (type == REDIR_NONE)
+		return ;
+	skip_space(&in->input);
+	expand = 0;
+	name = grab_filename_or_delim(&(in->input), (type == HEREDOC), &expand);
+	if (!validate_redirect_name(name, in))
+		return ;
+	info = (t_redirect_info){name, type, expand, cmd, in};
+	create_and_add_redirect(&info);
+}
+
