@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   grab_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:48:15 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 15:12:45 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:31:37 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-static char	*grab_unquoted_word(char **input, char **envp, t_shell *shell)
+char	*grab_unquoted_word(char **input, char **envp, t_shell *shell)
 {
 	char	*start;
 	int		bytes;
@@ -49,14 +49,36 @@ char	*grab_word(char **input)
 	return (grab_word_with_env(input, environ, NULL));
 }
 
+static char	*concatenate_tokens(char **input, char **envp, t_shell *shell)
+{
+	char	*result;
+	char	*part;
+
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
+	while (**input && !is_space(**input) && **input != '>' && **input != '<'
+		&& **input != '|')
+	{
+		part = get_next_token_part(input, envp, shell);
+		if (!part)
+			break ;
+		result = join_and_free(result, part);
+		if (!result)
+			return (NULL);
+	}
+	if (ft_strlen(result) == 0)
+	{
+		free(result);
+		return (NULL);
+	}
+	return (result);
+}
+
 char	*grab_word_with_env(char **input, char **envp, t_shell *shell)
 {
 	skip_space(input);
 	if (!**input)
 		return (NULL);
-	if (**input == '\"')
-		return (grab_quoted_word(input, envp, shell));
-	if (**input == '\'')
-		return (grab_single_quoted_word(input));
-	return (grab_unquoted_word(input, envp, shell));
+	return (concatenate_tokens(input, envp, shell));
 }

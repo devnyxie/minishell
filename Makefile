@@ -30,6 +30,7 @@ EXEC_CMD_SRC = \
 PARSER_SRC = \
 	parser/expanders.c \
 	parser/grab_word.c \
+	parser/token_utils.c \
 	parser/word_expansion.c \
 	parser/expansion_helpers.c \
 	parser/parser.c \
