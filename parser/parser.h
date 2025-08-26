@@ -107,4 +107,8 @@ t_redirect			*new_redirect_node(t_redirect_type type, char *file);
 void				add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir);
 void				prune_heredocs(t_cmd *cmds);
 
+//parser_cmd.c
+void	parse_one_redirection(t_cmd *cmd, t_shell_input *shell_input);
+
+
 #endif

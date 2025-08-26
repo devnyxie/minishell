@@ -12,6 +12,22 @@
 
 #include "parser.h"
 
+static int	is_end_simple(char c)
+{
+	if (c == '|' || c == '\0')
+		return (1);
+	return (0);
+}
+
+static int	at_redir(const char *s)
+{
+	if (!s || !*s)
+		return (0);
+	if (*s == '>' || *s == '<')
+		return (1);
+	return (0);
+}
+
 static void	handle_args(t_cmd *cmd, char *cmd_name, t_cmd_params *params)
 {
 	int		arg_count;
@@ -23,23 +39,31 @@ static void	handle_args(t_cmd *cmd, char *cmd_name, t_cmd_params *params)
 		return ;
 	cmd->args[arg_count] = ft_strdup(cmd_name);
 	if (!cmd->args[arg_count])
-	{
-		free(cmd->args);
-		return ;
-	}
+		return (free(cmd->args));
 	arg_count++;
-	while (*(params->shell_input->input) && *(params->shell_input->input) != '>'
-		&& *(params->shell_input->input) != '<'
-		&& *(params->shell_input->input) != '|')
+	while (*(params->shell_input->input)
+		&& !is_end_simple(*(params->shell_input->input)))
 	{
-		arg = grab_word_with_env(&(params->shell_input->input), params->envp,
-				params->shell);
+		skip_space(&(params->shell_input->input));
+		if (!*(params->shell_input->input)
+			|| is_end_simple(*(params->shell_input->input)))
+			break ;
+		if (at_redir(params->shell_input->input))
+		{
+			parse_one_redirection(cmd, params->shell_input);
+			if (!params->shell_input->is_valid)
+				break ;
+			continue ;
+		}
+		arg = grab_word_with_env(&(params->shell_input->input),
+				params->envp, params->shell);
 		if (!arg)
 			break ;
 		cmd->args[arg_count++] = arg;
 	}
 	cmd->args[arg_count] = NULL;
 }
+
 
 void	append_to_linked_list(t_shell_input *shell_input, t_cmd *cmd)
 {
@@ -118,3 +142,4 @@ void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 	handle_args(cmd, cmd_name, &params);
 	append_to_linked_list(shell_input, cmd);
 }
+
