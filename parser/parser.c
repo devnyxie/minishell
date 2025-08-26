@@ -42,6 +42,7 @@ void	handle_char(t_shell *shell)
 		{
 			report_error(NULL, "syntax error near unexpected token `|'", 0);
 			shell->parsed_input->is_valid = 0;
+			shell->exit_code = 258;
 			return ;
 		}
 		if (**input)
@@ -66,6 +67,7 @@ void	parser(t_shell *shell, char *input)
 		shell_input->is_valid = 0;
 		free_shell_input(shell_input);
 		shell->parsed_input = NULL;
+		shell->exit_code = 258;
 		return ;
 	}
 	while (*(shell_input->input) && shell_input->is_valid)

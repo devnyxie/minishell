@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:27:22 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/18 18:10:34 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:07:08 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	build_env_var(t_shell *shell, char **args, int i)
 			detail_mgs = ft_strjoin(detail_mgs, "': not valid identifier");
 			report_error("export", detail_mgs, 0);
 			free(detail_mgs);
+			shell->exit_code = 1;
 			return ;
 		}
 		equals = ft_strchr(args[i], '=');

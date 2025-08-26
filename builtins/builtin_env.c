@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:30:13 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 11:36:01 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:58:06 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	builtin_env(t_shell *shell, char **args)
 
 	if (args && args[1])
 	{
-		report_error(args[0], "No such file or directory", 127);
-		return (EXIT_FAILURE);
+		report_error(args[1], "No such file or directory", 0);
+		exit(127);
 	}
 	if (!shell->envp)
 		return (EXIT_FAILURE);
