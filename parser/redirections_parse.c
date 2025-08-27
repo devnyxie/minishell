@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections_parse.c                               :+:      :+:    :+:   */
+/*   redirections_parse_new.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/26 20:06:17 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:45:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,82 +42,71 @@ static char	*grab_filename_or_delim(char **p, int is_hd, int *expand)
 	return (tok);
 }
 
-t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
+static int	get_redirect_name(t_shell_input *shell_input, t_redirect_type type,
+		char **name, int *expand)
 {
-	char			*p;
-	t_redirect_type	type;
+	*expand = 0;
+	*name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),
+			expand);
+	if (!validate_redirect_name(*name, shell_input))
+	{
+		free(*name);
+		return (0);
+	}
+	return (1);
+}
 
-	(void)cmd;
-	p = shell_input->input;
-	if (!p || *p == '\0')
-		return (REDIR_NONE);
-	if (*p == '>' && *(p + 1) == '>')
-		type = REDIR_APPEND;
-	else if (*p == '<' && *(p + 1) == '<')
-		type = HEREDOC;
-	else if (*p == '>')
-		type = REDIR_OUT;
-	else if (*p == '<')
-		type = REDIR_IN;
-	else
-		return (REDIR_NONE);
-	if (type == REDIR_APPEND || type == HEREDOC)
-		shell_input->input += 2;
-	else
-		shell_input->input += 1;
-	return (type);
+static void	handle_redirect_with_cmd(t_shell_input *shell_input,
+		t_redirect_params *params)
+{
+	t_redirect_info	info;
+	t_cmd			*cmd;
+
+	cmd = shell_input->last_cmd;
+	info = (t_redirect_info){params->name, params->type, params->expand,
+		cmd, shell_input};
+	create_and_add_redirect(&info);
+	set_redirect_fd_on_cmd(cmd, params->fd, params->type);
 }
 
 void	handle_redirect(t_shell_input *shell_input)
 {
-	t_cmd			*cmd;
-	t_redirect_type	type;
-	int				expand;
-	char			*name;
-	t_redirect_info	info;
+	t_redirect_type		type;
+	int					expand;
+	char				*name;
+	int					fd;
+	t_redirect_params	params;
 
-	cmd = shell_input->last_cmd;
-	type = redirect_type(shell_input, cmd);
-	if (type == REDIR_NONE)
-		return ;
-	if (!cmd)
-		cmd = create_empty_cmd(shell_input);
-	if (!cmd)
+	if (!parse_redirect_fd_and_type(shell_input, &type, &fd))
 		return ;
 	skip_space(&shell_input->input);
-	expand = 0;
-	name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),
-			&expand);
-	if (!validate_redirect_name(name, shell_input))
+	if (!get_redirect_name(shell_input, type, &name, &expand))
+		return ;
+	params = (t_redirect_params){type, name, fd, expand};
+	if (!shell_input->last_cmd)
 	{
-		free(name);
+		store_pending_redirect(shell_input, &params);
 		return ;
 	}
-	info = (t_redirect_info){name, type, expand, cmd, shell_input};
-	create_and_add_redirect(&info);
+	handle_redirect_with_cmd(shell_input, &params);
 }
 
 void	parse_one_redirection(t_cmd *cmd, t_shell_input *in)
 {
 	t_redirect_type	type;
 	char			*name;
-	int				expand;
 	t_redirect_info	info;
 
 	type = redirect_type(in, cmd);
 	if (type == REDIR_NONE)
 		return ;
 	skip_space(&in->input);
-	expand = 0;
-	printf("Shell input before grabbing name: '%s'\n", in->input);
-	printf("Command name: '%s'\n", cmd->name);
-	name = grab_filename_or_delim(&(in->input), (type == HEREDOC), &expand);
+	name = grab_word(&in->input);
 	if (!validate_redirect_name(name, in))
 	{
-		printf("Shell input after grabbing name: '%s'\n", in->input);
-		printf("Invalid redirect name!\n");
+		free(name);
 		return ;
 	}
-	info = (t_redirect_info){name, type, expand, cmd, in};
+	info = (t_redirect_info){name, type, 1, cmd, in};
 	create_and_add_redirect(&info);
 }

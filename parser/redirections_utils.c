@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:41:01 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/20 16:41:02 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,22 @@ t_redirect	*new_redirect_node(t_redirect_type type, char *file)
 	redir->type = type;
 	redir->file = file;
 	redir->expand = 0;
+	redir->fd = -1;
+	redir->next = NULL;
+	return (redir);
+}
+
+t_redirect	*new_redirect_node_with_fd(t_redirect_type type, char *file, int fd)
+{
+	t_redirect	*redir;
+
+	redir = (t_redirect *)malloc(sizeof(t_redirect));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->file = file;
+	redir->expand = 0;
+	redir->fd = fd;
 	redir->next = NULL;
 	return (redir);
 }

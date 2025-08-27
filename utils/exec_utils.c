@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 12:54:04 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/26 18:14:55 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 		report_error(cmd->name, "command not found", 0);
 		exit(127);
 	}
-		
 	else
 	{
 		path = search_cmd_path(shell->path, cmd->name);
@@ -82,6 +81,7 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 void	handle_input_redirection(t_redirect *redir)
 {
 	int	fd;
+	int	target_fd;
 
 	while (redir)
 	{
@@ -93,7 +93,11 @@ void	handle_input_redirection(t_redirect *redir)
 				report_error(NULL, redir->file, 1);
 				exit(1);
 			}
-			dup2(fd, STDIN_FILENO);
+			if (redir->fd != -1)
+				target_fd = redir->fd;
+			else
+				target_fd = STDIN_FILENO;
+			dup2(fd, target_fd);
 			close(fd);
 		}
 		redir = redir->next;

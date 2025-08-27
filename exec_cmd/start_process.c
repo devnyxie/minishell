@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:18:09 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/20 17:49:11 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:42:15 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	close_fds(int prev_fd, t_cmd *cmd, int pipefd[2])
 
 static int	exec_parent_builtin(t_procctx *p)
 {
-	if (is_parent_builtin(p->shell, p->cmd))
+	if (is_parent_builtin(p->shell, p->cmd) && !p->cmd->next
+		&& p->prev_fd == -1)
 	{
 		execute_parent_builtin(p->shell, p->args, p->cmd);
 		return (1);
