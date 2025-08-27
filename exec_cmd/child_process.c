@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/27 14:01:54 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,11 @@ static void	child_process_redir_out(t_cmd *cmd)
 	redir = cmd->out_redir;
 	while (redir)
 	{
-		if (redir->type == REDIR_OUT)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == REDIR_APPEND)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-		{
-			report_error(NULL, redir->file, 1);
-			exit(1);
-		}
-		
-		// Use specified file descriptor or default to stdout
-		target_fd = (redir->fd != -1) ? redir->fd : STDOUT_FILENO;
+		fd = open_redir_file(redir);
+		if (redir->fd != -1)
+			target_fd = redir->fd;
+		else
+			target_fd = STDOUT_FILENO;
 		dup2(fd, target_fd);
 		close(fd);
 		redir = redir->next;
