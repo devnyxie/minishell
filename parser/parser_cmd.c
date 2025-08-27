@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:27:34 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/25 11:21:53 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,23 @@ static int	is_end_simple(char c)
 
 static int	at_redir(const char *s)
 {
+	int	i;
+
 	if (!s || !*s)
 		return (0);
 	if (*s == '>' || *s == '<')
 		return (1);
+	
+	// Check for file descriptor redirection (digit followed by > or <)
+	i = 0;
+	if (ft_isdigit(s[i]))
+	{
+		while (s[i] && ft_isdigit(s[i]))
+			i++;
+		if (s[i] == '>' || s[i] == '<')
+			return (1);
+	}
+	
 	return (0);
 }
 
@@ -119,6 +132,41 @@ static void	handle_variable_assignment(char *assignment, t_shell *shell)
 	*equals = '=';
 }
 
+static void	attach_pending_redirections(t_cmd *cmd, t_shell_input *shell_input)
+{
+	t_redirect	*cur;
+
+	// Attach pending input redirections
+	if (shell_input->pending_in_redir)
+	{
+		if (!cmd->in_redir)
+			cmd->in_redir = shell_input->pending_in_redir;
+		else
+		{
+			cur = cmd->in_redir;
+			while (cur->next)
+				cur = cur->next;
+			cur->next = shell_input->pending_in_redir;
+		}
+		shell_input->pending_in_redir = NULL;
+	}
+
+	// Attach pending output redirections
+	if (shell_input->pending_out_redir)
+	{
+		if (!cmd->out_redir)
+			cmd->out_redir = shell_input->pending_out_redir;
+		else
+		{
+			cur = cmd->out_redir;
+			while (cur->next)
+				cur = cur->next;
+			cur->next = shell_input->pending_out_redir;
+		}
+		shell_input->pending_out_redir = NULL;
+	}
+}
+
 void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 {
 	t_cmd			*cmd;
@@ -136,6 +184,10 @@ void	handle_cmd(t_shell_input *shell_input, char **envp, t_shell *shell)
 		return ;
 	}
 	cmd = init_cmd(cmd_name);
+	
+	// Attach any pending redirections to this command
+	attach_pending_redirections(cmd, shell_input);
+	
 	params.shell_input = shell_input;
 	params.envp = envp;
 	params.shell = shell;

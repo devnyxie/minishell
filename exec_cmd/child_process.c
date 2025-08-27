@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:33:33 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	child_process_redir_out(t_cmd *cmd)
 {
 	t_redirect	*redir;
 	int			fd;
+	int			target_fd;
 
 	redir = cmd->out_redir;
 	while (redir)
@@ -55,7 +56,10 @@ static void	child_process_redir_out(t_cmd *cmd)
 			report_error(NULL, redir->file, 1);
 			exit(1);
 		}
-		dup2(fd, STDOUT_FILENO);
+		
+		// Use specified file descriptor or default to stdout
+		target_fd = (redir->fd != -1) ? redir->fd : STDOUT_FILENO;
+		dup2(fd, target_fd);
 		close(fd);
 		redir = redir->next;
 	}

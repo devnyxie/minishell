@@ -29,12 +29,33 @@ char	*get_env_value(char **envp, const char *key)
 	return ("");
 }
 
+static int	is_fd_redirect(char *input)
+{
+	int	i;
+
+	if (!input || !*input)
+		return (0);
+	
+	// Check if we have digit(s) followed by > or <
+	i = 0;
+	if (!ft_isdigit(input[i]))
+		return (0);
+	
+	while (input[i] && ft_isdigit(input[i]))
+		i++;
+	
+	if (input[i] == '>' || input[i] == '<')
+		return (1);
+	
+	return (0);
+}
+
 void	handle_char(t_shell *shell)
 {
 	char	**input;
 
 	input = &shell->parsed_input->input;
-	if (**input == '>' || **input == '<')
+	if (**input == '>' || **input == '<' || is_fd_redirect(*input))
 		handle_redirect(shell->parsed_input);
 	else if (**input == '|')
 	{

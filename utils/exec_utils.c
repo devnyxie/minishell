@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 12:54:04 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/26 18:14:55 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,18 @@ void	handle_input_redirection(t_redirect *redir)
 	{
 		if (redir->type == REDIR_IN)
 		{
+			int	target_fd;
+			
 			fd = open(redir->file, O_RDONLY);
 			if (fd < 0)
 			{
 				report_error(NULL, redir->file, 1);
 				exit(1);
 			}
-			dup2(fd, STDIN_FILENO);
+			
+			// Use specified file descriptor or default to stdin
+			target_fd = (redir->fd != -1) ? redir->fd : STDIN_FILENO;
+			dup2(fd, target_fd);
 			close(fd);
 		}
 		redir = redir->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell_input.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 02:28:29 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/26 19:31:10 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ t_shell_input	*init_shell_input(char *input)
 	shell_input->incomplete_pipe = 0;
 	shell_input->cmds_count = 0;
 	shell_input->input = input;
+	shell_input->pending_in_redir = NULL;
+	shell_input->pending_out_redir = NULL;
 	return (shell_input);
 }

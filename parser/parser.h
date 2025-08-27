@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/26 18:29:14 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void				create_and_add_redirect(t_redirect_info *info);
 
 // redirection_utils.c
 t_redirect			*new_redirect_node(t_redirect_type type, char *file);
+t_redirect			*new_redirect_node_with_fd(t_redirect_type type, char *file, int fd);
 void				add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir);
 void				prune_heredocs(t_cmd *cmds);
 

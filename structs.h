@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:10:24 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/26 19:41:23 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_redirect
 	t_redirect_type		type;
 	char				*file;
 	int					expand;
+	int					fd;
 	struct s_redirect	*next;
 }						t_redirect;
 
@@ -52,6 +53,8 @@ typedef struct s_shell_input
 	int					is_valid;
 	int					incomplete_pipe;
 	char				*input;
+	t_redirect			*pending_in_redir;
+	t_redirect			*pending_out_redir;
 }						t_shell_input;
 
 // Shell
