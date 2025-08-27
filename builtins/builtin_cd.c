@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:00:01 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 11:08:41 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:10:46 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	builtin_cd(t_shell *shell, char **args)
 	if (chdir(path) == -1)
 	{
 		report_error("cd", path, 1);
+		shell->exit_code = 1;
 		return (1);
 	}
 	update_pwd_after_chdir(shell);

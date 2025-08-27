@@ -6,13 +6,12 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:12:12 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/05 12:02:26 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:13:55 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// to-be-reviewed
 void	custom_error(char *msg)
 {
 	rl_replace_line("", 0);

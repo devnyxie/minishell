@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/22 16:59:29 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/26 20:06:17 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	handle_redirect(t_shell_input *shell_input)
 			&expand);
 	if (!validate_redirect_name(name, shell_input))
 	{
-		free (name);
+		free(name);
 		return ;
 	}
 	info = (t_redirect_info){name, type, expand, cmd, shell_input};
@@ -109,10 +109,15 @@ void	parse_one_redirection(t_cmd *cmd, t_shell_input *in)
 		return ;
 	skip_space(&in->input);
 	expand = 0;
+	printf("Shell input before grabbing name: '%s'\n", in->input);
+	printf("Command name: '%s'\n", cmd->name);
 	name = grab_filename_or_delim(&(in->input), (type == HEREDOC), &expand);
 	if (!validate_redirect_name(name, in))
+	{
+		printf("Shell input after grabbing name: '%s'\n", in->input);
+		printf("Invalid redirect name!\n");
 		return ;
+	}
 	info = (t_redirect_info){name, type, expand, cmd, in};
 	create_and_add_redirect(&info);
 }
-

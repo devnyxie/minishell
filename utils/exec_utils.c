@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 12:54:04 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 12:54:04 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:14:55 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,16 @@ void	exec_absolute_path(t_shell *shell, t_cmd *cmd)
 			perror("execve");
 		}
 		else
+		{
 			report_error(cmd->name, "Permission denied", 0);
+			exit(126);
+		}
 	}
 	else
-		report_error(cmd->name, "No such file or directory", 127);
+	{
+		report_error(cmd->name, "No such file or directory", 0);
+		exit(127);
+	}
 }
 
 void	exec_relative_path(t_shell *shell, t_cmd *cmd)
@@ -51,7 +57,11 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 	char	*path;
 
 	if (shell->path == NULL)
+	{
 		report_error(cmd->name, "command not found", 0);
+		exit(127);
+	}
+		
 	else
 	{
 		path = search_cmd_path(shell->path, cmd->name);
@@ -62,7 +72,10 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 			free(path);
 		}
 		else
+		{
 			report_error(cmd->name, "command not found", 0);
+			exit(127);
+		}
 	}
 }
 

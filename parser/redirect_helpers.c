@@ -6,7 +6,7 @@
 /*   By: mmitkovi <mmitkovi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 12:00:00 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/25 12:00:00 by mmitkovi         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:50:08 by mmitkovi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,17 @@ int	validate_redirect_name(char *name, t_shell_input *shell_input)
 {
 	if (!name || name[0] == '\0')
 	{
-		report_error(NULL, "syntax error near unexpected token `newline'", 0);
+		report_error(NULL, "syntax error near unexpected !token `newline'", 0);
 		shell_input->is_valid = 0;
 		return (0);
 	}
+	// if (name[0] == '|' || name[0] == '<' || name[0] == '>')
+	// {
+	// 	report_error(NULL, "syntax error near unexpected token", 0);
+	// 	shell_input->is_valid = 0;
+	// 	free(name);
+	// 	return (0);
+	// }
 	return (1);
 }
 
