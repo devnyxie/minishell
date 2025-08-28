@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:59:58 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/22 13:36:52 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/28 11:36:45 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	rl_replace_line("", 0);
-	rl_on_new_line();
 	printf("\n");
-	rl_redisplay();
+	rl_on_new_line();
 }
 
 void	setup_signals(void)
