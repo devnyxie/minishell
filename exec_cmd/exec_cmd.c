@@ -13,6 +13,24 @@
 #include "../minishell.h"
 #include "exec_cmd.h"
 
+int	open_redir_file(t_redirect *redir)
+{
+	int	fd;
+
+	if (redir->type == REDIR_OUT)
+		fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (redir->type == REDIR_APPEND)
+		fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		return (-1);
+	if (fd < 0)
+	{
+		report_error(NULL, redir->file, 1);
+		exit(1);
+	}
+	return (fd);
+}
+
 void	exec_cmd(t_cmd *cmd, t_shell *shell, char **args)
 {
 	if (prepare_heredocs(cmd, shell) < 0)

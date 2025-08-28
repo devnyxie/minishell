@@ -36,4 +36,5 @@ int			try_builtin_child(t_shell *shell, t_cmd *cmd);
 void		exec_absolute_path(t_shell *shell, t_cmd *cmd);
 void		exec_relative_path(t_shell *shell, t_cmd *cmd);
 void		handle_input_redirection(t_redirect *redir);
+int			open_redir_file(t_redirect *redir);
 #endif

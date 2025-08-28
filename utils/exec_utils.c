@@ -61,7 +61,6 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 		report_error(cmd->name, "command not found", 0);
 		exit(127);
 	}
-		
 	else
 	{
 		path = search_cmd_path(shell->path, cmd->name);
@@ -82,22 +81,22 @@ void	exec_relative_path(t_shell *shell, t_cmd *cmd)
 void	handle_input_redirection(t_redirect *redir)
 {
 	int	fd;
+	int	target_fd;
 
 	while (redir)
 	{
 		if (redir->type == REDIR_IN)
 		{
-			int	target_fd;
-			
 			fd = open(redir->file, O_RDONLY);
 			if (fd < 0)
 			{
 				report_error(NULL, redir->file, 1);
 				exit(1);
 			}
-			
-			// Use specified file descriptor or default to stdin
-			target_fd = (redir->fd != -1) ? redir->fd : STDIN_FILENO;
+			if (redir->fd != -1)
+				target_fd = redir->fd;
+			else
+				target_fd = STDIN_FILENO;
 			dup2(fd, target_fd);
 			close(fd);
 		}

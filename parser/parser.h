@@ -6,7 +6,7 @@
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:14:47 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 12:46:25 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/28 11:15:12 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ typedef struct s_redirect_info
 	t_cmd			*cmd;
 	t_shell_input	*shell_input;
 }					t_redirect_info;
+
+typedef struct s_redirect_data
+{
+	t_cmd			*cmd;
+	t_redirect_type	type;
+	int				expand;
+	char			*name;
+	int				fd;
+	char			*start_pos;
+}					t_redirect_data;
 
 // parser.c
 void				parser(t_shell *shell, char *input);
@@ -104,12 +114,34 @@ void				create_and_add_redirect(t_redirect_info *info);
 
 // redirection_utils.c
 t_redirect			*new_redirect_node(t_redirect_type type, char *file);
-t_redirect			*new_redirect_node_with_fd(t_redirect_type type, char *file, int fd);
+t_redirect			*new_redirect_node_with_fd(t_redirect_type type, char *file,
+						int fd);
 void				add_redirect_to_cmd(t_cmd *cmd, t_redirect *redir);
 void				prune_heredocs(t_cmd *cmds);
 
-//parser_cmd.c
-void	parse_one_redirection(t_cmd *cmd, t_shell_input *shell_input);
-
+// parser_cmd.c
+void				parse_one_redirection(t_cmd *cmd,
+						t_shell_input *shell_input);
+// parser_cmd_utils.c
+int					is_variable_assignment(char *cmd_name);
+void				handle_variable_assignment(char *assignment,
+						t_shell *shell);
+// parser_cmd_attach.c
+void				attach_pending_redirections(t_cmd *cmd,
+						t_shell_input *shell_input);
+// parser_mem.c
+void				handle_args(t_cmd *cmd, char *cmd_name,
+						t_cmd_params *params);
+int					is_end_simple(char c);
+int					at_redir(const char *s);
+// redirect_parse_utils.c
+char				*grab_filename_or_delim(char **p, int is_hd, int *expand);
+int					parse_fd_number(char **p);
+t_redirect_type		get_redirect_type_with_fd(char *p, int *consumed);
+// redirect_store.c
+void				handle_redirect_no_cmd(t_shell_input *shell_input,
+						t_redirect_data *data);
+void				handle_redirect_with_cmd(t_redirect_data *data,
+						t_shell_input *shell_input);
 
 #endif

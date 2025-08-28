@@ -35,18 +35,13 @@ static int	is_fd_redirect(char *input)
 
 	if (!input || !*input)
 		return (0);
-	
-	// Check if we have digit(s) followed by > or <
 	i = 0;
 	if (!ft_isdigit(input[i]))
 		return (0);
-	
 	while (input[i] && ft_isdigit(input[i]))
 		i++;
-	
 	if (input[i] == '>' || input[i] == '<')
 		return (1);
-	
 	return (0);
 }
 

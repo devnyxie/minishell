@@ -22,7 +22,8 @@ static void	close_fds(int prev_fd, t_cmd *cmd, int pipefd[2])
 
 static int	exec_parent_builtin(t_procctx *p)
 {
-	if (is_parent_builtin(p->shell, p->cmd) && !p->cmd->next && p->prev_fd == -1)
+	if (is_parent_builtin(p->shell, p->cmd) && !p->cmd->next
+		&& p->prev_fd == -1)
 	{
 		execute_parent_builtin(p->shell, p->args, p->cmd);
 		return (1);

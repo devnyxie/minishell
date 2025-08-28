@@ -35,9 +35,15 @@ PARSER_SRC = \
 	parser/expansion_helpers.c \
 	parser/parser.c \
 	parser/parser_cmd.c \
+	parser/parser_cmd_args.c \
+	parser/parser_cmd_attach.c \
+	parser/parser_cmd_utils.c \
+	parser/parser_mem.c \
 	parser/is_space.c \
 	parser/redirections_parse.c \
 	parser/redirect_helpers.c \
+	parser/redirect_parse_utils.c \
+	parser/redirect_store.c \
 	parser/string_utils.c \
 	parser/redirections_utils.c \
 	parser/skip_space.c \

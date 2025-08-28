@@ -23,7 +23,7 @@ t_redirect	*new_redirect_node(t_redirect_type type, char *file)
 	redir->type = type;
 	redir->file = file;
 	redir->expand = 0;
-	redir->fd = -1;  // Default: no specific fd
+	redir->fd = -1;
 	redir->next = NULL;
 	return (redir);
 }
