@@ -5,80 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 15:45:00 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:00 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/08/28 17:00:00 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/08/28 17:00:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-static void	add_to_pending_input(t_shell_input *shell_input, t_redirect *redir)
+static void	add_to_redir_list(t_redirect **head, t_redirect *redir)
 {
 	t_redirect	*cur;
 
-	if (!shell_input->pending_in_redir)
-		shell_input->pending_in_redir = redir;
+	if (!*head)
+		*head = redir;
 	else
 	{
-		cur = shell_input->pending_in_redir;
+		cur = *head;
 		while (cur->next)
 			cur = cur->next;
 		cur->next = redir;
 	}
 }
 
-static void	add_to_pending_output(t_shell_input *shell_input, t_redirect *redir)
-{
-	t_redirect	*cur;
-
-	if (!shell_input->pending_out_redir)
-		shell_input->pending_out_redir = redir;
-	else
-	{
-		cur = shell_input->pending_out_redir;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = redir;
-	}
-}
-
-void	store_pending_redirect(t_shell_input *shell_input,
-		t_redirect_params *params)
+void	handle_redirect_no_cmd(t_shell_input *shell_input,
+	t_redirect_data *data)
 {
 	t_redirect	*redir;
+	t_redirect	**head;
 
-	if (params->fd != -1)
-		redir = new_redirect_node_with_fd(params->type, params->name,
-				params->fd);
+	if (data->fd != -1)
+		redir = new_redirect_node_with_fd(data->type, data->name, data->fd);
 	else
-		redir = new_redirect_node(params->type, params->name);
+		redir = new_redirect_node(data->type, data->name);
 	if (!redir)
 	{
 		shell_input->is_valid = 0;
 		return ;
 	}
-	if (params->type == HEREDOC)
-		redir->expand = params->expand;
-	if (params->type == REDIR_IN || params->type == HEREDOC)
-		add_to_pending_input(shell_input, redir);
+	if (data->type == HEREDOC)
+		redir->expand = data->expand;
+	if (data->type == REDIR_IN || data->type == HEREDOC)
+		head = &shell_input->pending_in_redir;
 	else
-		add_to_pending_output(shell_input, redir);
+		head = &shell_input->pending_out_redir;
+	add_to_redir_list(head, redir);
 }
 
-void	set_redirect_fd_on_cmd(t_cmd *cmd, int fd, t_redirect_type type)
+static void	set_redir_fd(t_redirect *redir, int fd)
 {
-	t_redirect	*redir;
-
-	if (fd == -1)
-		return ;
-	if (type == REDIR_OUT || type == REDIR_APPEND)
-		redir = cmd->out_redir;
-	else
-		redir = cmd->in_redir;
-	if (!redir)
-		return ;
 	while (redir->next)
 		redir = redir->next;
 	redir->fd = fd;
+}
+
+void	handle_redirect_with_cmd(t_redirect_data *data,
+	t_shell_input *shell_input)
+{
+	t_redirect_info	info;
+	t_redirect		*redir;
+
+	info = (t_redirect_info){data->name, data->type, data->expand,
+		data->cmd, shell_input};
+	create_and_add_redirect(&info);
+	if (data->fd != -1 && data->cmd->out_redir)
+	{
+		redir = data->cmd->out_redir;
+		set_redir_fd(redir, data->fd);
+	}
+	else if (data->fd != -1 && data->cmd->in_redir)
+	{
+		redir = data->cmd->in_redir;
+		set_redir_fd(redir, data->fd);
+	}
 }

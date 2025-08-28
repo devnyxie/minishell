@@ -5,15 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 15:45:00 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:00 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/08/28 17:00:00 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/08/28 17:00:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-static int	parse_fd_number(char **p)
+char	*grab_filename_or_delim(char **p, int is_hd, int *expand)
+{
+	char	*tok;
+
+	if (!p || !*p)
+		return (NULL);
+	if (is_hd && (**p == '\'' || **p == '"'))
+	{
+		tok = read_quoted_str(p);
+		if (!tok)
+			return (NULL);
+		if (expand)
+			*expand = 0;
+		return (tok);
+	}
+	tok = grab_word(p);
+	if (!tok)
+		return (NULL);
+	if (expand)
+	{
+		if (is_hd)
+			*expand = 1;
+		else
+			*expand = 0;
+	}
+	return (tok);
+}
+
+int	parse_fd_number(char **p)
 {
 	int	fd;
 	int	i;
@@ -33,73 +61,37 @@ static int	parse_fd_number(char **p)
 	return (fd);
 }
 
-static t_redirect_type	get_redirect_type_and_advance(char *p,
-		t_shell_input *shell_input)
+static t_redirect_type	get_redirect_type_basic(char *p, int *consumed)
 {
+	t_redirect_type	type;
+
 	if (*p == '>' && *(p + 1) == '>')
 	{
-		shell_input->input += 2;
-		return (REDIR_APPEND);
+		type = REDIR_APPEND;
+		*consumed = 2;
 	}
 	else if (*p == '<' && *(p + 1) == '<')
 	{
-		shell_input->input += 2;
-		return (HEREDOC);
+		type = HEREDOC;
+		*consumed = 2;
 	}
 	else if (*p == '>')
 	{
-		shell_input->input += 1;
-		return (REDIR_OUT);
+		type = REDIR_OUT;
+		*consumed = 1;
 	}
 	else if (*p == '<')
 	{
-		shell_input->input += 1;
-		return (REDIR_IN);
+		type = REDIR_IN;
+		*consumed = 1;
 	}
-	return (REDIR_NONE);
+	else
+		return (REDIR_NONE);
+	return (type);
 }
 
-int	parse_redirect_fd_and_type(t_shell_input *shell_input,
-		t_redirect_type *type, int *fd)
+t_redirect_type	get_redirect_type_with_fd(char *p, int *consumed)
 {
-	char	*start_pos;
-
-	start_pos = shell_input->input;
-	*fd = parse_fd_number(&shell_input->input);
-	*type = get_redirect_type_and_advance(shell_input->input, shell_input);
-	if (*type == REDIR_NONE)
-	{
-		shell_input->input = start_pos;
-		return (0);
-	}
-	return (1);
-}
-
-t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
-{
-	char	*input;
-
-	(void)cmd;
-	input = shell_input->input;
-	if (*input == '>' && *(input + 1) == '>')
-	{
-		shell_input->input += 2;
-		return (REDIR_APPEND);
-	}
-	if (*input == '<' && *(input + 1) == '<')
-	{
-		shell_input->input += 2;
-		return (HEREDOC);
-	}
-	if (*input == '>')
-	{
-		shell_input->input += 1;
-		return (REDIR_OUT);
-	}
-	if (*input == '<')
-	{
-		shell_input->input += 1;
-		return (REDIR_IN);
-	}
-	return (REDIR_NONE);
+	*consumed = 0;
+	return (get_redirect_type_basic(p, consumed));
 }

@@ -5,14 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 15:30:00 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 15:30:00 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/08/28 17:00:00 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/08/28 17:00:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../minishell.h"
 #include "parser.h"
 
-static int	is_variable_assignment(char *cmd_name)
+int	is_variable_assignment(char *cmd_name)
 {
 	int	i;
 
@@ -30,7 +31,7 @@ static int	is_variable_assignment(char *cmd_name)
 	return (cmd_name[i] == '=');
 }
 
-static void	handle_variable_assignment(char *assignment, t_shell *shell)
+void	handle_variable_assignment(char *assignment, t_shell *shell)
 {
 	char	*equals;
 	char	*var_name;
@@ -45,14 +46,4 @@ static void	handle_variable_assignment(char *assignment, t_shell *shell)
 	if (is_valid_identifier(var_name))
 		update_env_var(shell, var_name, var_value);
 	*equals = '=';
-}
-
-int	check_and_handle_variable_assignment(char *cmd_name, t_shell *shell)
-{
-	if (is_variable_assignment(cmd_name))
-	{
-		handle_variable_assignment(cmd_name, shell);
-		return (1);
-	}
-	return (0);
 }

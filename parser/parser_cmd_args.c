@@ -5,64 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 15:30:00 by tafanasi          #+#    #+#             */
-/*   Updated: 2025/08/27 15:30:00 by tafanasi         ###   ########.fr       */
+/*   Created: 2025/08/28 17:00:00 by tafanasi          #+#    #+#             */
+/*   Updated: 2025/08/28 17:00:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../minishell.h"
 #include "parser.h"
 
-static int	is_end_simple(char c)
+static void	set_redirect_fd(t_redirect *redir, int fd)
 {
-	if (c == '|' || c == '\0')
-		return (1);
-	return (0);
+	while (redir && redir->next)
+		redir = redir->next;
+	if (redir)
+		redir->fd = fd;
 }
 
-static int	at_redir(const char *s)
+static int	init_redirection_data(t_cmd *cmd, t_shell_input *in,
+	t_redirect_data *data)
 {
-	int	i;
-
-	if (!s || !*s)
+	data->start_pos = in->input;
+	data->fd = parse_fd_number(&in->input);
+	data->type = redirect_type(in, cmd);
+	if (data->type == REDIR_NONE)
+	{
+		in->input = data->start_pos;
 		return (0);
-	if (*s == '>' || *s == '<')
-		return (1);
-	i = 0;
-	if (ft_isdigit(s[i]))
-	{
-		while (s[i] && ft_isdigit(s[i]))
-			i++;
-		if (s[i] == '>' || s[i] == '<')
-			return (1);
 	}
-	return (0);
+	skip_space(&in->input);
+	data->expand = 0;
+	data->name = grab_filename_or_delim(&(in->input),
+			(data->type == HEREDOC), &data->expand);
+	return (1);
 }
 
-void	handle_args(t_cmd *cmd, char *cmd_name, t_cmd_params *params)
+static void	process_redirection(t_cmd *cmd, t_shell_input *in,
+	t_redirect_data *data)
 {
-	int		arg_count;
-	char	*arg;
+	t_redirect_info	info;
 
-	arg_count = 0;
-	cmd->args = malloc(sizeof(char *) * 256);
-	if (!cmd->args)
+	if (!validate_redirect_name(data->name, in))
 		return ;
-	cmd->args[arg_count++] = ft_strdup(cmd_name);
-	while (!is_end_simple(*(params->shell_input->input)))
+	info = (t_redirect_info){data->name, data->type, data->expand, cmd, in};
+	create_and_add_redirect(&info);
+	if (data->fd != -1)
 	{
-		skip_space(&(params->shell_input->input));
-		if (is_end_simple(*(params->shell_input->input)))
-			break ;
-		if (at_redir(params->shell_input->input))
-		{
-			redirections_parse(params->shell_input);
-			continue ;
-		}
-		arg = grab_word_with_env(&(params->shell_input->input),
-				params->envp, params->shell);
-		if (arg)
-			cmd->args[arg_count++] = arg;
+		if (data->type == REDIR_IN || data->type == HEREDOC)
+			set_redirect_fd(cmd->in_redir, data->fd);
+		else
+			set_redirect_fd(cmd->out_redir, data->fd);
 	}
-	cmd->args[arg_count] = NULL;
-	cmd->args_count = arg_count;
+}
+
+void	parse_one_redirection(t_cmd *cmd, t_shell_input *in)
+{
+	t_redirect_data	data;
+
+	if (!init_redirection_data(cmd, in, &data))
+		return ;
+	process_redirection(cmd, in, &data);
 }

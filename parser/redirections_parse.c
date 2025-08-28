@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections_parse_new.c                           :+:      :+:    :+:   */
+/*   redirections_parse.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tafanasi <tafanasi@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:40:54 by mmitkovi          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:00 by tafanasi         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:00:00 by tafanasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,99 +14,56 @@
 #include "parser.h"
 #include <stddef.h>
 
-static char	*grab_filename_or_delim(char **p, int is_hd, int *expand)
+t_redirect_type	redirect_type(t_shell_input *shell_input, t_cmd *cmd)
 {
-	char	*tok;
+	char			*p;
+	t_redirect_type	type;
+	int				consumed;
 
-	if (!p || !*p)
-		return (NULL);
-	if (is_hd && (**p == '\'' || **p == '"'))
-	{
-		tok = read_quoted_str(p);
-		if (!tok)
-			return (NULL);
-		if (expand)
-			*expand = 0;
-		return (tok);
-	}
-	tok = grab_word(p);
-	if (!tok)
-		return (NULL);
-	if (expand)
-	{
-		if (is_hd)
-			*expand = 1;
-		else
-			*expand = 0;
-	}
-	return (tok);
+	(void)cmd;
+	p = shell_input->input;
+	if (!p || *p == '\0')
+		return (REDIR_NONE);
+	type = get_redirect_type_with_fd(p, &consumed);
+	if (type != REDIR_NONE)
+		shell_input->input += consumed;
+	return (type);
 }
 
-static int	get_redirect_name(t_shell_input *shell_input, t_redirect_type type,
-		char **name, int *expand)
+static void	handle_redirect_vars(t_shell_input *shell_input,
+	t_redirect_data *data)
 {
-	*expand = 0;
-	*name = grab_filename_or_delim(&shell_input->input, (type == HEREDOC),
-			expand);
-	if (!validate_redirect_name(*name, shell_input))
+	data->cmd = shell_input->last_cmd;
+	data->start_pos = shell_input->input;
+	data->fd = parse_fd_number(&shell_input->input);
+	data->type = redirect_type(shell_input, data->cmd);
+	if (data->type == REDIR_NONE)
 	{
-		free(*name);
-		return (0);
+		shell_input->input = data->start_pos;
+		return ;
 	}
-	return (1);
-}
-
-static void	handle_redirect_with_cmd(t_shell_input *shell_input,
-		t_redirect_params *params)
-{
-	t_redirect_info	info;
-	t_cmd			*cmd;
-
-	cmd = shell_input->last_cmd;
-	info = (t_redirect_info){params->name, params->type, params->expand,
-		cmd, shell_input};
-	create_and_add_redirect(&info);
-	set_redirect_fd_on_cmd(cmd, params->fd, params->type);
+	skip_space(&shell_input->input);
+	data->expand = 0;
+	data->name = grab_filename_or_delim(&shell_input->input,
+			(data->type == HEREDOC), &data->expand);
 }
 
 void	handle_redirect(t_shell_input *shell_input)
 {
-	t_redirect_type		type;
-	int					expand;
-	char				*name;
-	int					fd;
-	t_redirect_params	params;
+	t_redirect_data	data;
 
-	if (!parse_redirect_fd_and_type(shell_input, &type, &fd))
+	handle_redirect_vars(shell_input, &data);
+	if (data.type == REDIR_NONE)
 		return ;
-	skip_space(&shell_input->input);
-	if (!get_redirect_name(shell_input, type, &name, &expand))
-		return ;
-	params = (t_redirect_params){type, name, fd, expand};
-	if (!shell_input->last_cmd)
+	if (!validate_redirect_name(data.name, shell_input))
 	{
-		store_pending_redirect(shell_input, &params);
+		free(data.name);
 		return ;
 	}
-	handle_redirect_with_cmd(shell_input, &params);
-}
-
-void	parse_one_redirection(t_cmd *cmd, t_shell_input *in)
-{
-	t_redirect_type	type;
-	char			*name;
-	t_redirect_info	info;
-
-	type = redirect_type(in, cmd);
-	if (type == REDIR_NONE)
-		return ;
-	skip_space(&in->input);
-	name = grab_word(&in->input);
-	if (!validate_redirect_name(name, in))
+	if (!data.cmd)
 	{
-		free(name);
+		handle_redirect_no_cmd(shell_input, &data);
 		return ;
 	}
-	info = (t_redirect_info){name, type, 1, cmd, in};
-	create_and_add_redirect(&info);
+	handle_redirect_with_cmd(&data, shell_input);
 }
